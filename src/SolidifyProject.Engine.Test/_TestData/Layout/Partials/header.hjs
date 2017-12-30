@@ -1,0 +1,7 @@
+<div>
+    <ul>
+        {{# Data.Social}}
+        <li><a href="{{ Link }}">{{ Text }}</a></li>
+        {{/ Data.Social}}
+    </ul>
+</div>

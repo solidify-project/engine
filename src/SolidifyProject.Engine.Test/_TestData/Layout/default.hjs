@@ -1,0 +1,14 @@
+<html>
+<head>
+    <link href="/assets/style.css" rel="stylesheet" type="text/css">
+
+    <title>{{ Page.Title }}</title>
+</head>
+<body>
+{{> header.hjs }}
+
+{{ Page.Content }}
+
+{{> footer.hjs }}
+</body>
+</html>
