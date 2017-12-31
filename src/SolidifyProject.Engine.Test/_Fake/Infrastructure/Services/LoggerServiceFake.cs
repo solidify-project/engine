@@ -6,11 +6,13 @@ namespace SolidifyProject.Engine.Test._Fake.Infrastructure.Services
 {
     public class LoggerServiceFake : ILoggerService
     {
-        private List<string> _logs = new List<string>();
+        private readonly List<string> _logs = new List<string>();
         
-        public async Task WriteLogMessage(string message)
+        public Task WriteLogMessage(string message)
         {
             _logs.Add(message);
+            
+            return Task.FromResult<object>(null);
         }
     }
 }

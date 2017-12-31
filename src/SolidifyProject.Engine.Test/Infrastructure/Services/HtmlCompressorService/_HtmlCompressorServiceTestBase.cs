@@ -19,9 +19,11 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.HtmlCompressorServ
         }
 
         [Test]
-        public async Task Html_Should_Be_NotNull()
+        public Task Html_Should_Be_NotNull()
         {
             Assert.ThrowsAsync<ArgumentNullException>(() => HtmlMinificationService.CompressHtmlAsync(null));
+            
+            return Task.FromResult<object>(null);
         }
     }
 }

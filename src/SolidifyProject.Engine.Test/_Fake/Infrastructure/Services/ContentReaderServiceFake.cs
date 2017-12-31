@@ -17,21 +17,26 @@ namespace SolidifyProject.Engine.Test._Fake.Infrastructure.Services
             _storage = storage ?? new List<T>();
         }
         
-        public async Task<IEnumerable<string>> LoadContentsIdsAsync()
+        public Task<IEnumerable<string>> LoadContentsIdsAsync()
         {
-            return _storage
+            var result = _storage
                 .Select(x => x.Id)
                 .Where(x => !x.EndsWith("README.md", StringComparison.OrdinalIgnoreCase));
+
+            return Task.FromResult(result);
         }
 
-        public async Task<T> LoadContentByIdAsync(string id)
+        public Task<T> LoadContentByIdAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
                 throw new ArgumentException(nameof(id));
             }
 
-            return _storage.SingleOrDefault(x => x.Id.Equals(id, StringComparison.Ordinal));
+            var result = _storage
+                .SingleOrDefault(x => x.Id.Equals(id, StringComparison.Ordinal));
+
+            return Task.FromResult(result);
         }
     }
 }

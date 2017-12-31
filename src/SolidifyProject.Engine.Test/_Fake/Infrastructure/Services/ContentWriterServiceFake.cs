@@ -17,7 +17,7 @@ namespace SolidifyProject.Engine.Test._Fake.Infrastructure.Services
             _storage = storage ?? new List<T>();
         }
         
-        public async Task SaveContentAsync(string id, T content)
+        public Task SaveContentAsync(string id, T content)
         {
             var elements = _storage
                 .Where(x => x.Id.Equals(id, StringComparison.Ordinal))
@@ -30,6 +30,8 @@ namespace SolidifyProject.Engine.Test._Fake.Infrastructure.Services
 
             content.Id = id;
             _storage.Add(content);
+
+            return Task.FromResult<object>(null);
         }
     }
 }

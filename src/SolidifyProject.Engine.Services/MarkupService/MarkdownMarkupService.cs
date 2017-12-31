@@ -10,9 +10,11 @@ namespace SolidifyProject.Engine.Services.MarkupService
             .UsePipeTables()
             .Build();
         
-        public async Task<string> RenderMarkupAsync(string markup)
+        public Task<string> RenderMarkupAsync(string markup)
         {
-            return Markdown.ToHtml(markup, defaultPipeline);
+            var result = Markdown.ToHtml(markup, defaultPipeline);
+
+            return Task.FromResult(result);
         }
     }
 }

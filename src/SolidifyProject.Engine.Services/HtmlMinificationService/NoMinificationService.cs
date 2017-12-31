@@ -6,14 +6,14 @@ namespace SolidifyProject.Engine.Services.HtmlMinificationService
 {
     public class NoMinificationService : IHtmlMinificationService
     {
-        public async Task<string> CompressHtmlAsync(string html)
+        public Task<string> CompressHtmlAsync(string html)
         {
             if (html == null)
             {
                 throw new ArgumentNullException(nameof(html));
             }
             
-            return html;
+            return Task.FromResult(html);
         }
     }
 }

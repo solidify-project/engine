@@ -19,14 +19,16 @@ namespace SolidifyProject.Engine.Services.HtmlMinificationService
             _compressor.setRemoveIntertagSpaces(true);
         }
         
-        public async Task<string> CompressHtmlAsync(string html)
+        public Task<string> CompressHtmlAsync(string html)
         {
             if (html == null)
             {
                 throw new ArgumentNullException(nameof(html));
             }
 
-            return _compressor.compress(html);
+            var result = _compressor.compress(html);
+
+            return Task.FromResult(result);
         }
     }
 }

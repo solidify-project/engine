@@ -20,7 +20,7 @@ namespace SolidifyProject.Engine.Services.TemplateService
             _partialsLocator = partialsLocator;
         }
         
-        public async Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
+        public Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
         {
             if (pageModel == null)
             {
@@ -29,10 +29,12 @@ namespace SolidifyProject.Engine.Services.TemplateService
 
             var model = new { Page = pageModel, Data = dataModel };
             
-            return Render.StringToString(template, model, getPartialTemplate, new RenderContextBehaviour
+            var result = Render.StringToString(template, model, getPartialTemplate, new RenderContextBehaviour
             {
                 HtmlEncoder = _noHtmlEncoding
             });
+
+            return Task.FromResult(result);
         }
 
         private Template getPartialTemplate(string name)

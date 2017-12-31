@@ -37,11 +37,13 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.TemplateService
         }
 
         [Test]
-        public async Task PageModel_Should_Be_NotNull()
+        public Task PageModel_Should_Be_NotNull()
         {
             PageModel pageModel = null;
             
             Assert.ThrowsAsync<ArgumentNullException>(async () => await RenderTemplateTest(null, pageModel, null));
+            
+            return Task.FromResult<object>(null);
         }
     }
 }

@@ -6,9 +6,11 @@ namespace SolidifyProject.Engine.Services.LoggerService
 {
     public class ConsoleLoggerService : ILoggerService
     {
-        public async Task WriteLogMessage(string message)
+        public Task WriteLogMessage(string message)
         {
             Console.WriteLine(message);
+            
+            return Task.FromResult<object>(null);
         }
     }
 }
