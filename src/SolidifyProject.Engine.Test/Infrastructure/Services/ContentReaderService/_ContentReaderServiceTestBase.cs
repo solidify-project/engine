@@ -15,7 +15,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderServi
         protected abstract bool AreEqual(T expected, T actual);
         
         [Test]
-        public virtual async Task LoadContentsIdsAsyncTest(IList<T> expected)
+        public virtual async Task LoadContentsIdsAsyncExcludedTest(IList<T> expected)
         {
             var actual = (await ContentReaderService.LoadContentsIdsAsync()).ToList();
             
@@ -26,6 +26,18 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderServi
             }
         }
 
+        [Test]
+        public virtual async Task LoadContentsIdsAsyncIncludedTest(IList<T> expected)
+        {
+            var actual = (await ContentReaderService.LoadContentsIdsAsync(true)).ToList();
+            
+            Assert.AreEqual(expected.Count, actual.Count);
+            foreach (var element in expected)
+            {
+                Assert.IsTrue(actual.Contains(element.Id), $"{element.Id} was not fount in actual collection");
+            }
+        }
+        
         [Test]
         public virtual async Task LoadContentByIdAsyncTest(string contentId, T expected)
         {
