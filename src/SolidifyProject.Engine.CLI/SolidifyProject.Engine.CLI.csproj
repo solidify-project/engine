@@ -13,9 +13,6 @@
     <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ExampleData Include="Data\**\*.*" />
+    <Content Include="Data\**\*.*" CopyToOutputDirectory="Always" PublishState="Included" />
   </ItemGroup>
-  <Target Name="CopyExampleData" AfterTargets="build">
-    <Copy SourceFiles="@(ExampleData)" DestinationFiles="@(ExampleData->'$(OutputPath)\Data\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
-  </Target>
 </Project>
