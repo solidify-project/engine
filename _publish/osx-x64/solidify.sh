@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./engine/SolidifyProject.Engine.CLI
+./engine/SolidifyProject.Engine.CLI $@
