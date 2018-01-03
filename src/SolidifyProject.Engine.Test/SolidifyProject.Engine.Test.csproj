@@ -13,6 +13,7 @@
     <TestData Include="_TestData\**\*.*" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
   </ItemGroup>

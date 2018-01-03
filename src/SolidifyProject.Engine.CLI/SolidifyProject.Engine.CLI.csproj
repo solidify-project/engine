@@ -11,4 +11,10 @@
     <ProjectReference Include="..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <ExampleData Include="Data\**\*.*" />
+  </ItemGroup>
+  <Target Name="CopyExampleData" AfterTargets="build">
+    <Copy SourceFiles="@(ExampleData)" DestinationFiles="@(ExampleData->'$(OutputPath)\Data\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+  </Target>
 </Project>
