@@ -9,6 +9,9 @@ namespace SolidifyProject.Engine.Test.Configuration.Models
     public class SolidifyConfigurationModelTest
     {
         private string _config = @"
+            engine:
+              path: ./engine
+              
             source:
               path: ./src
             
@@ -26,6 +29,7 @@ namespace SolidifyProject.Engine.Test.Configuration.Models
 
             var config = new SolidifyConfiguration(model);
             
+            Assert.AreEqual("./engine", config.Engine.Path);
             Assert.AreEqual("./src", config.Source.Path);
             Assert.AreEqual("./www", config.Output.Path);
         }

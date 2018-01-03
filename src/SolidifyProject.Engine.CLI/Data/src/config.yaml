@@ -1,5 +1,0 @@
-source:
-  path: ./src
-
-output:
-  path: ./www
