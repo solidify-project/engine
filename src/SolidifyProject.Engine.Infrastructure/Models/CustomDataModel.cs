@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 
 namespace SolidifyProject.Engine.Infrastructure.Models
 {
-    public class CustomDataModel : TextContentModel
+    public sealed class CustomDataModel : TextContentModel
     {
         private string _id;
         public override string Id
