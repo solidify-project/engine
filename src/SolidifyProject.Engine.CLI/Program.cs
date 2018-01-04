@@ -14,7 +14,7 @@ namespace SolidifyProject.Engine.CLI
             CliCommands.LoggerService = LoggerService;
             
             var app = new CommandLineApplication();
-            app.Name = "SSG.CLI";
+            app.Name = "SolidifyProject.CLI";
             app.Description = "Static Site Generator";
 
             app.HelpOption("-?|-h|--help");
