@@ -1,6 +1,9 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
+using SolidifyProject.Engine.Configuration;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
+using SolidifyProject.Engine.Services.ContentReaderService;
 using SolidifyProject.Engine.Services.ContentWriterService;
 
 namespace SolidifyProject.Engine.CLI.Commands
@@ -13,30 +16,34 @@ namespace SolidifyProject.Engine.CLI.Commands
                 
             command.HelpOption("-?|-h|--help");
 
-            var destination = command.Option("-d|--destination <DESTINATION>", "Path to folder where static website will be generated", CommandOptionType.SingleValue);
-            
             command.OnExecute(() =>
             {
                 LoggerService.WriteLogMessage("Bootstraping folder strcuture").Wait();
 
-                var files = new[]
-                {
-                    "Assets/README.md",
-                    "Data/README.md",
-                    "Layout/README.md",
-                    "Layout/Partials/README.md",
-                    "Pages/README.md",
-                    "WWW/README.md",
-                    "README.md"
-                };
-                var destinationPath = destination.HasValue() ? destination.Value() : Directory.GetCurrentDirectory();
+                var configurationService = new ConfigurationService();
+                var examplePath = Path.Combine(Directory.GetCurrentDirectory(), configurationService.Configuration.Engine.Path, "Data", "src");
+                var sourcePath = Path.Combine(Directory.GetCurrentDirectory(), configurationService.Configuration.Source.Path);
                 
-                LoggerService.WriteLogMessage($"Destination: {destinationPath}").Wait();
+                LoggerService.WriteLogMessage($"Example from: {examplePath}").Wait();
+                LoggerService.WriteLogMessage($"Bootstraped to: {sourcePath}").Wait();
 
+                var dataReader = new FileSystemBinaryContentReaderService<BinaryContentModel>(examplePath);
+                var dataWriter = new FileSystemBinaryContentWriterService<BinaryContentModel>(sourcePath);
+
+                var taskGetList = dataReader.LoadContentsIdsAsync(true);
+                taskGetList.Wait();
+                
+                var files = taskGetList.Result;
+                
                 foreach (var file in files)
                 {
-                    var writer = new FileSystemTextContentWriterService<TextContentModel>(Path.Combine(destinationPath));
-                    writer.SaveContentAsync(file, new TextContentModel{ Id = file, ContentRaw = string.Empty}).Wait();
+                    var taskLoadContent = dataReader.LoadContentByIdAsync(file);
+                    taskLoadContent.Wait();
+                    
+                    var content = taskLoadContent.Result;
+                    dataWriter.SaveContentAsync(file, content).Wait();
+                    
+                    LoggerService.WriteLogMessage($"Bootstraped file: {file}").Wait();
                 }
                 
                 LoggerService.WriteLogMessage("Bootstraping finished successfully").Wait();

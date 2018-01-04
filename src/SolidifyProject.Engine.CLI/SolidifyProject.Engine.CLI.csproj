@@ -8,7 +8,11 @@
     <PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\**\*.*" CopyToOutputDirectory="Always" PublishState="Included" />
   </ItemGroup>
 </Project>

@@ -10,13 +10,11 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <TestData Include="_TestData\**\*.*" />
+    <Content Include="_TestData\**\*.*" CopyToOutputDirectory="Always" PublishState="Included" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
   </ItemGroup>
-  <Target Name="CopyTestData" AfterTargets="build">
-    <Copy SourceFiles="@(TestData)" DestinationFiles="@(TestData->'$(OutputPath)\_TestData\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
-  </Target>
 </Project>

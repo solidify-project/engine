@@ -49,7 +49,8 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderServi
             }
         }
         
-        private static object[] _loadContentsIdsAsyncTestCases =
+        
+        private static object[] _loadContentsIdsAsyncExcludedTestCases =
         {
             new object[]
             {
@@ -61,10 +62,30 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderServi
             }
         };
         
-        [TestCaseSource(nameof(_loadContentsIdsAsyncTestCases))]
-        public override Task LoadContentsIdsAsyncTest(IList<CustomDataModel> expected)
+        [TestCaseSource(nameof(_loadContentsIdsAsyncExcludedTestCases))]
+        public override Task LoadContentsIdsAsyncExcludedTest(IList<CustomDataModel> expected)
         {
-            return base.LoadContentsIdsAsyncTest(expected);
+            return base.LoadContentsIdsAsyncExcludedTest(expected);
+        }
+        
+        
+        private static object[] _loadContentsIdsAsyncIncludedTestCases =
+        {
+            new object[]
+            {
+                new List<CustomDataModel>
+                {
+                    new CustomDataModel { Id = "about.txt" },
+                    new CustomDataModel { Id = "home.txt" },
+                    new CustomDataModel { Id = "README.md" }
+                }
+            }
+        };
+        
+        [TestCaseSource(nameof(_loadContentsIdsAsyncIncludedTestCases))]
+        public override Task LoadContentsIdsAsyncIncludedTest(IList<CustomDataModel> expected)
+        {
+            return base.LoadContentsIdsAsyncIncludedTest(expected);
         }
 
         
