@@ -11,7 +11,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentWriterServi
 {
     public class FileSystemContentWriterServiceTest : _ContentWriterServiceTestBase<CustomDataModel>
     {
-        private static readonly string _root = Path.Combine(Path.GetTempPath(), "SSG.Test", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"), "FileSystemContentWriterServiceTest");
+        private static readonly string _root = Path.Combine(Path.GetTempPath(), "SolidifyProject.Test", DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss"), "FileSystemContentWriterServiceTest");
         
         private readonly FileSystemTextContentReaderService<CustomDataModel> _binaryContentReaderService = new FileSystemTextContentReaderService<CustomDataModel>(_root);
         protected override IContentReaderService<CustomDataModel> ContentReaderService => _binaryContentReaderService;
