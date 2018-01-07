@@ -1,1 +1,1 @@
-\engine\SolidifyProject.Engine.CLI.exe
+engine\SolidifyProject.Engine.CLI.exe %*
