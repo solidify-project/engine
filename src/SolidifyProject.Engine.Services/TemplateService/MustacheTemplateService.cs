@@ -6,18 +6,21 @@ using Nustache.Core;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
 using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Utils.Cache;
 
 namespace SolidifyProject.Engine.Services.TemplateService
 {
     public sealed class MustacheTemplateService : ITemplateService
     {
         private readonly Encoders.HtmlEncoder _noHtmlEncoding = delegate(string text) { return text; };
-
         private readonly IContentReaderService<TextContentModel> _partialsLocator;
+
+        private readonly LazyCache<Template> _cache;
         
         public MustacheTemplateService(IContentReaderService<TextContentModel> partialsLocator = null)
         {
             _partialsLocator = partialsLocator;
+            _cache = new LazyCache<Template>(loadTemplate);
         }
         
         public Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
@@ -29,7 +32,7 @@ namespace SolidifyProject.Engine.Services.TemplateService
 
             var model = new { Page = pageModel, Data = dataModel };
             
-            var result = Render.StringToString(template, model, getPartialTemplate, new RenderContextBehaviour
+            var result = Render.StringToString(template, model, getTemplate, new RenderContextBehaviour
             {
                 HtmlEncoder = _noHtmlEncoding
             });
@@ -37,7 +40,7 @@ namespace SolidifyProject.Engine.Services.TemplateService
             return Task.FromResult(result);
         }
 
-        private Template getPartialTemplate(string name)
+        private Task<Template> loadTemplate(string name)
         {
             if (_partialsLocator == null)
             {
@@ -49,7 +52,15 @@ namespace SolidifyProject.Engine.Services.TemplateService
             var template = new Template();
             template.Load(new StringReader(content));
 
-            return template;
+            return Task.FromResult(template);
+        }
+
+        private Template getTemplate(string key)
+        {
+            var task = _cache.GetFromCacheAsync(key);
+            task.Wait();
+
+            return task.Result;
         }
     }
 }

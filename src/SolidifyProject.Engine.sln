@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Configuration", "SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj", "{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Utils", "SolidifyProject.Engine.Utils\SolidifyProject.Engine.Utils.csproj", "{C6098A76-E4C6-408E-A8C4-949C5406D416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6098A76-E4C6-408E-A8C4-949C5406D416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6098A76-E4C6-408E-A8C4-949C5406D416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6098A76-E4C6-408E-A8C4-949C5406D416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6098A76-E4C6-408E-A8C4-949C5406D416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
