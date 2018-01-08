@@ -160,7 +160,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         private void ParseTxt()
         {
-            CustomData = ContentRaw;
+            CustomData = ContentRaw?.Trim();
         }
     }
 }

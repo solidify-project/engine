@@ -6,12 +6,32 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
     [TestFixture]
     public class TxtCustomDataModelTest
     {
+        private static object[] _parseTextTestCases =
+        {
+            new object[]
+            {
+                "some text goes here",
+                "some text goes here"
+            },
+            new object[]
+            {
+                "      ",
+                ""
+            },
+            new object[]
+            {
+                "      hello world       ",
+                "hello world"
+            }
+        };
+        
         [Test]
-        public void ParseTest()
+        [TestCaseSource(nameof(_parseTextTestCases))]
+        public void ParseText(string raw, string expected)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.txt";
-            model.ContentRaw = "some text goes here";
+            model.ContentRaw = raw;
             
             model.Parse();
             
@@ -20,7 +40,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
             
             var data = (string)model.CustomData;
             Assert.IsNotNull(data);
-            Assert.AreEqual("some text goes here", data);
+            Assert.AreEqual(expected, data);
         }
     }
 }
