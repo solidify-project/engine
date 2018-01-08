@@ -6,12 +6,27 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
     [TestFixture]
     public class JsonCustomDataModelTest
     {
+        private string _json = @"
+            { 
+                ""links"": [
+                    { 
+                        ""name""    :     ""facebook"", 
+                        ""url""     :     ""https://facebook.com""
+                    }, 
+                    { 
+                        ""name""    :     ""twitter"",
+                        ""url""     :     ""https://twitter.com""
+                    }
+                ]
+            }
+        ";
+        
         [Test]
-        public void ParseTest()
+        public void ParseJson()
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.json";
-            model.ContentRaw = "{ \"links\": [ { \"name\": \"facebook\", \"url\": \"https://facebook.com\" }, { \"name\": \"twitter\", \"url\": \"https://twitter.com\" } ] }";
+            model.ContentRaw = _json;
             
             model.Parse();
             

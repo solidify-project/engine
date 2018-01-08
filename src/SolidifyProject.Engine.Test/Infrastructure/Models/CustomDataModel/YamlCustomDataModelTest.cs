@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SolidifyProject.Engine.Infrastructure.Enums;
 
 namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
@@ -8,12 +7,14 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
     public class YamlCustomDataModelTest
     {
         [Test]
-        public void ParseCollectionOfScalarsTest()
+        public void ParseCollectionOfScalars()
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.yaml";
-            model.ContentRaw = "- aaa" + Environment.NewLine +
-                               "- bbb";
+            model.ContentRaw = @"
+                - aaa
+                - bbb
+            ";
             
             model.Parse();
             
@@ -28,19 +29,21 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseCollectionOfStructuresTest()
+        public void ParseCollectionOfStructures()
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.yaml";
-            model.ContentRaw = "-" + Environment.NewLine +
-                               "  name: John" + Environment.NewLine +
-                               "  phones:" + Environment.NewLine +
-                               "    - iPhone" + Environment.NewLine +
-                               
-                               "-" + Environment.NewLine +
-                               "  name: Bob" + Environment.NewLine +
-                               "  phones:" + Environment.NewLine +
-                               "    - Samsung";
+            model.ContentRaw = @"
+                -
+                  name:     John
+                  phones:
+                    - iPhone
+                                   
+                -
+                  name:     Bob
+                  phones:
+                    - Samsung
+            ";
             
             model.Parse();
             
@@ -61,13 +64,15 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseStructureTest()
+        public void ParseStructure()
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.yaml";
-            model.ContentRaw = "name:    John" + Environment.NewLine +
-                               "phones:  " + Environment.NewLine +
-                               "  - iPhone" + Environment.NewLine;
+            model.ContentRaw = @" 
+                name:    John
+                phones:  
+                  - iPhone
+            ";
             
             model.Parse();
             
@@ -83,14 +88,16 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseScalarTest()
+        public void ParseScalar()
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
             model.Id = "file.yaml";
-            model.ContentRaw = "this" + Environment.NewLine +
-                               "is" + Environment.NewLine +
-                               "just" + Environment.NewLine +
-                               "text";
+            model.ContentRaw = @"
+                this
+                is
+                just
+                text
+            ";
             
             model.Parse();
             
