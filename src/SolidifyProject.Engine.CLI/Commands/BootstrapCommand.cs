@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 using SolidifyProject.Engine.Configuration;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
