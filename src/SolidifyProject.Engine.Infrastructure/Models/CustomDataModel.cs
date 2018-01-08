@@ -62,7 +62,8 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
             
-            if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase) ||
+                extension.Equals(CustomDataType.Yml.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 DataType = CustomDataType.Yaml;
                 ParseYaml();

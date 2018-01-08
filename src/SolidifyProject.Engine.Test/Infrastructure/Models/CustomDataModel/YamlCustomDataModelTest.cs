@@ -6,11 +6,18 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
     [TestFixture]
     public class YamlCustomDataModelTest
     {
+        private static object[] _fileNames =
+        {
+            new object[] { "file.yaml" },
+            new object[] { "file.yml" },
+        };
+        
         [Test]
-        public void ParseCollectionOfScalars()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseCollectionOfScalars(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
+            model.Id = fileName;
             model.ContentRaw = @"
                 - aaa
                 - bbb
@@ -29,10 +36,11 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseCollectionOfStructures()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseCollectionOfStructures(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
+            model.Id = fileName;
             model.ContentRaw = @"
                 -
                   name:     John
@@ -64,10 +72,11 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseStructure()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseStructure(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
+            model.Id = fileName;
             model.ContentRaw = @" 
                 name:    John
                 phones:  
@@ -88,10 +97,11 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseScalar()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseScalar(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
+            model.Id = fileName;
             model.ContentRaw = @"
                 this
                 is
