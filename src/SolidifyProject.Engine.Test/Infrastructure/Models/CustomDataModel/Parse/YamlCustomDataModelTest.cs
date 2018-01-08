@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using SolidifyProject.Engine.Infrastructure.Enums;
 
-namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
+namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel.Parse
 {
     [TestFixture]
     public class YamlCustomDataModelTest
