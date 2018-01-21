@@ -29,7 +29,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
             await Task.WhenAll(dataTasks);
 
-            var dataModel = new ExpandoObject();
+            ICollection<KeyValuePair<string, object>> dataModel = new ExpandoObject();
             
             foreach (var result in dataTasks.Select(x => x.Result))
             {
@@ -39,12 +39,14 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
                 PopulateDataObject(ref dataModel, sections, result.Value);
             }
+
+            PopulateSpecialCollection(ref dataModel);
             
-            return dataModel;
+            return (ExpandoObject)dataModel;
         }
 
         private void PopulateDataObject(
-            ref ExpandoObject dataObject,
+            ref ICollection<KeyValuePair<string, object>> dataObject,
             IEnumerable<string> sections,
             object value)
         {
@@ -54,19 +56,16 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             var currentValue = GetCurrentValue(sectionsArray, value);
 
             PopulateCurrentSection(ref dataObject, currentSection, currentValue);
-
-            PopulateSpecialCollection(ref dataObject, currentValue);
         }
 
-        private void PopulateCurrentSection(ref ExpandoObject dataObject, string currentSection, object currentValue)
+        private void PopulateCurrentSection(ref ICollection<KeyValuePair<string, object>> dataObject, string currentSection, object currentValue)
         {
             if (dataObject.Any(x => x.Key.Equals(currentSection, StringComparison.InvariantCulture)))
             {
                 if (currentValue is ICollection<KeyValuePair<string, object>>)
                 {
-                    var newObj = new ExpandoObject();
-                    ((ICollection<KeyValuePair<string, object>>)newObj)
-                        .Add(new KeyValuePair<string, object>(currentSection, currentValue));
+                    ICollection<KeyValuePair<string, object>> newObj = new ExpandoObject();
+                    newObj.Add(new KeyValuePair<string, object>(currentSection, currentValue));
                     MergeDataObjects(ref dataObject, newObj);
                 }
                 else
@@ -76,29 +75,24 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             }
             else
             {
-                ((ICollection<KeyValuePair<string, object>>)dataObject)
-                    .Add(new KeyValuePair<string, object>(currentSection, currentValue));
+                dataObject.Add(new KeyValuePair<string, object>(currentSection, currentValue));
             }
         }
 
-        private void PopulateSpecialCollection(ref ExpandoObject dataObject, object currentValue)
+        private void PopulateSpecialCollection(ref ICollection<KeyValuePair<string, object>> dataObject)
         {
-            ICollection<object> collection;
-
-            if (dataObject.Any(x => x.Key.Equals(COLLECTION_PROPERTY, StringComparison.InvariantCulture)))
+            var collection = new List<object>();
+            
+            foreach (var val in dataObject.Select(x => x.Value))
             {
-                collection = (List<object>) dataObject
-                    .Single(x => x.Key.Equals(COLLECTION_PROPERTY, StringComparison.InvariantCulture))
-                    .Value;
+                collection.Add(val);
+                if (val is ICollection<KeyValuePair<string, object>> expandoObject)
+                {
+                    PopulateSpecialCollection(ref expandoObject);
+                }
             }
-            else
-            {
-                collection = new List<object>();
-                var collectionProperty = new KeyValuePair<string, object>(COLLECTION_PROPERTY, collection);
-                ((ICollection<KeyValuePair<string, object>>)dataObject).Add(collectionProperty);
-            }
-
-            collection.Add(currentValue);
+            
+            dataObject.Add(new KeyValuePair<string, object>(COLLECTION_PROPERTY, collection));
         }
 
         private string GetCurrentSection(IEnumerable<string> sectionsArray)
@@ -118,7 +112,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
             if (sectionsArray.Count > 1)
             {
-                var obj = new ExpandoObject();
+                ICollection<KeyValuePair<string, object>> obj = new ExpandoObject();
                 PopulateDataObject(ref obj, sectionsArray.Skip(1), value);
                 currentValue = obj;
             }
@@ -130,8 +124,8 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         }
 
         private void MergeDataObjects(
-            ref ExpandoObject destinationObject,
-            ExpandoObject sourceObject)
+            ref ICollection<KeyValuePair<string, object>> destinationObject,
+            ICollection<KeyValuePair<string, object>> sourceObject)
         {
             foreach (var property in sourceObject.Where(x => !x.Key.Equals(COLLECTION_PROPERTY, StringComparison.InvariantCulture)))
             {
@@ -139,7 +133,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 {
                     if (property.Value is ICollection<KeyValuePair<string, object>>)
                     {
-                        var pr = (ExpandoObject)destinationObject
+                        var pr = (ICollection<KeyValuePair<string, object>>)destinationObject
                             .Single(x => x.Key.Equals(property.Key, StringComparison.InvariantCulture))
                             .Value;
                         MergeDataObjects(ref pr, (ExpandoObject)property.Value);
@@ -151,7 +145,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 }
                 else
                 {
-                    ((ICollection<KeyValuePair<string, object>>)destinationObject).Add(property);
+                    destinationObject.Add(property);
                 }
             }
         }

@@ -140,8 +140,8 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services
             Assert.IsNotNull(data);
             Assert.IsNotNull(data.__collection);
             Assert.AreEqual(2, data.__collection.Count);                    // f1, f2
-            Assert.AreEqual(2, data.__collection[0].__collection.Count);    // i1, i2
-            Assert.AreEqual(1, data.__collection[1].__collection.Count);    // i3
+            Assert.AreEqual(2, data.__collection[0].__collection.Count);    // f1 => i1, i2
+            Assert.AreEqual(1, data.__collection[1].__collection.Count);    // f2 => i3
         }
         
         [Test]
@@ -163,10 +163,11 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services
             
             Assert.IsNotNull(data);
             Assert.IsNotNull(data.__collection);
-            Assert.AreEqual(3, data.__collection.Count);
-            Assert.AreEqual(3, data.__collection[0].__collection.Count);
-            Assert.AreEqual(2, data.__collection[1].__collection.Count);
-            Assert.AreEqual(2, data.__collection[2].__collection.Count);
+            Assert.AreEqual(3, data.__collection.Count);                                    // f1, f2, f3
+            Assert.AreEqual(3, data.__collection[0].__collection.Count);                    // f1 => i1, i6, i7
+            Assert.AreEqual(2, data.__collection[1].__collection.Count);                    // f2 => i2, i3
+            Assert.AreEqual(1, data.__collection[2].__collection.Count);                    // f3 => s3
+            Assert.AreEqual(2, data.__collection[2].__collection[0].__collection.Count);    // f3 => s3 => i4, i5
         }
         
         
