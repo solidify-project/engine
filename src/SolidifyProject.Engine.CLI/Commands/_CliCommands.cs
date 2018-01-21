@@ -1,4 +1,4 @@
-﻿using SolidifyProject.Engine.Infrastructure.Services;
+﻿using SolidifyProject.Engine.Infrastructure.Interfaces;
 
 namespace SolidifyProject.Engine.CLI.Commands
 {

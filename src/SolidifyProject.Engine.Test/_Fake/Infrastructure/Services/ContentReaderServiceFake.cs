@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
-using SolidifyProject.Engine.Infrastructure.Services;
 
 namespace SolidifyProject.Engine.Test._Fake.Infrastructure.Services
 {

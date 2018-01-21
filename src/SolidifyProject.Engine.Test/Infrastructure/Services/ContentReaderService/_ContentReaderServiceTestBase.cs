@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
-using SolidifyProject.Engine.Infrastructure.Services;
 
 namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderService
 {

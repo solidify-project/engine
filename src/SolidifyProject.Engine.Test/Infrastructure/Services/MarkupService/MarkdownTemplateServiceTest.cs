@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Services.MarkupService;
 
 namespace SolidifyProject.Engine.Test.Infrastructure.Services.MarkupService

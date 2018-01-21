@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 
 namespace SolidifyProject.Engine.Services.ContentWriterService
 {

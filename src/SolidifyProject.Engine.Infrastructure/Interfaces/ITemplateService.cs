@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SolidifyProject.Engine.Infrastructure.Models;
 
-namespace SolidifyProject.Engine.Infrastructure.Services
+namespace SolidifyProject.Engine.Infrastructure.Interfaces
 {
     public interface ITemplateService
     {
