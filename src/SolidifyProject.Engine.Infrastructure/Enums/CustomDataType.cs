@@ -2,10 +2,15 @@
 {
     public enum CustomDataType
     {
-        Json = 1,
-        Xml = 2,
-        Yaml = 3,
-        Csv = 4,
-        Txt = 5
+        Json     = 101,
+        
+        Xml      = 201,
+        
+        Yaml     = 301,
+        Yml      = 302,
+        
+        Csv      = 401,
+        
+        Txt      = 501
     }
 }

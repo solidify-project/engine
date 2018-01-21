@@ -1,6 +1,6 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
 using SolidifyProject.Engine.CLI.Commands;
-using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Services.LoggerService;
 
 namespace SolidifyProject.Engine.CLI

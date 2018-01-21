@@ -1,94 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
-using SolidifyProject.Engine.Infrastructure.Services;
 using SolidifyProject.Engine.Test._Fake.Infrastructure.Services;
 
 namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentReaderService
 {
     public class ContentReaderServiceFakeTest : _ContentReaderServiceTestBase<CustomDataModel>
     {
-        private readonly List<CustomDataModel> _storage = new List<CustomDataModel>
-        {
-            new CustomDataModel { Id = "1" },
-            new CustomDataModel { Id = "2" },
-            new CustomDataModel { Id = "3" },
-            new CustomDataModel { Id = "README.md" }
-        };
+        private readonly List<CustomDataModel> _storage = new List<CustomDataModel>();
         protected override IContentReaderService<CustomDataModel> ContentReaderService => new ContentReaderServiceFake<CustomDataModel, string>(_storage);
         
         protected override bool AreEqual(CustomDataModel expected, CustomDataModel actual)
         {
-            if (expected.Id.Equals(actual.Id, StringComparison.Ordinal)) return true;
+            if (!expected.Id.Equals(actual.Id, StringComparison.Ordinal)) return false;
 
-            return false;
-        }
-        
-        private static object[] _loadContentsIdsAsyncExcludedTestCases =
-        {
-            new object[]
-            {
-                new List<CustomDataModel>
-                {
-                    new CustomDataModel { Id = "1" },
-                    new CustomDataModel { Id = "2" },
-                    new CustomDataModel { Id = "3" }
-                }
-            }
-        };
-        
-        [TestCaseSource(nameof(_loadContentsIdsAsyncExcludedTestCases))]
-        public override Task LoadContentsIdsAsyncExcludedTest(IList<CustomDataModel> expected)
-        {
-            return base.LoadContentsIdsAsyncExcludedTest(expected);
-        }
-        
-        private static object[] _loadContentsIdsAsyncIncludedTestCases =
-        {
-            new object[]
-            {
-                new List<CustomDataModel>
-                {
-                    new CustomDataModel { Id = "1" },
-                    new CustomDataModel { Id = "2" },
-                    new CustomDataModel { Id = "3" },
-                    new CustomDataModel { Id = "README.md" }
-                }
-            }
-        };
-        
-        [TestCaseSource(nameof(_loadContentsIdsAsyncIncludedTestCases))]
-        public override Task LoadContentsIdsAsyncIncludedTest(IList<CustomDataModel> expected)
-        {
-            return base.LoadContentsIdsAsyncIncludedTest(expected);
+            return true;
         }
 
-        
-        private static object[] _loadContentByIdAsyncTestCases =
+        protected override Task WriteContentAsync(CustomDataModel model)
         {
-            new object[] { "1", new CustomDataModel { Id = "1" } },
-            new object[] { "2", new CustomDataModel { Id = "2" } },
-            new object[] { "3", new CustomDataModel { Id = "3" } }
-        };
-        
-        [TestCaseSource(nameof(_loadContentByIdAsyncTestCases))]
-        public override Task LoadContentByIdAsyncTest(string contentId, CustomDataModel expected)
-        {
-            return base.LoadContentByIdAsyncTest(contentId, expected);
+            _storage.Add(model);
+            return Task.FromResult<object>(null);
         }
 
+        public override Task Setup()
+        {
+            return Task.FromResult<object>(null);
+        }
         
-        private static object[] _loadContentByNonExistingIdAsyncTestCases =
+        protected override Task CleanupAsync()
         {
-            new object[] { "4" }
-        };
-
-        [TestCaseSource(nameof(_loadContentByNonExistingIdAsyncTestCases))]
-        public override Task LoadContentByNonExistingIdAsyncTest(string contentId)
-        {
-            return base.LoadContentByNonExistingIdAsyncTest(contentId);
+            _storage.Clear();
+            return Task.FromResult<object>(null);
         }
     }
 }

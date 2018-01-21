@@ -1,19 +1,27 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SolidifyProject.Engine.Infrastructure.Enums;
 
-namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
+namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel.Parse
 {
     [TestFixture]
     public class YamlCustomDataModelTest
     {
+        private static object[] _fileNames =
+        {
+            new object[] { "file.yaml" },
+            new object[] { "file.yml" },
+        };
+        
         [Test]
-        public void ParseCollectionOfScalarsTest()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseCollectionOfScalars(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
-            model.ContentRaw = "- aaa" + Environment.NewLine +
-                               "- bbb";
+            model.Id = fileName;
+            model.ContentRaw = @"
+                - aaa
+                - bbb
+            ";
             
             model.Parse();
             
@@ -28,19 +36,22 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseCollectionOfStructuresTest()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseCollectionOfStructures(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
-            model.ContentRaw = "-" + Environment.NewLine +
-                               "  name: John" + Environment.NewLine +
-                               "  phones:" + Environment.NewLine +
-                               "    - iPhone" + Environment.NewLine +
-                               
-                               "-" + Environment.NewLine +
-                               "  name: Bob" + Environment.NewLine +
-                               "  phones:" + Environment.NewLine +
-                               "    - Samsung";
+            model.Id = fileName;
+            model.ContentRaw = @"
+                -
+                  name:     John
+                  phones:
+                    - iPhone
+                                   
+                -
+                  name:     Bob
+                  phones:
+                    - Samsung
+            ";
             
             model.Parse();
             
@@ -61,13 +72,16 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseStructureTest()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseStructure(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
-            model.ContentRaw = "name:    John" + Environment.NewLine +
-                               "phones:  " + Environment.NewLine +
-                               "  - iPhone" + Environment.NewLine;
+            model.Id = fileName;
+            model.ContentRaw = @" 
+                name:    John
+                phones:  
+                  - iPhone
+            ";
             
             model.Parse();
             
@@ -83,14 +97,17 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
         }
         
         [Test]
-        public void ParseScalarTest()
+        [TestCaseSource(nameof(_fileNames))]
+        public void ParseScalar(string fileName)
         {
             var model = new Engine.Infrastructure.Models.CustomDataModel();
-            model.Id = "file.yaml";
-            model.ContentRaw = "this" + Environment.NewLine +
-                               "is" + Environment.NewLine +
-                               "just" + Environment.NewLine +
-                               "text";
+            model.Id = fileName;
+            model.ContentRaw = @"
+                this
+                is
+                just
+                text
+            ";
             
             model.Parse();
             

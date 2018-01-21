@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Markdig;
-using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 
 namespace SolidifyProject.Engine.Services.MarkupService
 {

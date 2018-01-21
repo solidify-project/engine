@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 
 namespace SolidifyProject.Engine.Infrastructure.Models
 {
-    public sealed class CustomDataModel : TextContentModel
+    public class CustomDataModel : TextContentModel
     {
         private string _id;
         public override string Id
@@ -30,11 +30,17 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             {
                 if (string.IsNullOrEmpty(_sanitezedId))
                 {
-                    var extension = Path.GetExtension(Id);
+                    
                     _sanitezedId = Id
                         .Replace('/', '.')
-                        .Replace('\\', '.')
-                        .Replace(extension, string.Empty);
+                        .Replace('\\', '.');
+
+                    if (Path.HasExtension(Id))
+                    {
+                        var extension = Path.GetExtension(Id);
+                        _sanitezedId = _sanitezedId
+                            .Replace(extension, string.Empty);
+                    }
                 }
                 return _sanitezedId;
             }
@@ -62,7 +68,8 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
             
-            if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase) ||
+                extension.Equals(CustomDataType.Yml.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 DataType = CustomDataType.Yaml;
                 ParseYaml();
@@ -142,7 +149,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private void ParseCsv()
         {
-            CustomData = new List<object>();
+            CustomData = new List<dynamic>();
             
             using (var reader = new StringReader(ContentRaw))
             using (var csv = new CsvReader(reader))
@@ -152,15 +159,23 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
                 while (csv.Read())
                 {
-                    var record = csv.GetRecord<dynamic>();
-                    ((List<object>) CustomData).Add(record);
+                    ICollection<KeyValuePair<string, object>> row = csv.GetRecord<dynamic>();
+                    ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
+
+                    foreach (var cell in row)
+                    {
+                        var property = new KeyValuePair<string, object>(cell.Key.Trim(), cell.Value.ToString().Trim());
+                        data.Add(property);
+                    }
+                
+                    ((List<dynamic>)CustomData).Add(data);
                 }
             }
         }
         
         private void ParseTxt()
         {
-            CustomData = ContentRaw;
+            CustomData = ContentRaw?.Trim();
         }
     }
 }

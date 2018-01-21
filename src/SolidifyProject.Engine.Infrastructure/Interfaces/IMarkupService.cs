@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace SolidifyProject.Engine.Infrastructure.Services
+namespace SolidifyProject.Engine.Infrastructure.Interfaces
 {
     public interface IMarkupService
     {

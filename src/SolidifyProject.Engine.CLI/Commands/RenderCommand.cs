@@ -3,6 +3,7 @@ using McMaster.Extensions.CommandLineUtils;
 using SolidifyProject.Engine.Configuration;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
+using SolidifyProject.Engine.Infrastructure.Services;
 using SolidifyProject.Engine.Services;
 using SolidifyProject.Engine.Services.ContentReaderService;
 using SolidifyProject.Engine.Services.ContentWriterService;
@@ -37,6 +38,9 @@ namespace SolidifyProject.Engine.CLI.Commands
                 LoggerService.WriteLogMessage($"Source: {sourcePath}").Wait();
                 LoggerService.WriteLogMessage($"Output: {outputPath}").Wait();
 
+                var dataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(sourcePath, "data")));
+                dataService.OnLogEvent += async message => { await LoggerService.WriteLogMessage(message); };
+                
                 var orchestrationService = new OrchestrationService();
                 
                 orchestrationService.LoggerService = LoggerService;
@@ -47,12 +51,12 @@ namespace SolidifyProject.Engine.CLI.Commands
                 orchestrationService.AssetsReaderService = new FileSystemBinaryContentReaderService<BinaryContentModel>(Path.Combine(sourcePath, "assets"));
                 orchestrationService.PageModelReaderService = new FileSystemTextContentReaderService<PageModel>(Path.Combine(sourcePath, "pages"));
                 orchestrationService.TemplateReaderService = new FileSystemTextContentReaderService<TemplateModel>(Path.Combine(sourcePath, "layout"));
-                orchestrationService.DataReaderService = new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(sourcePath, "data"));
+                orchestrationService.DataService = dataService;
                 
                 orchestrationService.PageModelWriterService = new FileSystemTextContentWriterService<TextContentModel>(Path.Combine(outputPath));
                 orchestrationService.AssetsWriterService = new FileSystemBinaryContentWriterService<BinaryContentModel>(Path.Combine(outputPath, "assets"));
     
-                orchestrationService.RenderProject().Wait();
+                orchestrationService.RenderProjectAsync().Wait();
 
                 LoggerService.WriteLogMessage("Rendering finished successfully").Wait();
 

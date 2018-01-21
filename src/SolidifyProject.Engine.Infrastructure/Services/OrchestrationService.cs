@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
-using SolidifyProject.Engine.Infrastructure.Services;
 
-namespace SolidifyProject.Engine.Services
+namespace SolidifyProject.Engine.Infrastructure.Services
 {
     public sealed class OrchestrationService
     {
@@ -22,57 +21,20 @@ namespace SolidifyProject.Engine.Services
         public IContentReaderService<TemplateModel> TemplateReaderService { get; set; }
         public ITemplateService TemplateService { get; set; }
 
-        public IContentReaderService<CustomDataModel> DataReaderService { get; set; }
+        public IDataService DataService { get; set; }
 
         public IMarkupService MarkupService { get; set; }
 
         public IHtmlMinificationService HtmlMinificationService { get; set; }
         
-        public async Task RenderProject()
+        public async Task RenderProjectAsync()
         {
             var tasksGroupContent = Task.Run(async () =>
             {
-                var data = await DataReaderService.LoadContentsIdsAsync();
-                var dataTasks = data.Select(GetDataById).ToList();
-            
-                await Task.WhenAll(dataTasks);
-            
-                var dataModel = new ExpandoObject();
-                foreach (var task in dataTasks)
-                {
-                    var sections = task.Result.Key.Split(new [] {'.'}, StringSplitOptions.RemoveEmptyEntries);
-                    if (sections.Length > 1)
-                    {
-                        var obj = new ExpandoObject();
-                        var lastSection = sections.Last();
-                        
-                        ((ICollection<KeyValuePair<string, object>>) obj)
-                            .Add(new KeyValuePair<string, object>(lastSection, task.Result.Value));
-
-                        foreach (var section in sections.Reverse().Skip(2))
-                        {
-                            var tmp = new ExpandoObject();
-                            
-                            ((ICollection<KeyValuePair<string, object>>) tmp)
-                                .Add(new KeyValuePair<string, object>(section, obj));
-
-                            obj = tmp;
-                        }
-                        
-                        var firstSection = sections.First();
-                        
-                        ((ICollection<KeyValuePair<string, object>>) dataModel)
-                            .Add(new KeyValuePair<string, object>(firstSection, obj));
-                    }
-                    else
-                    {
-                        ((ICollection<KeyValuePair<string, object>>) dataModel)
-                            .Add(new KeyValuePair<string, object>(task.Result.Key, task.Result.Value));
-                    }
-                }
+                var dataModel = await DataService.GetDataModelAsync();
 
                 var pages = await PageModelReaderService.LoadContentsIdsAsync();
-                var pageTasks = pages.Select(pageId => ProcessPageById(pageId, dataModel)).ToList();
+                var pageTasks = pages.Select(pageId => ProcessPageByIdAsync(pageId, dataModel)).ToList();
             
                 await Task.WhenAll(pageTasks);
             });
@@ -81,7 +43,7 @@ namespace SolidifyProject.Engine.Services
             {
                 var assets = await AssetsReaderService.LoadContentsIdsAsync();
 
-                var tasks = assets.Select(CopyAssetById).ToList();
+                var tasks = assets.Select(CopyAssetByIdAsync).ToList();
 
                 await Task.WhenAll(tasks);
             });
@@ -89,23 +51,7 @@ namespace SolidifyProject.Engine.Services
             await Task.WhenAll(tasksGroupContent, tasksGroupAssets);
         }
 
-        private async Task<KeyValuePair<string, object>> GetDataById(string dataId)
-        {
-            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started retrieval of data \"{dataId}\"");
-            
-            var customData = await DataReaderService.LoadContentByIdAsync(dataId);
-
-            try
-            {
-                return new KeyValuePair<string, object>(customData.SanitezedId, customData.CustomData);
-            }
-            finally
-            {
-                await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished data retrieval \"{dataId}\"");
-            }
-        }
-
-        private async Task ProcessPageById(string pageId, ExpandoObject dataModel)
+        private async Task ProcessPageByIdAsync(string pageId, ExpandoObject dataModel)
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started precessing of page \"{pageId}\"");
             
@@ -129,7 +75,7 @@ namespace SolidifyProject.Engine.Services
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished page precessing \"{pageId}\"");
         }
 
-        private async Task CopyAssetById(string id)
+        private async Task CopyAssetByIdAsync(string id)
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started copying of asset \"{id}\"");
             

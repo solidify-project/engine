@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
-using SolidifyProject.Engine.Infrastructure.Services;
 
 namespace SolidifyProject.Engine.Test.Infrastructure.Services.ContentWriterService
 {

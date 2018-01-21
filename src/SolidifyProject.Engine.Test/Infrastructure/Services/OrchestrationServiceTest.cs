@@ -3,20 +3,20 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
 using SolidifyProject.Engine.Infrastructure.Services;
-using SolidifyProject.Engine.Services;
 using SolidifyProject.Engine.Services.ContentReaderService;
 using SolidifyProject.Engine.Services.HtmlMinificationService;
 using SolidifyProject.Engine.Services.MarkupService;
 using SolidifyProject.Engine.Services.TemplateService;
 using SolidifyProject.Engine.Test._Fake.Infrastructure.Services;
 
-namespace SolidifyProject.Engine.Test.Orchestration
+namespace SolidifyProject.Engine.Test.Infrastructure.Services
 {
     [TestFixture]
-    public class OrchestrationTest
+    public class OrchestrationServiceTest
     {
         private static string _root = Path.Combine(Directory.GetCurrentDirectory(), "_TestData");
         
@@ -36,8 +36,8 @@ namespace SolidifyProject.Engine.Test.Orchestration
 
         private ITemplateService TemplateService => new MustacheTemplateService(new FileSystemTextContentReaderService<TextContentModel>(Path.Combine(_root, "layout", "partials")));
 
-        private IContentReaderService<CustomDataModel> DataReaderService => new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(_root, "data"));
-
+        private IDataService DataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(_root, "data")));
+        
         private IMarkupService MarkupService => new MarkdownMarkupService();
 
         private IHtmlMinificationService HtmlMinificationService => new GoogleHtmlMinificationService();
@@ -56,11 +56,11 @@ namespace SolidifyProject.Engine.Test.Orchestration
             orchestrationService.PageModelWriterService = PageModelWriterService;
             orchestrationService.TemplateReaderService = TemplateReaderService;
             orchestrationService.TemplateService = TemplateService;
-            orchestrationService.DataReaderService = DataReaderService;
+            orchestrationService.DataService = DataService;
             orchestrationService.MarkupService = MarkupService;
             orchestrationService.HtmlMinificationService = HtmlMinificationService;
 
-            await orchestrationService.RenderProject();
+            await orchestrationService.RenderProjectAsync();
 
             
             Assert.AreEqual(2, _pageModelWriterStorage.Count);

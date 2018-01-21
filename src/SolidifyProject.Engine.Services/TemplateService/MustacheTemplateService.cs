@@ -3,9 +3,9 @@ using System.Dynamic;
 using System.IO;
 using System.Threading.Tasks;
 using Nustache.Core;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
-using SolidifyProject.Engine.Infrastructure.Services;
 using SolidifyProject.Engine.Utils.Cache;
 
 namespace SolidifyProject.Engine.Services.TemplateService

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using SolidifyProject.Engine.Infrastructure.Services;
+using SolidifyProject.Engine.Infrastructure.Interfaces;
 using ZetaProducerHtmlCompressor.Internal;
 
 namespace SolidifyProject.Engine.Services.HtmlMinificationService
