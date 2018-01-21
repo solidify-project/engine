@@ -30,11 +30,17 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             {
                 if (string.IsNullOrEmpty(_sanitezedId))
                 {
-                    var extension = Path.GetExtension(Id);
+                    
                     _sanitezedId = Id
                         .Replace('/', '.')
-                        .Replace('\\', '.')
-                        .Replace(extension, string.Empty);
+                        .Replace('\\', '.');
+
+                    if (Path.HasExtension(Id))
+                    {
+                        var extension = Path.GetExtension(Id);
+                        _sanitezedId = _sanitezedId
+                            .Replace(extension, string.Empty);
+                    }
                 }
                 return _sanitezedId;
             }

@@ -10,7 +10,9 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Models.CustomDataModel
             new object[] { @"4.txt",             "4" },
             new object[] { @"README.md",         "README" },
             new object[] { @"folder\file.txt",   "folder.file" },
-            new object[] { @"p1/p2/ff.txt",      "p1.p2.ff" }
+            new object[] { @"p1/p2/ff.txt",      "p1.p2.ff" },
+            new object[] { @"a/b",               "a.b" },
+            new object[] { @"a\b\c\d",           "a.b.c.d" }
         };
         
         [Test]
