@@ -9,7 +9,7 @@ title:      Assets folder structure
 
 ### Assets
 
-Inside `Assets` folder there will be all assets (css, js, png, gif, etc.) that will be copied to output without any modifications. Under current output folder engine will create a folder with name `Assets` and copy all files from source assets folder there. Nested folders are supported.
+Inside `Assets` folder there will be all assets (css, js, png, gif, etc.) that will be copied to output without any modifications. Under current output folder engine will create a folder with the name `Assets` and copy all files from source assets folder there. Nested folders are supported.
 
 ##### Example
 
