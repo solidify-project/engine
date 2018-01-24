@@ -32,7 +32,7 @@ Data
 
 And inside `social.json` you have the following content:
 
-```
+```json
 {
     "profiles ": [{
         "url": "http://facebook.com/JohnDoe",
@@ -48,13 +48,13 @@ And inside `social.json` you have the following content:
 
 Then our template, that we will use to show the list of social profiles, will look like this:
 
-```
+```handlebars
 {{ Data.FoldersStructure.data.template01 }}
 ```
 
 Finally, the html rendered by Solidify Engine will look like this:
 
-```
+```html
 <ul>
     <li>
         <img src="fb.png"/>

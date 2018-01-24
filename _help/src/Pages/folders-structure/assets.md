@@ -18,7 +18,8 @@ If you want to have a website logo, you should do the following:
 - Put logo under `Assets` source folder. Let's assume that name of the file will be `logo.png`.
 
 - Create an image html tag on a website.
-```
+
+```html
 <img src="/Assets/logo.png"/>
 ```
 
