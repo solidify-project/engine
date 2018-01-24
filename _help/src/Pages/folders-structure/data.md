@@ -18,6 +18,8 @@ Inside `Data` folder there will be all data files. For now Solidify Engine can s
 
 On views you can use global object `Data` to access actual data that is located on the file system.
 
+All properties of `Data` object are case sensitive.
+
 ##### Example
 
 Let's assume that you have the following folders structure on you file system:
