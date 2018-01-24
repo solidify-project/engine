@@ -24,7 +24,7 @@ All properties of `Data` object are case sensitive.
 
 Let's assume that you have the following folders structure on you file system:
 
-```
+```none
 Data
     misc
         social.json
