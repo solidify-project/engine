@@ -5,7 +5,7 @@ title:      Data folder structure
 
 ---
 
-[back to folders structure](/folders-structure.html )
+[back to folders structure](/folders-structure.html)
 
 #### Data
 

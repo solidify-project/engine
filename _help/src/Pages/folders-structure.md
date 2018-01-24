@@ -5,6 +5,8 @@ title:      Folders structure
 
 ---
 
+[back to help root](/index.html)
+
 ### Root level folders
 
 Each and every website project should have a root folder. Let's assume that name of that folder will be `MySite`. The folder structure should look like:

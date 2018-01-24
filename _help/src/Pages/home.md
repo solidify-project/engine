@@ -5,6 +5,10 @@ title:      Home
 
 ---
 
+# Table of content
+
+- [Folders structure](/folders-structure.html)
+
 #### Founders
 {{# Data.Authors.Founders }}  
 
