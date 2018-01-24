@@ -1,0 +1,6 @@
+<div class="container">
+    <hr />
+    <p class="text-center font-italic">
+        Solidify Project is powered by .NET Core 2.0 and distributed under MIT license
+    </p>
+</div>
