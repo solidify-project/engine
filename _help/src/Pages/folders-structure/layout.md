@@ -62,7 +62,7 @@ title:      Home
 # Welcome to my website!
 ```
 
-> More details about pages can be found in a dedicated [pages](/folders-structure/pages.html) section.
+> More details about pages can be found in the dedicated [pages](/folders-structure/pages.html) section.
 
 Finally, the html rendered by Solidify Engine will look like this:
 
