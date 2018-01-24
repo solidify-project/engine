@@ -9,18 +9,18 @@ title:      Data folder structure
 
 #### Data
 
-Inside `Data` folder there will be all data files. For now Solidify Engine can support those data formats:
+Inside `Data` folder there will be all data files. For now Solidify Engine can support the following data formats:
 
 - json
 - csv
 - txt
 - yaml (yml)
 
-On views you can use global object `Data` to access actual data that are located on a file system.
+On views you can use global object `Data` to access actual data that is located on the file system.
 
 ##### Example
 
-Let's assume that you have following folders structure on you file system:
+Let's assume that you have the following folders structure on you file system:
 
 ```
 Data
@@ -50,7 +50,7 @@ Then our template, that we will use to show the list of social profiles, will lo
 {{ Data.FoldersStructure.data.template01 }}
 ```
 
-Finally, the html, rendered by Solidify Engine, will look like this:
+Finally, the html rendered by Solidify Engine will look like this:
 
 ```
 <ul>
