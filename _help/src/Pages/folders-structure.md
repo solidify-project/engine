@@ -22,9 +22,9 @@ MySite
     config.yaml
 ```
 
-Inside `engine` folder there will be all the binaries for Solidify Engine.
+Inside `engine` folder there will be all binaries for Solidify Engine.
 
-Inside `src` folder there will be all the source files for the project. This folder structure is more complicated and will be described in a dedicated section later.
+Inside `src` folder there will be all source files for the project. This folder structure is more complicated and will be described in a dedicated section later.
 
 Inside `www` folder there will be all pre-rendered files of website project. Solidify Engine will use this folder as a default output folder.
 
