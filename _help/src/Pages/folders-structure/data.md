@@ -52,6 +52,8 @@ Then our template, that we will use to show the list of social profiles, will lo
 {{ Data.FoldersStructure.data.template01 }}
 ```
 
+> More details about templates and layouts can be found in a dedicated [layout](/folders-structure/layout.html) section.
+
 Finally, the html rendered by Solidify Engine will look like this:
 
 ```html
