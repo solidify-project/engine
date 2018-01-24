@@ -11,7 +11,7 @@ title:      Folders structure
 
 Each and every website project should have a root folder. Let's assume that name of that folder will be `MySite`. The folder structure should look like:
 
-```
+```none
 MySite
     engine
         ....
@@ -34,7 +34,7 @@ Inside `config.yaml` file there will be all the configuration for current websit
 
 Inside `src` folder there will be all the source files for website project. This folder structure should look like:
 
-```
+```none
 src
     Assets
         ....
@@ -65,3 +65,19 @@ Inside `Data` folder there will be all data files. For now Solidify Engine can s
 - yaml (yml)
 
 [more details...](folders-structure/data.html)
+
+
+#### Layout
+
+Inside `Layout` folder there will be all layout files. For now Solidify Engine can support those layout formats: 
+
+- mustache
+
+[more details...](folders-structure/layout.html)
+
+
+#### Pages
+
+Inside `Pages` folder there will be all pages files. Each page file is a markdown markup file with some mandatory metadata at the start of the file.
+
+[more details...](folders-structure/pages.html)
