@@ -1,15 +1,15 @@
 url:        index.html  
 template:   default.hjs
 
-title:      Home
+title:      Solidify Project Help
 
 ---
 
-# Table of content
+### Table of content
 
 - [Folders structure](/folders-structure.html)
 
-#### Founders
+### Founders
 {{# Data.Authors.Founders }}  
 
 * {{ Name }} ({{ Title }})  

@@ -7,7 +7,7 @@ title:      Data folder structure
 
 [back to folders structure](/folders-structure.html)
 
-#### Data
+### Data
 
 Inside `Data` folder there will be all data files. For now Solidify Engine can support the following data formats:
 
