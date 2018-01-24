@@ -16,6 +16,8 @@ Inside `Data` folder there will be all data files. For now Solidify Engine can s
 - txt
 - yaml (yml)
 
+Solidify Engine will look for exact file extension from list provided above. In case he is unable to find a match the engine will blowup. In case there is a match it will apply a parser based on exact extension to transform file content to in-memory data object.
+
 On views you can use global object `Data` to access actual data that is located on the file system.
 
 All properties of `Data` object are case sensitive.
@@ -52,7 +54,7 @@ Then our template, that we will use to show the list of social profiles, will lo
 {{ Data.FoldersStructure.data.template01 }}
 ```
 
-> More details about templates and layouts can be found in a dedicated [layout](/folders-structure/layout.html) section.
+> More details about layouts templates can be found in a dedicated [layout](/folders-structure/layout.html) section.
 
 Finally, the html rendered by Solidify Engine will look like this:
 
