@@ -65,3 +65,12 @@ Inside `Data` folder there will be all data files. For now Solidify Engine can s
 - yaml (yml)
 
 [more details...](folders-structure/data.html)
+
+
+#### Layout
+
+Inside `Layout` folder there will be all layout files. For now Solidify Engine can support those layout formats: 
+
+- mustache
+
+[more details...](folders-structure/layout.html)
