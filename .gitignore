@@ -289,3 +289,8 @@ __pycache__/
 
 # Visual Studio Code
 .vscode
+
+# Solidify Project Help
+_help/engine
+_help/www
+solidify.sh

@@ -1,0 +1,4 @@
+<div class="container">
+    <h1>{{ Page.Title }}</h1>
+    <hr />
+</div>
