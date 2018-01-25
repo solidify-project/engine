@@ -1,0 +1,10 @@
+<ul>
+    {{# Data.misc.social.profiles }}
+        <li>
+            <img src="{{ icon }}"/>
+            <a href="{{ url }}">
+                {{ name }}
+            </a>
+        </li>
+    {{/ Data.misc.social.profiles }}
+</ul>

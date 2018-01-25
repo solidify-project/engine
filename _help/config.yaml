@@ -1,0 +1,8 @@
+engine:
+  path: engine
+  
+source:
+  path: src
+
+output:
+  path: www

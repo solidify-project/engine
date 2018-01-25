@@ -1,0 +1,23 @@
+<html>
+<head>
+    <link href="/Assets/bootstrap-4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/Assets/prism-1.10.0/prism.css" rel="stylesheet" type="text/css">
+
+
+    <title>{{ Page.Title }}</title>
+</head>
+<body>
+{{> header.hjs }}
+
+<div class="container">
+    {{ Page.Content }}
+</div>
+
+{{> footer.hjs }}
+
+<script src="/Assets/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+<script src="/Assets/pooper/popper.js"></script>
+<script src="/Assets/bootstrap-4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script src="/Assets/prism-1.10.0/prism.js"></script>
+</body>
+</html>
