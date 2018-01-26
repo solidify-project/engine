@@ -19,7 +19,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             int? top = null,
             int? skip = null)
         {
-            IEnumerable<dynamic> results = _data.__collection;
+            var results = GetInitialResults();
 
             if (!string.IsNullOrWhiteSpace(orderString))
             {
@@ -41,7 +41,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
         public int Count(string filterString = null)
         {
-            IEnumerable<dynamic> results = _data.__collection;
+            var results = GetInitialResults();
 
             if (results.Any())
             {
@@ -49,6 +49,13 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             }
 
             return 0;
+        }
+        
+        private IEnumerable<object> GetInitialResults()
+        {
+            return ((ICollection<KeyValuePair<string, object>>) _data)
+                .Single(x => x.Key.Equals(DataService.COLLECTION_PROPERTY))
+                .Value as IEnumerable<object>;
         }
     }
 }
