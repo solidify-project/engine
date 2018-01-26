@@ -49,9 +49,9 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.QueryService
             var results = service.Query(skip: skip).ToList();
             
             Assert.AreEqual(expectedCount, results.Count);
-            for (var i = results.Count - 1; i == 0; i--)
+            for (var i = 0; i < results.Count; i++)
             {
-                Assert.AreEqual(data[i].id, results[i].id);
+                Assert.AreEqual(data.__collection[i + skip].id, results[i].id);
             }
         }
     }
