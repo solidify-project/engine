@@ -21,7 +21,7 @@ namespace SolidifyProject.Engine.Helpers.PredicateParser
                 return item => item
                     .GetType()
                     .GetProperty(PropertyName)
-                    .GetValue(item, null);
+                    .GetValue(item);
             }
         }
         
