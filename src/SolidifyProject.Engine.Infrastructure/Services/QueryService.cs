@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SolidifyProject.Engine.Helpers.PredicateParser;
 
 namespace SolidifyProject.Engine.Infrastructure.Services
 {
@@ -19,7 +20,12 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             int? skip = null)
         {
             IEnumerable<dynamic> results = _data.__collection;
-            
+
+            if (!string.IsNullOrWhiteSpace(orderString))
+            {
+                results = results.OrderCollectionBy(orderString);
+            }
+
             if (skip.HasValue)
             {
                 results = results.Skip(skip.Value);
@@ -30,12 +36,12 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 results = results.Take(top.Value);
             }
 
-            yield return results;
+            return results;
         }
 
         public int Count(string filterString = null)
         {
-            var results = (IEnumerable<dynamic>) _data.__collection;
+            IEnumerable<dynamic> results = _data.__collection;
 
             if (results.Any())
             {
