@@ -42,7 +42,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.QueryService
         
         [Test]
         [TestCaseSource(nameof(_skipSimpleTestCases))]
-        public void SkipSimpleTest(dynamic data, int expectedCount, int top)
+        public void TopSimpleTest(dynamic data, int expectedCount, int top)
         {
             var service = new Engine.Infrastructure.Services.QueryService(data);
 
@@ -51,7 +51,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.QueryService
             Assert.AreEqual(expectedCount, results.Count);
             for (var i = 0; i < results.Count; i++)
             {
-                Assert.AreEqual(data[i].id, results[i].id);
+                Assert.AreEqual(data.__collection[i].id, results[i].id);
             }
         }
     }
