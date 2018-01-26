@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SolidifyProject.Engine.Helpers.PredicateParser
 {
-    public static class OrderByExtension
+    public static class OrderCollection
     {
         public const string ORDER_SEPARATOR = ",";
         public const string ORDER_ASCENDING = "asc";
