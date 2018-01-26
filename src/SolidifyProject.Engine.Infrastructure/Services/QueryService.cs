@@ -21,6 +21,11 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         {
             var results = GetInitialResults();
 
+            if (!string.IsNullOrWhiteSpace(filterString))
+            {
+                results = results.FilterCollectionBy(filterString);
+            }
+
             if (!string.IsNullOrWhiteSpace(orderString))
             {
                 results = results.OrderCollectionBy(orderString);
@@ -43,12 +48,12 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         {
             var results = GetInitialResults();
 
-            if (results.Any())
+            if (!string.IsNullOrWhiteSpace(filterString))
             {
-                return results.Count();
+                results = results.FilterCollectionBy(filterString);
             }
 
-            return 0;
+            return results.Count();
         }
         
         private IEnumerable<object> GetInitialResults()
