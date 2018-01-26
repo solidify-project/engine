@@ -9,7 +9,7 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.QueryService
     [TestFixture]
     public class OrderByTest
     {
-        private static dynamic getDynamicCollection(params dynamic[] items)
+        private static dynamic GetDynamicCollection(params dynamic[] items)
         {
             var list = new List<dynamic>();
 
@@ -23,8 +23,8 @@ namespace SolidifyProject.Engine.Test.Infrastructure.Services.QueryService
             return obj;
         }
 
-        private static readonly dynamic _dataEmpty = getDynamicCollection();
-        private static readonly dynamic _dataSimple = getDynamicCollection(
+        private static readonly dynamic _dataEmpty = GetDynamicCollection();
+        private static readonly dynamic _dataSimple = GetDynamicCollection(
             new {id = 1, name = "Bob",  age = 14},
             new {id = 2, name = "Paul", age = 42},
             new {id = 3, name = "Barb", age = 21},
