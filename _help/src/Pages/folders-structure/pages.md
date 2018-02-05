@@ -9,7 +9,7 @@ title:      Pages folder structure
 
 ### Pages
 
-Inside `Pages` folder there will be all pages files. Each page file is a markdown markup file with some mandatory metadata at the start of the file.
+Inside `Pages` folder there will be all page files. Each page file is a markdown markup file with some mandatory metadata at the start of the file.
 
 Page file look like this:
 
@@ -31,7 +31,7 @@ custom.logo.url:    http://my.com/logo.png
 
 #### url
 
-The `url` attribute is mandatory. It shows under which path output html file will be saved. If you want to save in some specific folder you can do it by providing this kind of value for `url` attribute:
+The `url` attribute is mandatory. It shows under which path output html file will be saved. If you want to save in some specific folder, you can do it by providing the following value for `url` attribute:
 
 ```markdown
 url:    blog/posts/2018/Jan/my-awesome-post.html
@@ -47,17 +47,17 @@ You can use other synonimous for `template` attribute which are `TemplateId`, `L
 
 #### title
 
-The `title` attribute is not mandatory, but we reccond to use it for setting html title of your page.
+The `title` attribute is not mandatory, but we recommend to use it for setting html title of your page.
 
 
 ### Custom attributes
 
-If predefined attributes are not enough and you want to add some extra attributes to your page, you can acheive that by using custom attributes section. The name of custom attribute should start with `custom` and be followed by `.`. After that you should add at least one character that will represent the name of your attribute.
+If predefined attributes are not enough and you want to add some extra attributes to your page, you can acheive that by using custom attributes section. The name of custom attribute should start with `custom` followed by `.`. After that you should add at least one character that will represent the name of your attribute.
 
 
 #### Page object
 
-All attributes can be accessible through global `Page` object. That object is accessible from each and every template and it always have a context of current page.
+All attributes can be accessible through global `Page` object. That object is accessible from each and every template and it always has a context of current page.
 
 You can access predefined page attributes via `Page.Title`, `Page.Url`, `Page.TemplateId` and `Page.Content` for page html content. All properties of global `Page` object are case sensitive.
 
@@ -65,7 +65,7 @@ You can access custom page attributes via properties of `Page.Custom` object. It
 
 #### Example
 
-If your page file look like this:
+If your page file looks like this:
 
 ```markdown
 url:                index.html  
@@ -81,6 +81,6 @@ custom.logo.url:    http://my.com/logo.png
 # Welcome to my website!
 ```
 
-You can access logo url using following statement `Page.Custom.logo.url`.
+You can access logo url using the following statement `Page.Custom.logo.url`.
 
 There is one important point to highlight here. `Page.Custom` is predifened and case sensitive, but `logo.url` was generated dynamicaly from page metadata and it's also case sensitive.
