@@ -3,7 +3,6 @@
     <link href="/Assets/bootstrap-4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/Assets/prism-1.10.0/prism.css" rel="stylesheet" type="text/css">
 
-
     <title>{{ Page.Title }}</title>
 </head>
 <body>
