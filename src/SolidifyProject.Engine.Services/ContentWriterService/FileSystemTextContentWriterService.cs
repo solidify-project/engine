@@ -19,7 +19,7 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
             using (var file = new FileStream(path, FileMode.Create))
             using (var writer = new StreamWriter(file))
             {
-                await writer.WriteAsync(content.ContentRaw);
+                await writer.WriteAsync(content.ContentRaw).ConfigureAwait(false);
             }
         }
     }

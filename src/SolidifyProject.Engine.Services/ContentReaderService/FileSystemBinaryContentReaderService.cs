@@ -26,7 +26,7 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
                 model.Id = id;
                 model.ContentRaw = new byte[file.Length];
                 
-                await file.ReadAsync(model.ContentRaw, 0, (int)file.Length);
+                await file.ReadAsync(model.ContentRaw, 0, (int)file.Length).ConfigureAwait(false);
                 model.Parse();
                 
                 return model;

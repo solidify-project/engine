@@ -28,10 +28,10 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         
         public async Task<ExpandoObject> GetDataModelAsync()
         {
-            var data = await DataReaderService.LoadContentsIdsAsync();
+            var data = await DataReaderService.LoadContentsIdsAsync().ConfigureAwait(false);
             var dataTasks = data.Select(GetDataByIdAsync).ToList();
 
-            await Task.WhenAll(dataTasks);
+            await Task.WhenAll(dataTasks).ConfigureAwait(false);
 
             ICollection<KeyValuePair<string, object>> dataModel = new ExpandoObject();
             
