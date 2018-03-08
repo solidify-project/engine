@@ -18,7 +18,7 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
             
             using (var file = new FileStream(path, FileMode.Create))
             {
-                await file.WriteAsync(content.ContentRaw, 0, content.ContentRaw.Length);
+                await file.WriteAsync(content.ContentRaw, 0, content.ContentRaw.Length).ConfigureAwait(false);
             }
         }
     }
