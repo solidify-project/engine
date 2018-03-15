@@ -18,9 +18,11 @@ Inside `Data` folder there will be all data files. For now Solidify Engine can s
 
 Solidify Engine will look for exact file extension from the list provided above. In case it is unable to find a match, the engine will blow up. In case there is a match, it will apply a parser based on exact extension to transform file content to in-memory data object.
 
-On views you can use global object `Data` to access actual data that is located on the file system.
+On views and pages you can use global object `Data` to access actual data that is located on the file system.
 
 All properties of `Data` object are case sensitive.
+
+> More advanced details about how to work with data can be found in [data special properties](/folders-structure/data/special-properties.html) section.
 
 ##### Example
 
@@ -36,7 +38,7 @@ And inside `social.json` you have the following content:
 
 ```json
 {
-    "profiles ": [{
+    "profiles": [{
         "url": "http://facebook.com/JohnDoe",
         "icon": "fb.png",
         "name": "facebook"
@@ -51,7 +53,7 @@ And inside `social.json` you have the following content:
 Then our template that we will use to show the list of social profiles will look like this:
 
 ```handlebars
-{{ Data.FoldersStructure.data.template01 }}
+{{ Data.FoldersStructure.DataTemplate01 }}
 ```
 
 > More details about layout templates can be found in the dedicated [layout](/folders-structure/layout.html) section.

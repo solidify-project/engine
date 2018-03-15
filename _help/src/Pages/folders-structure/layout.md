@@ -42,7 +42,7 @@ Layout
 Template file can look like this:
 
 ```handlebars
-{{ Data.FoldersStructure.layout.layout01 }}
+{{ Data.FoldersStructure.LayoutTemplate01 }}
 ```
 
 Partials file can look like this:
