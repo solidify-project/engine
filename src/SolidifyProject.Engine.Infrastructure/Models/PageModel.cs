@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -17,8 +18,13 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         private static readonly string[] TEMPLATE_TYPE = {"TemplateType"};
         private static readonly string[] TEMPLATE_ID_ATTRIBUTE = {"TemplateId", "Template", "LayoutÏd", "Layout"};
         
+        private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR = {"."};
+        private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX = {"Custom"};
+        
         public string Title { get; set; }
         public string Url { get; set; }
+
+        public dynamic Custom { get; set; }
 
         /// <summary>
         /// </summary>
@@ -36,11 +42,13 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         public override void Parse()
         {
+            Custom = new ExpandoObject();
+            
             var lines = ContentRaw.Split(END_OF_LINE, StringSplitOptions.None);
 
             var attributeLines = lines
-                .TakeWhile(x => !SEPARATOR.Equals(x))
                 .Select(x => x.Trim())
+                .TakeWhile(x => !SEPARATOR.Equals(x))
                 .Where(x => !string.IsNullOrEmpty(x));
             foreach (var attributeLine in attributeLines)
             {
@@ -91,8 +99,43 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 TemplateId = attributeValue;
                 return;
             }
-            
+
+            if (CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR.Any(x => attributeName.Contains(x)))
+            {
+                var customAttributeNames = attributeName.Split(CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
+                if (customAttributeNames.Length >= 2 && CUSTOM_ATTRIBUTE_PREFIX.Any(x => x.Equals(customAttributeNames[0], StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    ParseCustomAttribute(Custom, customAttributeNames.Skip(1), attributeValue);
+                }
+                else
+                {
+                    throw new ArgumentException($"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                }
+                
+                return;
+            }
+
             throw new ArgumentException($"Unknown attribute \"{attributeName}\" at line \"{line}\"");
+        }
+
+        private void ParseCustomAttribute(ExpandoObject obj, IEnumerable<string> attributeNames, string attributeValue)
+        {
+            ICollection<KeyValuePair<string, object>> node = obj;
+            var currentSection = attributeNames.First();
+            object currentValue;
+            
+            if (attributeNames.Count() > 1)
+            {
+                var subNode = new ExpandoObject();
+                currentValue = subNode;
+                ParseCustomAttribute(subNode, attributeNames.Skip(1), attributeValue);
+            }
+            else
+            {
+                currentValue = attributeValue;
+            }
+            
+            node.Add(new KeyValuePair<string, object>(currentSection, currentValue));
         }
 
         private void ParseContent(IEnumerable<string> lines)

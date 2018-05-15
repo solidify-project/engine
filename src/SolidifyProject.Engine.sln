@@ -9,13 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Services", "SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj", "{B78481CE-442F-4D4B-8BA5-BE24DB469BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Test", "SolidifyProject.Engine.Test\SolidifyProject.Engine.Test.csproj", "{2C29754F-289D-48C3-B86D-7921EBAE6648}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Configuration", "SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj", "{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Utils", "SolidifyProject.Engine.Utils\SolidifyProject.Engine.Utils.csproj", "{C6098A76-E4C6-408E-A8C4-949C5406D416}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Helpers", "SolidifyProject.Engine.Helpers\SolidifyProject.Engine.Helpers.csproj", "{13E4712E-BA87-42F8-9C44-C3DE386774CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{ECCE42A8-7F06-4EDB-83AC-572AFBE6002A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Test.Unit", "SolidifyProject.Engine.Test.Unit\SolidifyProject.Engine.Test.Unit.csproj", "{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Test.Integration", "SolidifyProject.Engine.Test.Integration\SolidifyProject.Engine.Test.Integration.csproj", "{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +39,6 @@ Global
 		{B78481CE-442F-4D4B-8BA5-BE24DB469BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B78481CE-442F-4D4B-8BA5-BE24DB469BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B78481CE-442F-4D4B-8BA5-BE24DB469BC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C29754F-289D-48C3-B86D-7921EBAE6648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C29754F-289D-48C3-B86D-7921EBAE6648}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C29754F-289D-48C3-B86D-7921EBAE6648}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C29754F-289D-48C3-B86D-7921EBAE6648}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC9CD17E-C9CD-4B1E-84E1-6E7110D53DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,8 +51,20 @@ Global
 		{13E4712E-BA87-42F8-9C44-C3DE386774CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13E4712E-BA87-42F8-9C44-C3DE386774CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13E4712E-BA87-42F8-9C44-C3DE386774CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04D310C2-DF0E-45E2-AF8B-B99F2975B3F4} = {ECCE42A8-7F06-4EDB-83AC-572AFBE6002A}
+		{A00AFF06-27B0-4D4E-BD8D-A916229EB5D5} = {ECCE42A8-7F06-4EDB-83AC-572AFBE6002A}
 	EndGlobalSection
 EndGlobal

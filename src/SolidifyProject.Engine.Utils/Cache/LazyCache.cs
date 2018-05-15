@@ -21,14 +21,14 @@ namespace SolidifyProject.Engine.Utils.Cache
         {
             if (_cache.TryGetValue(key, out var result))
             {
-                return await result.Value;
+                return await result.Value.ConfigureAwait(false);
             }
 
             result = new Lazy<Task<T>>(() => _loadToCache(key));
             
             _cache.AddOrUpdate(key, result, (k, r) => result);
 
-            return await GetFromCacheAsync(key);
+            return await GetFromCacheAsync(key).ConfigureAwait(false);
         }
     }
 }
