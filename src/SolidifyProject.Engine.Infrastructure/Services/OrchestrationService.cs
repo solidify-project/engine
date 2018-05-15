@@ -48,29 +48,29 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 await Task.WhenAll(tasks);
             });
 
-            await Task.WhenAll(tasksGroupContent, tasksGroupAssets);
+            await Task.WhenAll(tasksGroupContent, tasksGroupAssets).ConfigureAwait(false);
         }
 
         private async Task ProcessPageByIdAsync(string pageId, ExpandoObject dataModel)
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started precessing of page \"{pageId}\"");
             
-            var page = await PageModelReaderService.LoadContentByIdAsync(pageId);
+            var page = await PageModelReaderService.LoadContentByIdAsync(pageId).ConfigureAwait(false);
                 
             var html = await TemplateService.RenderTemplateAsync(page.Content, page, dataModel);
-            html = await MarkupService.RenderMarkupAsync(html);
+            html = await MarkupService.RenderMarkupAsync(html).ConfigureAwait(false);
             page.Content = html;
                 
-            var template = await TemplateReaderService.LoadContentByIdAsync(page.TemplateId);
-            html = await TemplateService.RenderTemplateAsync(template.Template, page, dataModel);
+            var template = await TemplateReaderService.LoadContentByIdAsync(page.TemplateId).ConfigureAwait(false);
+            html = await TemplateService.RenderTemplateAsync(template.Template, page, dataModel).ConfigureAwait(false);
 
-            html = await HtmlMinificationService.CompressHtmlAsync(html);
+            html = await HtmlMinificationService.CompressHtmlAsync(html).ConfigureAwait(false);
 
             var result = new TextContentModel();
             result.Id = page.Id;
             result.ContentRaw = html;
                 
-            await PageModelWriterService.SaveContentAsync(page.Url, result);
+            await PageModelWriterService.SaveContentAsync(page.Url, result).ConfigureAwait(false);
             
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished page precessing \"{pageId}\"");
         }
@@ -79,9 +79,9 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started copying of asset \"{id}\"");
             
-            var content = await AssetsReaderService.LoadContentByIdAsync(id);
+            var content = await AssetsReaderService.LoadContentByIdAsync(id).ConfigureAwait(false);
 
-            await AssetsWriterService.SaveContentAsync(id, content);
+            await AssetsWriterService.SaveContentAsync(id, content).ConfigureAwait(false);
             
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished copying of asset \"{id}\"");
         }

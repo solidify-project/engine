@@ -25,7 +25,7 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
             {
                 var model = new T();
                 model.Id = id;
-                model.ContentRaw = await reader.ReadToEndAsync();
+                model.ContentRaw = await reader.ReadToEndAsync().ConfigureAwait(false);
                 
                 model.Parse();
             

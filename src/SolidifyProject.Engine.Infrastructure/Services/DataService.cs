@@ -17,17 +17,21 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         public delegate Task LogEventHandler(string message);
         public event LogEventHandler OnLogEvent;
         
+        #region constructor
+        
         public DataService(IContentReaderService<CustomDataModel> dataReaderService)
         {
             DataReaderService = dataReaderService;
         }
 
+        #endregion
+        
         public async Task<ExpandoObject> GetDataModelAsync()
         {
-            var data = await DataReaderService.LoadContentsIdsAsync();
+            var data = await DataReaderService.LoadContentsIdsAsync().ConfigureAwait(false);
             var dataTasks = data.Select(GetDataByIdAsync).ToList();
 
-            await Task.WhenAll(dataTasks);
+            await Task.WhenAll(dataTasks).ConfigureAwait(false);
 
             ICollection<KeyValuePair<string, object>> dataModel = new ExpandoObject();
             
