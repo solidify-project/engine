@@ -102,6 +102,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         private void ParseXml()
         {
+            //hack to convert xml document to dynamic object
             XDocument doc = XDocument.Parse(ContentRaw);
             string jsonText = JsonConvert.SerializeXNode(doc);
             CustomData = JObject.Parse(jsonText);
