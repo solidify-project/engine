@@ -9,6 +9,7 @@ using SolidifyProject.Engine.Services.ContentWriterService;
 using SolidifyProject.Engine.Services.HtmlMinificationService;
 using SolidifyProject.Engine.Services.MarkupService;
 using SolidifyProject.Engine.Services.TemplateService;
+using SolidifyProject.Engine.Utils.FileSystem;
 
 namespace SolidifyProject.Engine.CLI.Commands
 {
@@ -36,6 +37,10 @@ namespace SolidifyProject.Engine.CLI.Commands
                 
                 LoggerService.WriteLogMessage($"Source: {sourcePath}").Wait();
                 LoggerService.WriteLogMessage($"Output: {outputPath}").Wait();
+
+                LoggerService.WriteLogMessage("Starting cleaning output folder").Wait();
+                
+                FileSystemUtils.CleanFolder(outputPath);
 
                 var dataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(sourcePath, "data")));
                 dataService.OnLogEvent += async message => { await LoggerService.WriteLogMessage(message); };
