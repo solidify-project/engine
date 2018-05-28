@@ -10,9 +10,10 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj" />
-    <ProjectReference Include="..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
-    <ProjectReference Include="..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
+    <ProjectReference Include="..\..\SolidifyProject.Engine.Configuration\SolidifyProject.Engine.Configuration.csproj" />
+    <ProjectReference Include="..\..\SolidifyProject.Engine.Infrastructure\SolidifyProject.Engine.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\SolidifyProject.Engine.Services\SolidifyProject.Engine.Services.csproj" />
+    <ProjectReference Include="..\..\SolidifyProject.Engine.Utils\SolidifyProject.Engine.Utils.csproj" />
     <ProjectReference Include="..\SolidifyProject.Engine.Test.Unit\SolidifyProject.Engine.Test.Unit.csproj" />
   </ItemGroup>
   <ItemGroup>

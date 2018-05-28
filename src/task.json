@@ -1,0 +1,21 @@
+﻿{
+  "containerImage": "boykoant/solidify",
+  "resultVolumeName": "test-results",
+  "instances": [
+    {
+      "containerName": "unit",
+      "containerOS": "Linux",
+      "testAssemblyPath": "/app/Test/SolidifyProject.Engine.Test.Unit"
+    },
+    {
+      "containerName": "integration-linux",
+      "containerOS": "Linux",
+      "testAssemblyPath": "/app/Test/SolidifyProject.Engine.Test.Integration"
+    },
+    {
+      "containerName": "integration-windows",
+      "containerOS": "Windows",
+      "testAssemblyPath": "/app/Test/SolidifyProject.Engine.Test.Integration"
+    }
+  ]
+}
