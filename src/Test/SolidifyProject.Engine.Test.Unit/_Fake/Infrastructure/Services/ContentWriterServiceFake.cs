@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Markdig.Extensions.TaskLists;
 using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
 
@@ -32,6 +33,13 @@ namespace SolidifyProject.Engine.Test.Unit._Fake.Infrastructure.Services
             _storage.Add(content);
 
             return Task.FromResult<object>(null);
+        }
+
+        public Task CleanOutputAsync()
+        {
+            _storage.Clear();
+            
+            return Task.CompletedTask;
         }
     }
 }

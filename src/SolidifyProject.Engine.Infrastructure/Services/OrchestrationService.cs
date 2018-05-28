@@ -29,6 +29,8 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         
         public async Task RenderProjectAsync()
         {
+            await CleanOutputAsync();
+            
             var tasksGroupContent = Task.Run(async () =>
             {
                 var dataModel = await DataService.GetDataModelAsync();
@@ -84,6 +86,17 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             await AssetsWriterService.SaveContentAsync(id, content).ConfigureAwait(false);
             
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished copying of asset \"{id}\"");
+        }
+
+        private async Task CleanOutputAsync()
+        {
+            LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Starting cleaning output folder").Wait();
+            
+            await PageModelWriterService.CleanOutputAsync();
+
+            await AssetsWriterService.CleanOutputAsync();
+            
+            LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Cleaning output folder finished").Wait();
         }
     }
 }

@@ -32,5 +32,11 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services.ContentWriter
         {
             return base.SaveContentAsyncTest(newElement);
         }
+        
+        [TestCaseSource(nameof(_saveContentAsyncTestCases))]
+        public override Task CleanOutputAsyncTest(CustomDataModel newElement)
+        {
+            return base.CleanOutputAsyncTest(newElement);
+        }
     }
 }
