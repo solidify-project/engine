@@ -32,7 +32,7 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services.ContentWriter
         {
             await ContentWriterService.SaveContentAsync(newElement.Id, newElement);
 
-            await ContentWriterService.CleanOutputAsync();
+            await ContentWriterService.CleanFolderAsync("");
 
             var newElementActual = await ContentReaderService.LoadContentByIdAsync(newElement.Id);
             

@@ -6,6 +6,6 @@ namespace SolidifyProject.Engine.Infrastructure.Interfaces
     {
         Task SaveContentAsync(string id, T content);
 
-        Task CleanOutputAsync();
+        Task CleanFolderAsync(string path);
     }
 }

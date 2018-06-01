@@ -24,9 +24,9 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
             Directory.CreateDirectory(directory);
         }
 
-        public Task CleanOutputAsync()
+        public Task CleanFolderAsync(string path)
         {
-            DirectoryInfo di = new DirectoryInfo(_root);
+            DirectoryInfo di = new DirectoryInfo(Path.Combine(_root, path));
             if (di.Exists)
             {
                 foreach (var file in di.GetFiles())

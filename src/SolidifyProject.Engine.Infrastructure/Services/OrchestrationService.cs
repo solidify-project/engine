@@ -90,13 +90,13 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
         private async Task CleanOutputAsync()
         {
-            LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Starting cleaning output folder").Wait();
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Starting cleaning output folder");
             
-            await PageModelWriterService.CleanOutputAsync();
+            await PageModelWriterService.CleanFolderAsync("");
 
-            await AssetsWriterService.CleanOutputAsync();
-            
-            LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Cleaning output folder finished").Wait();
+            await AssetsWriterService.CleanFolderAsync("");
+
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Cleaning output folder finished");
         }
     }
 }
