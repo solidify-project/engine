@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Xml.Linq;
 using CsvHelper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -100,7 +102,10 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         private void ParseXml()
         {
-            throw new NotImplementedException();
+            //hack to convert xml document to dynamic object
+            XDocument doc = XDocument.Parse(ContentRaw);
+            string jsonText = JsonConvert.SerializeXNode(doc);
+            CustomData = JObject.Parse(jsonText);
         }
         
         private void ParseYaml()
