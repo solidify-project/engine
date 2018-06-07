@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using NUnit.Framework;
 using SolidifyProject.Engine.Infrastructure.Enums;
 
 namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel.Parse
@@ -6,23 +9,66 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
    [TestFixture]
    public class XmlCustomDataModelTest
    {
-      private string _xml = @"<root>
-                              <links>
-                                 <name>facebook</name>
-                                 <url>https://facebook.com</url>
-                              </links>
-                              <links>
-                                  <name>twitter</name>
-                                  <url>https://twitter.com</url>
-                              </links>
-                           </root>";
+       private static IEnumerable<(string, Func<dynamic, int, string>, Func<dynamic, int, string>)> _xmlSources
+       {
+           get
+           {
+               yield return (
+                   @"<root>
+                   <links>
+                      <name>facebook</name>
+                      <url>https://facebook.com</url>
+                   </links>
+                   <links>
+                       <name>twitter</name>
+                       <url>https://twitter.com</url>
+                   </links>
+               </root>",
+                   (data, indx) => data.root.links[indx].name,
+                   (data, indx) => data.root.links[indx].url
+               );
+               yield return (
+                   @"<root>
+                    <links name=""facebook"" url=""https://facebook.com"" />
+                    <links name=""twitter"" url=""https://twitter.com"" />
+               </root>",
+                    (data, indx) => data.root.links[indx]["@name"],
+                    (data, indx) => data.root.links[indx]["@url"]
+                   );
+               yield return (
+                   @"<root>
+                   <links name=""facebook"">
+                       <url>https://facebook.com</url>
+                   </links>
+                   <links name=""twitter"">
+                       <url>https://twitter.com</url>
+                   </links>
+               </root>",
+                   (data, indx) => data.root.links[indx]["@name"],
+                   (data, indx) => data.root.links[indx].url
+               );
+               yield return (
+                   @"<root>
+                   <links name=""facebook"">https://facebook.com</links>
+                   <links name=""twitter"">https://twitter.com</links>
+               </root>",
+                    (data, indx) => data.root.links[indx]["@name"],
+                    (data, indx) => data.root.links[indx]["#text"]
+               );
+
+           }
+
+       }
+      
+      
       
       [Test]
-      public void ParseXml()
+      [TestCaseSource(nameof(_xmlSources))]
+      public void ParseXml((string xml, Func<dynamic, int, string> nameGetter, Func<dynamic, int, string> urlGetter) tuple)
       {
          var model = new Engine.Infrastructure.Models.CustomDataModel();
          model.Id = "file.xml";
-         model.ContentRaw = _xml;
+         model.ContentRaw = tuple.xml;
             
          model.Parse();
             
@@ -33,11 +79,12 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
          Assert.IsNotNull(data);
          Assert.AreEqual(2, data.root.links.Count);
             
-         Assert.AreEqual("facebook", (string)data.root.links[0].name);
-         Assert.AreEqual("https://facebook.com", (string)data.root.links[0].url);
+         Assert.AreEqual("facebook", tuple.nameGetter(data, 0));
+         Assert.AreEqual("https://facebook.com", tuple.urlGetter(data, 0));
             
-         Assert.AreEqual("twitter", (string)data.root.links[1].name);
-         Assert.AreEqual("https://twitter.com", (string)data.root.links[1].url);
+         Assert.AreEqual("twitter", tuple.nameGetter(data, 1));
+         Assert.AreEqual("https://twitter.com", tuple.urlGetter(data, 1));
       }
+      
    }
 }
