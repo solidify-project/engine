@@ -22,21 +22,21 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
         
         private ILoggerService LoggerService = new LoggerServiceFake();
         
-        private IContentReaderService<BinaryContentModel> AssetsReaderService => new FileSystemBinaryContentReaderService<BinaryContentModel>(Path.Combine(_root, "assets"));
+        private IContentReaderService<BinaryContentModel> AssetsReaderService => new FileSystemBinaryContentReaderService<BinaryContentModel>(Path.Combine(_root, "Assets"));
         
         private readonly List<BinaryContentModel> _assetsWriterStorage = new List<BinaryContentModel>();
         private IContentWriterService<BinaryContentModel> AssetsWriterService => new ContentWriterServiceFake<BinaryContentModel>(_assetsWriterStorage);
         
-        private IContentReaderService<PageModel> PageModelReaderService => new FileSystemTextContentReaderService<PageModel>(Path.Combine(_root, "pages"));
+        private IContentReaderService<PageModel> PageModelReaderService => new FileSystemTextContentReaderService<PageModel>(Path.Combine(_root, "Pages"));
         
         private readonly List<TextContentModel> _pageModelWriterStorage = new List<TextContentModel>();
         private IContentWriterService<TextContentModel> PageModelWriterService => new ContentWriterServiceFake<TextContentModel>(_pageModelWriterStorage);
         
-        private IContentReaderService<TemplateModel> TemplateReaderService => new FileSystemTextContentReaderService<TemplateModel>(Path.Combine(_root, "layout"));
+        private IContentReaderService<TemplateModel> TemplateReaderService => new FileSystemTextContentReaderService<TemplateModel>(Path.Combine(_root, "Layout"));
 
-        private ITemplateService TemplateService => new MustacheTemplateService(new FileSystemTextContentReaderService<TextContentModel>(Path.Combine(_root, "layout", "partials")));
+        private ITemplateService TemplateService => new MustacheTemplateService(new FileSystemTextContentReaderService<TextContentModel>(Path.Combine(_root, "Layout", "Partials")));
 
-        private IDataService DataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(_root, "data")));
+        private IDataService DataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(_root, "Data")));
         
         private IMarkupService MarkupService => new MarkdownMarkupService();
 
