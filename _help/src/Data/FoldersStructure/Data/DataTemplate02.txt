@@ -1,0 +1,10 @@
+<ul>
+    {{# Data.__collection }}
+        {{# __collection }}
+            <li>
+                <img src="{{ flag }}"/>
+                On {{ date }} at {{ address }}
+            </li>
+        {{/ __collection }}
+    {{/ Data.__collection }}
+</ul>
