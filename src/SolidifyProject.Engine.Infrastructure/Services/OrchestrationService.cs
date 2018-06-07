@@ -92,9 +92,9 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Starting cleaning output folder");
             
-            await PageModelWriterService.CleanFolderAsync("");
+            await PageModelWriterService.CleanFolderAsync(String.Empty);
 
-            await AssetsWriterService.CleanFolderAsync("");
+            await AssetsWriterService.CleanFolderAsync(String.Empty);
 
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Cleaning output folder finished");
         }

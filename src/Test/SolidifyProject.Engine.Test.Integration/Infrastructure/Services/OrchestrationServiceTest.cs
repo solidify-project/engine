@@ -52,6 +52,9 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
         [Test]
         public async Task ProduceHtml()
         {
+            Assert.AreEqual(0, _pageModelWriterStorage.Count);
+            Assert.AreEqual(0, _assetsWriterStorage.Count);
+            
             var orchestrationService = new OrchestrationService();
             orchestrationService.LoggerService = LoggerService;
             orchestrationService.AssetsReaderService = AssetsReaderService;
@@ -84,6 +87,9 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
         [Test]
         public async Task CleanUpBeforeRender()
         {
+            Assert.AreEqual(0, _pageModelWriterStorage.Count);
+            Assert.AreEqual(0, _assetsWriterStorage.Count);
+            
             _assetsWriterStorage.Add(new BinaryContentModel
             {
                 Id = "fakedata"
