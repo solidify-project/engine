@@ -9,7 +9,7 @@ title:      Data 101
 
 ### `__collection` special property
 
-There are a special property `__collection` of each child property of `Data` object. Using this property you can navigate through collection of child properties of current property.
+There is a special property `__collection` of each child property of `Data` object. Using this property you can navigate through collection of child properties of current property.
 
 ##### Example (simple)
 
@@ -97,27 +97,27 @@ Finally, the html rendered by Solidify Engine will look like this:
 <ul>
     <li>
         <img src="poland.png"/>
-        On 1st of February at Warsaw
+        On 1st of February in Warsaw
     </li>
     <li>
         <img src="ukraine.png"/>
-        On 1st of March at Kyiv
+        On 1st of March in Kyiv
     </li>
     <li>
         <img src="bulgaria.png"/>
-        On 1st of April at Sofia
+        On 1st of April in Sofia
     </li>
     <li>
         <img src="romania.png"/>
-        On 1st of May at Bucharest
+        On 1st of May in Bucharest
     </li>
     <li>
         <img src="denmark.png"/>
-        On 1st of June at Copenhagen
+        On 1st of June in Copenhagen
     </li>
     <li>
         <img src="spain.png"/>
-        On 1st of July at Madrid
+        On 1st of July in Madrid
     </li>
 </ul>
 ```
