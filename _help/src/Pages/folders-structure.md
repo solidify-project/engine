@@ -30,6 +30,17 @@ Inside `www` folder there will be all pre-rendered files of website project. Sol
 
 Inside `config.yaml` file there will be all the configuration for current website project.
 
+
+### Ignored files
+
+There is a list of files that will be ignored by engine to load and process. Those files are:
+
+- `README.md`
+- `.DS_Store`
+
+Those files will be ignored, if found, in any folders and subfolders.
+
+
 ### Source files folder
 
 Inside `src` folder there will be all the source files for website project. This folder structure should look like:
