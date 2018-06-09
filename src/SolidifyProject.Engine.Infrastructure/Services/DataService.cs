@@ -11,6 +11,9 @@ namespace SolidifyProject.Engine.Infrastructure.Services
     public sealed class DataService : IDataService
     {
         public const string COLLECTION_PROPERTY = "__collection";
+        public const string NAMES_PROPERTY = "__names";
+
+        public readonly static string[] RESERVED_PROPERTIES = {COLLECTION_PROPERTY, NAMES_PROPERTY};
         
         public IContentReaderService<CustomDataModel> DataReaderService { get; }
 
@@ -86,27 +89,35 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         private void PopulateSpecialCollection(ref ICollection<KeyValuePair<string, object>> dataObject)
         {
             var collection = new List<object>();
+            var names = new List<string>();
             
-            foreach (var val in dataObject.Select(x => x.Value))
+            foreach (var obj in dataObject)
             {
-                collection.Add(val);
-                if (val is ICollection<KeyValuePair<string, object>> expandoObject)
+                collection.Add(obj.Value);
+                if (obj.Value is ICollection<KeyValuePair<string, object>> expandoObject)
                 {
                     PopulateSpecialCollection(ref expandoObject);
                 }
+                
+                names.Add(obj.Key);
             }
             
             dataObject.Add(new KeyValuePair<string, object>(COLLECTION_PROPERTY, collection));
+            dataObject.Add(new KeyValuePair<string, object>(NAMES_PROPERTY, names));
         }
 
         private string GetCurrentSection(IEnumerable<string> sectionsArray)
         {
             var currentSection = sectionsArray.First();
 
-            if (currentSection.Equals(COLLECTION_PROPERTY, StringComparison.InvariantCulture))
+            foreach (var propertyName in RESERVED_PROPERTIES)
             {
-                throw new NotSupportedException($"Reserved property name: {COLLECTION_PROPERTY}");
+                if (currentSection.Equals(propertyName, StringComparison.InvariantCulture))
+                {
+                    throw new NotSupportedException($"Reserved property name: {propertyName}");
+                }
             }
+            
             return currentSection;
         }
 
@@ -131,7 +142,12 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             ref ICollection<KeyValuePair<string, object>> destinationObject,
             ICollection<KeyValuePair<string, object>> sourceObject)
         {
-            foreach (var property in sourceObject.Where(x => !x.Key.Equals(COLLECTION_PROPERTY, StringComparison.InvariantCulture)))
+            var properties = RESERVED_PROPERTIES
+                .Aggregate<string, IEnumerable<KeyValuePair<string, object>>>(
+                    sourceObject,
+                    (current, propertyName) => current.Where(x => !x.Key.Equals(propertyName, StringComparison.InvariantCulture)));
+
+            foreach (var property in properties)
             {
                 if (destinationObject.Any(x => x.Key.Equals(property.Key, StringComparison.InvariantCulture)))
                 {
