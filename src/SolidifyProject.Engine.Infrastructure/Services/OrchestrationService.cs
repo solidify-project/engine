@@ -53,7 +53,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
         private async Task ProcessPageByIdAsync(string pageId, ExpandoObject dataModel)
         {
-            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started precessing of page \"{pageId}\"");
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Page:Started] \"{pageId}\"");
             
             var page = await PageModelReaderService.LoadContentByIdAsync(pageId).ConfigureAwait(false);
                 
@@ -72,18 +72,18 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 
             await PageModelWriterService.SaveContentAsync(page.Url, result).ConfigureAwait(false);
             
-            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished page precessing \"{pageId}\"");
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Page:Finished] \"{pageId}\"");
         }
 
         private async Task CopyAssetByIdAsync(string id)
         {
-            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Started copying of asset \"{id}\"");
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Asset:Started] \"{id}\"");
             
             var content = await AssetsReaderService.LoadContentByIdAsync(id).ConfigureAwait(false);
 
             await AssetsWriterService.SaveContentAsync(id, content).ConfigureAwait(false);
             
-            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Finished copying of asset \"{id}\"");
+            await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Asset:Finished] \"{id}\"");
         }
     }
 }
