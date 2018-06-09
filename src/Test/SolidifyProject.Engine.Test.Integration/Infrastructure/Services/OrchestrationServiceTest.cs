@@ -43,7 +43,7 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
         private IHtmlMinificationService HtmlMinificationService => new GoogleHtmlMinificationService();
 
         [TearDown]
-        public void Dispose()
+        public void TearDown()
         {
             _assetsWriterStorage.Clear();
             _pageModelWriterStorage.Clear();
