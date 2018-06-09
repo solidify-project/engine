@@ -28,11 +28,11 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.root.links.Count);
 
-            Assert.AreEqual("facebook", data.root.links[0]["@name"]);
-            Assert.AreEqual("https://facebook.com", data.root.links[0]["@url"]);
+            Assert.AreEqual("facebook", (string)data.root.links[0]["@name"]);
+            Assert.AreEqual("https://facebook.com", (string)data.root.links[0]["@url"]);
 
-            Assert.AreEqual("twitter", data.root.links[1]["@name"]);
-            Assert.AreEqual("https://twitter.com", data.root.links[1]["@url"]);
+            Assert.AreEqual("twitter", (string)data.root.links[1]["@name"]);
+            Assert.AreEqual("https://twitter.com", (string)data.root.links[1]["@url"]);
         }
 
         [Test]
@@ -60,11 +60,11 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.root.links.Count);
 
-            Assert.AreEqual("facebook", data.root.links[0].name);
-            Assert.AreEqual("https://facebook.com", data.root.links[0].url);
+            Assert.AreEqual("facebook", (string)data.root.links[0].name);
+            Assert.AreEqual("https://facebook.com", (string)data.root.links[0].url);
 
-            Assert.AreEqual("twitter", data.root.links[1].name);
-            Assert.AreEqual("https://twitter.com", data.root.links[1].url);
+            Assert.AreEqual("twitter", (string)data.root.links[1].name);
+            Assert.AreEqual("https://twitter.com", (string)data.root.links[1].url);
         }
 
         [Test]
@@ -90,11 +90,11 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.root.links.Count);
 
-            Assert.AreEqual("facebook", data.root.links[0]["@name"]);
-            Assert.AreEqual("https://facebook.com", data.root.links[0].url);
+            Assert.AreEqual("facebook", (string)data.root.links[0]["@name"]);
+            Assert.AreEqual("https://facebook.com", (string)data.root.links[0].url);
 
-            Assert.AreEqual("twitter", data.root.links[1]["@name"]);
-            Assert.AreEqual("https://twitter.com", data.root.links[1].url);
+            Assert.AreEqual("twitter", (string)data.root.links[1]["@name"]);
+            Assert.AreEqual("https://twitter.com", (string)data.root.links[1].url);
         }
 
         [Test]
@@ -116,11 +116,11 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models.CustomDataModel
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.root.links.Count);
 
-            Assert.AreEqual("facebook", data.root.links[0]["@name"]);
-            Assert.AreEqual("https://facebook.com", data.root.links[0]["#text"]);
+            Assert.AreEqual("facebook", (string)data.root.links[0]["@name"]);
+            Assert.AreEqual("https://facebook.com", (string)data.root.links[0]["#text"]);
 
-            Assert.AreEqual("twitter", data.root.links[1]["@name"]);
-            Assert.AreEqual("https://twitter.com", data.root.links[1]["#text"]);
+            Assert.AreEqual("twitter", (string)data.root.links[1]["@name"]);
+            Assert.AreEqual("https://twitter.com", (string)data.root.links[1]["#text"]);
         }
 
     }
