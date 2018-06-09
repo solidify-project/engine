@@ -156,7 +156,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         
         private async Task<KeyValuePair<string, object>> GetDataByIdAsync(string dataId)
         {
-            await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: Started retrieval of data \"{dataId}\"");
+            await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Started] \"{dataId}\"");
             
             var customData = await DataReaderService.LoadContentByIdAsync(dataId);
 
@@ -166,7 +166,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             }
             finally
             {
-                await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: Finished data retrieval \"{dataId}\"");
+                await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Finished] \"{dataId}\"");
             }
         }
 
