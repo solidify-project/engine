@@ -36,7 +36,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 var pages = await PageModelReaderService.LoadContentsIdsAsync();
                 var pageTasks = pages.Select(pageId => ProcessPageByIdAsync(pageId, dataModel)).ToList();
             
-                await Task.WhenAll(pageTasks);
+                await Task.WhenAll(pageTasks).ConfigureAwait(false);
             });
             
             var tasksGroupAssets = Task.Run(async () =>
@@ -45,7 +45,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
 
                 var tasks = assets.Select(CopyAssetByIdAsync).ToList();
 
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks).ConfigureAwait(false);
             });
 
             await Task.WhenAll(tasksGroupContent, tasksGroupAssets).ConfigureAwait(false);
