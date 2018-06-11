@@ -19,7 +19,7 @@ There is a special property `__collection` of each child property of `Data` obje
 
 ##### Example (simple)
 
-Let's assume that you have the following folders structure on you file system:
+Let's assume that you have the following folder structure on your file system:
 
 ```none
 Data
@@ -51,11 +51,11 @@ Finally, the html rendered by Solidify Engine will look like this:
 <ul>
     <li>
         <img src="poland.png"/>
-        On 1st of February at Warsaw
+        On 1st of February in Warsaw
     </li>
     <li>
         <img src="ukraine.png"/>
-        On 1st of March at Kyiv
+        On 1st of March in Kyiv
     </li>
 </ul>
 ```
@@ -64,7 +64,7 @@ Finally, the html rendered by Solidify Engine will look like this:
 
 You can also use nested `__collection` properties.
 
-Let's assume that you have the following folders structure on you file system:
+Let's assume that you have the following folder structure on you file system:
 
 ```none
 Data
@@ -178,7 +178,7 @@ Finally, the html rendered by Solidify Engine will look like this:
 
 You can also use `__names` together with nested `__collection` properties.
 
-Let's assume that you have the following folders structure on you file system:
+Let's assume that you have the following folder structure on you file system:
 
 ```none
 Data
