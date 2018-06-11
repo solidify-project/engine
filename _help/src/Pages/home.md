@@ -5,7 +5,7 @@ title:      Solidify Project Help
 
 ---
 
-### Table of contents
+## Table of contents
 
 - [Folders structure](/folders-structure.html)
 

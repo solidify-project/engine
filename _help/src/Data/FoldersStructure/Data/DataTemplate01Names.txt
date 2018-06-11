@@ -1,0 +1,7 @@
+<ul>
+    {{# Data.__names }}
+        <li>
+            {{ . }}
+        </li>
+    {{/ Data.__names }}
+</ul>
