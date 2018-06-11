@@ -16,7 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{242C0057-5654-4F23-9A35-A2F1EB78111D}"
 ProjectSection(SolutionItems) = preProject
 	Test\Dockerfile = Test\Dockerfile
-	task.json = task.json
+	Test\task.json = Test\task.json
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidifyProject.Engine.Test.Unit", "Test\SolidifyProject.Engine.Test.Unit\SolidifyProject.Engine.Test.Unit.csproj", "{0FF55993-464B-4FDC-ADD1-D266FC9A7499}"

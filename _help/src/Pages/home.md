@@ -12,6 +12,13 @@ title:      Solidify Project Help
 ### Founders
 {{# Data.Authors.Founders }}  
 
-* {{ Name }} ({{ Title }})  
+* {{ Name }} {{# Title }} ({{ Title }}) {{/ Title }}  
 
 {{/ Data.Authors.Founders }}
+
+### Contributors
+{{# Data.Authors.Contributors }}  
+
+* {{ Name }} {{# Title }} ({{ Title }}) {{/ Title }}  
+
+{{/ Data.Authors.Contributors }}
