@@ -33,12 +33,12 @@ Inside `config.yaml` file there will be all the configuration for current websit
 
 ### Ignored files
 
-There is a list of files that will be ignored by engine to load and process. Those files are:
+There is a list of files that will be ignored by engine to load and process. These files are:
 
 - `README.md`
 - `.DS_Store`
 
-Those files will be ignored, if found, in any folders and subfolders.
+These files will be ignored, if found, in any folders and subfolders.
 
 
 ### Source files folder
