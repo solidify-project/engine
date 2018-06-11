@@ -65,6 +65,26 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
         }
         
         [Test]
+        public async Task PlainModelNames()
+        {
+            _storage.Add(new CustomDataModel{ Id = "mine.txt", ContentRaw = "mine text" });
+            _storage.Add(new CustomDataModel{ Id = "yours.txt", ContentRaw = "yours text" });
+            foreach (var dataModel in _storage)
+            {
+                dataModel.Parse();
+            }
+            
+            dynamic data = await _dataService.GetDataModelAsync();
+            
+            Assert.IsNotNull(data);
+            Assert.IsNotNull(data.__names);
+            Assert.IsTrue(data.__names.GetType() == typeof(List<string>));
+            Assert.AreEqual("mine", data.__names[0]);
+            Assert.AreEqual("yours", data.__names[1]);
+        }
+        
+        
+        [Test]
         public async Task CaseSensitiveModel()
         {
             _storage.Add(new CustomDataModel{ Id = "mine.txt", ContentRaw = "mine text" });
@@ -79,8 +99,23 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             Assert.IsNotNull(data);
             Assert.AreEqual("mine text", data.mine);
             Assert.AreEqual("mine sensitive text", data.Mine);
+        }
+        
+        [Test]
+        public async Task CaseSensitiveModelNames()
+        {
+            _storage.Add(new CustomDataModel{ Id = "mine.txt", ContentRaw = "mine text" });
+            _storage.Add(new CustomDataModel{ Id = "Mine.txt", ContentRaw = "mine sensitive text" });
+            foreach (var dataModel in _storage)
+            {
+                dataModel.Parse();
+            }
             
+            dynamic data = await _dataService.GetDataModelAsync();
+            
+            Assert.IsNotNull(data);
             Assert.IsNotNull(data.__names);
+            Assert.IsTrue(data.__names.GetType() == typeof(List<string>));
             Assert.AreEqual("mine", data.__names[0]);
             Assert.AreEqual("Mine", data.__names[1]);
         }
@@ -127,10 +162,6 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             Assert.IsNotNull(data.__collection);
             Assert.AreEqual("mine text", data.__collection[0]);
             Assert.AreEqual("yours text", data.__collection[1]);
-            
-            Assert.IsNotNull(data.__names);
-            Assert.AreEqual("mine", data.__names[0]);
-            Assert.AreEqual("yours", data.__names[1]);
         }
         
         [Test]
@@ -152,11 +183,34 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             Assert.AreEqual(2, data.__collection.Count);                    // f1, f2
             Assert.AreEqual(2, data.__collection[0].__collection.Count);    // f1 => i1, i2
             Assert.AreEqual(1, data.__collection[1].__collection.Count);    // f2 => i3
+        }
+        
+        [Test]
+        public async Task SpecialProperty2LevelsNames()
+        {
+            _storage.Add(new CustomDataModel{ Id = @"f1\i1.txt", ContentRaw = "1" });
+            _storage.Add(new CustomDataModel{ Id = @"f1\i2.txt", ContentRaw = "2" });
+            _storage.Add(new CustomDataModel{ Id = @"f2\i3.txt", ContentRaw = "3" });
+            foreach (var dataModel in _storage)
+            {
+                dataModel.Parse();
+            }
             
+            dynamic data = await _dataService.GetDataModelAsync();
+            
+            Assert.IsNotNull(data);
             Assert.IsNotNull(data.__names);
-            Assert.AreEqual(2, data.__names.Count);                    // f1, f2
-            Assert.AreEqual(2, data.__collection[0].__names.Count);    // f1 => i1, i2
-            Assert.AreEqual(1, data.__collection[1].__names.Count);    // f2 => i3
+            
+            Assert.AreEqual(2, data.__names.Count);
+            Assert.AreEqual("f1", data.__names[0]);
+            Assert.AreEqual("f2", data.__names[1]);
+            
+            Assert.AreEqual(2, data.__collection[0].__names.Count);
+            Assert.AreEqual("i1", data.__collection[0].__names[0]);
+            Assert.AreEqual("i2", data.__collection[0].__names[1]);
+
+            Assert.AreEqual(1, data.__collection[1].__names.Count);
+            Assert.AreEqual("i3", data.__collection[1].__names[0]);
         }
         
         [Test]
@@ -184,6 +238,27 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             Assert.AreEqual(2, data.__collection[1].__collection.Count);                    // f2 => i2, i3
             Assert.AreEqual(1, data.__collection[2].__collection.Count);                    // f3 => s3
             Assert.AreEqual(2, data.__collection[2].__collection[0].__collection.Count);    // f3 => s3 => i4, i5
+        }
+        
+        
+        [Test]
+        public async Task SpecialProperty3LevelsNames()
+        {
+            _storage.Add(new CustomDataModel{ Id = @"f1\i1.txt", ContentRaw = "1" });
+            _storage.Add(new CustomDataModel{ Id = @"f2\i2.txt", ContentRaw = "2" });
+            _storage.Add(new CustomDataModel{ Id = @"f2\i3.txt", ContentRaw = "3" });
+            _storage.Add(new CustomDataModel{ Id = @"f3\s3\i4.txt", ContentRaw = "4" });
+            _storage.Add(new CustomDataModel{ Id = @"f3\s3\i5.txt", ContentRaw = "5" });
+            _storage.Add(new CustomDataModel{ Id = @"f1\i6.txt", ContentRaw = "6" });
+            _storage.Add(new CustomDataModel{ Id = @"f1\i7.txt", ContentRaw = "7" });
+            foreach (var dataModel in _storage)
+            {
+                dataModel.Parse();
+            }
+            
+            dynamic data = await _dataService.GetDataModelAsync();
+            
+            Assert.IsNotNull(data);
             
             Assert.IsNotNull(data.__names);
             Assert.AreEqual(3, data.__names.Count);                                       // f1, f2, f3
