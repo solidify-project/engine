@@ -11,11 +11,11 @@ This guide describes how to create your first static website with Solidify Proje
 
 ### Preparation
 
-Before we start you should create a new empty folder for your website. Lets name that folder `MySite`.
+Before we start you should create a new empty folder for your website. Let's name that folder `MySite`.
 
 ### Get the engine
 
-Solidify Project engine usualy distributed as a `.zip` archived folder. You should unzip it's content to `MySite` folder, so you will have the following stuff on your file system:
+Solidify Project engine is usualy distributed as a `.zip` archived folder. You should unzip its content to `MySite` folder, so you will have the following stuff on your file system:
 
 ```none
 MySite
@@ -24,7 +24,7 @@ MySite
     config.yaml
 ```
 
-In addition to that you will also have eithet `solidify.sh` or `solidify.bat` inside `MySite` folder (the exact file depends on what operational system you are using). This script file in nothing more than a script wrapper that provides you with easy access to engine executables.
+In addition to that you will also have either `solidify.sh` or `solidify.bat` inside `MySite` folder (the exact file depends on what operational system you are using). This script file in nothing more than a script wrapper that provides you with easy access to engine executables.
 
 ### Bootstrap some website
 
@@ -53,11 +53,11 @@ MySite
 
 ### Make some changes
 
-To change default website content please reference to [Folders structure](/folders-structure.html) section. It will describe what is inside `src` folder and how it affects the final website.
+To change default website content, please refer to [Folders structure](/folders-structure.html) section. It will describe what is inside `src` folder and how it affects the final website.
 
 ### Render your website
 
-After making changes you can render your website by exetuting following command from `MySite` folder.
+After making changes you can render your website by executing the following command from `MySite` folder.
 
 ##### Windows
 ```bash
