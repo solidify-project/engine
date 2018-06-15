@@ -5,7 +5,7 @@ title:      Solidify Project Help
 
 ---
 
-### Quicstart guide
+### Quickstart guide
 
 - [Create my first website](/quickstart/create-my-first-website.html)
 
