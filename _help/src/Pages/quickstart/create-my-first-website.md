@@ -53,7 +53,7 @@ MySite
 
 ### Make some changes
 
-To change default website content, please refer to [Folders structure](/folders-structure.html) section. It will describe what is inside `src` folder and how it affects the final website.
+To change default website content, please refer to [folders structure](/folders-structure.html) section. It will describe what is inside `src` folder and how it affects the final website.
 
 ### Render your website
 
