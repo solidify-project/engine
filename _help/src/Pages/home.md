@@ -9,7 +9,6 @@ title:      Solidify Project Help
 
 - [Create my first website](/quickstart/create-my-first-website.html)
 
-
 ### Reference
 
 - [Folders structure](/folders-structure.html)
@@ -17,6 +16,13 @@ title:      Solidify Project Help
 ### Founders
 {{# Data.Authors.Founders }}  
 
-* {{ Name }} ({{ Title }})  
+* {{ Name }} {{# Title }} ({{ Title }}) {{/ Title }}  
 
 {{/ Data.Authors.Founders }}
+
+### Contributors
+{{# Data.Authors.Contributors }}  
+
+* {{ Name }} {{# Title }} ({{ Title }}) {{/ Title }}  
+
+{{/ Data.Authors.Contributors }}

@@ -9,7 +9,7 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
 {
     public abstract class _FileSystemContentReaderServiceBase<T> : IContentReaderService<T> where T : class
     {
-        public const string IGNORED_FILES = "README.md";
+        public readonly string[] IGNORED_FILES = {"README.md", ".DS_Store"};
         protected readonly string _root;
 
         protected _FileSystemContentReaderServiceBase(string root = null)
@@ -42,7 +42,7 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
 
             if (!includeIgnored)
             {
-                query = query.Where(x => !x.EndsWith(IGNORED_FILES, StringComparison.OrdinalIgnoreCase));
+                query = IGNORED_FILES.Aggregate(query, (current, ignored) => current.Where(x => !x.EndsWith(ignored, StringComparison.OrdinalIgnoreCase)));
             }
 
             return query;

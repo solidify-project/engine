@@ -79,6 +79,10 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             Assert.IsNotNull(data);
             Assert.AreEqual("mine text", data.mine);
             Assert.AreEqual("mine sensitive text", data.Mine);
+            
+            Assert.IsNotNull(data.__names);
+            Assert.AreEqual("mine", data.__names[0]);
+            Assert.AreEqual("Mine", data.__names[1]);
         }
         
         [Test]
@@ -119,9 +123,14 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             dynamic data = await _dataService.GetDataModelAsync();
             
             Assert.IsNotNull(data);
+            
             Assert.IsNotNull(data.__collection);
             Assert.AreEqual("mine text", data.__collection[0]);
             Assert.AreEqual("yours text", data.__collection[1]);
+            
+            Assert.IsNotNull(data.__names);
+            Assert.AreEqual("mine", data.__names[0]);
+            Assert.AreEqual("yours", data.__names[1]);
         }
         
         [Test]
@@ -138,10 +147,16 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             dynamic data = await _dataService.GetDataModelAsync();
             
             Assert.IsNotNull(data);
+            
             Assert.IsNotNull(data.__collection);
             Assert.AreEqual(2, data.__collection.Count);                    // f1, f2
             Assert.AreEqual(2, data.__collection[0].__collection.Count);    // f1 => i1, i2
             Assert.AreEqual(1, data.__collection[1].__collection.Count);    // f2 => i3
+            
+            Assert.IsNotNull(data.__names);
+            Assert.AreEqual(2, data.__names.Count);                    // f1, f2
+            Assert.AreEqual(2, data.__collection[0].__names.Count);    // f1 => i1, i2
+            Assert.AreEqual(1, data.__collection[1].__names.Count);    // f2 => i3
         }
         
         [Test]
@@ -162,12 +177,20 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             dynamic data = await _dataService.GetDataModelAsync();
             
             Assert.IsNotNull(data);
+            
             Assert.IsNotNull(data.__collection);
             Assert.AreEqual(3, data.__collection.Count);                                    // f1, f2, f3
             Assert.AreEqual(3, data.__collection[0].__collection.Count);                    // f1 => i1, i6, i7
             Assert.AreEqual(2, data.__collection[1].__collection.Count);                    // f2 => i2, i3
             Assert.AreEqual(1, data.__collection[2].__collection.Count);                    // f3 => s3
             Assert.AreEqual(2, data.__collection[2].__collection[0].__collection.Count);    // f3 => s3 => i4, i5
+            
+            Assert.IsNotNull(data.__names);
+            Assert.AreEqual(3, data.__names.Count);                                       // f1, f2, f3
+            Assert.AreEqual(3, data.__collection[0].__names.Count);                       // f1 => i1, i6, i7
+            Assert.AreEqual(2, data.__collection[1].__names.Count);                       // f2 => i2, i3
+            Assert.AreEqual(1, data.__collection[2].__names.Count);                       // f3 => s3
+            Assert.AreEqual(2, data.__collection[2].__collection[0].__names.Count);       // f3 => s3 => i4, i5
         }
         
         
@@ -179,7 +202,15 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services
             new object[] { $@"folder\{DataService.COLLECTION_PROPERTY}" },
             new object[] { $@"folder/{DataService.COLLECTION_PROPERTY}" },
             new object[] { $@"folder\sub\{DataService.COLLECTION_PROPERTY}.txt" },
-            new object[] { $@"folder/sub/{DataService.COLLECTION_PROPERTY}.txt" }
+            new object[] { $@"folder/sub/{DataService.COLLECTION_PROPERTY}.txt" },
+            
+            new object[] { DataService.NAMES_PROPERTY },
+            new object[] { $@".\{DataService.NAMES_PROPERTY}" },
+            new object[] { $@"..\{DataService.NAMES_PROPERTY}" },
+            new object[] { $@"folder\{DataService.NAMES_PROPERTY}" },
+            new object[] { $@"folder/{DataService.NAMES_PROPERTY}" },
+            new object[] { $@"folder\sub\{DataService.NAMES_PROPERTY}.txt" },
+            new object[] { $@"folder/sub/{DataService.NAMES_PROPERTY}.txt" }
         };
         
         [Test]

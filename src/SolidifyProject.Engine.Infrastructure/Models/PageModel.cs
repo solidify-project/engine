@@ -16,7 +16,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         private static readonly string[] TITLE_ATTRIBUTE = {"Title"};
         private static readonly string[] URL_ATTRIBUTE = {"Url"};
         private static readonly string[] TEMPLATE_TYPE = {"TemplateType"};
-        private static readonly string[] TEMPLATE_ID_ATTRIBUTE = {"TemplateId", "Template", "LayoutÏd", "Layout"};
+        private static readonly string[] TEMPLATE_ID_ATTRIBUTE = {"TemplateId", "Template", "LayoutId", "Layout"};
         
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR = {"."};
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX = {"Custom"};
