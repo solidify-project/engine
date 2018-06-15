@@ -5,7 +5,11 @@ title:      Solidify Project Help
 
 ---
 
-## Table of contents
+### Quickstart guide
+
+- [Create my first website](/quickstart/create-my-first-website.html)
+
+### Reference
 
 - [Folders structure](/folders-structure.html)
 
