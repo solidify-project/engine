@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Nustache.Core;
 using SolidifyProject.Engine.Infrastructure.Interfaces;
@@ -29,8 +31,10 @@ namespace SolidifyProject.Engine.Services.TemplateService
             {
                 throw new ArgumentNullException(nameof(pageModel));
             }
+            
+            matchDataToPageModel(pageModel.Model, dataModel);
 
-            var model = new { Page = pageModel, Data = dataModel };
+            var model = new { Page = pageModel, Data = dataModel, Model = pageModel.Model };
             
             var result = Render.StringToString(template, model, getTemplate, new RenderContextBehaviour
             {
@@ -61,6 +65,56 @@ namespace SolidifyProject.Engine.Services.TemplateService
             task.Wait();
 
             return task.Result;
+        }
+
+        private void matchDataToPageModel(ExpandoObject model, ExpandoObject data)
+        {
+            IDictionary<string, object> modelDict = model;
+            foreach (var keyValuePair in model)
+            {
+                if (keyValuePair.Value is ExpandoObject o)
+                {
+                    matchDataToPageModel(o, data);
+                }
+                else
+                {
+                    modelDict[keyValuePair.Key] = getValueFromDataObject(keyValuePair.Value as string, data);
+                }
+            }
+        }
+
+        private object getValueFromDataObject(string path, ExpandoObject data)
+        {
+            var attributeNames = path.Split('.');
+            if (attributeNames.Length == 0)
+            {
+                return null;
+            }
+
+            if (attributeNames.First() == "Data")
+            {
+                if (attributeNames.Length == 1)
+                {
+                    return null;
+                }
+
+                attributeNames = attributeNames.Skip(1).ToArray();
+            }
+
+            object value = data;
+            foreach (var attribute in attributeNames)
+            {
+                if (value is ExpandoObject o)
+                {
+                    value = ((dynamic) o)[attribute];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return value;
         }
     }
 }

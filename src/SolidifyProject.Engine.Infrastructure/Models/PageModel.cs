@@ -20,6 +20,8 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR = {"."};
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX = {"Custom"};
+
+        private static readonly string[] MODEL_ATTRIBUTE_PREFIX = {"Model"};
         
         public string Title { get; set; }
         public string Url { get; set; }
@@ -39,10 +41,13 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         /// Raw content after separator
         /// </summary>
         public string Content { get; set; }
+        
+        public dynamic Model { get; set; }
 
         public override void Parse()
         {
             Custom = new ExpandoObject();
+            Model = new ExpandoObject();
             
             var lines = ContentRaw.Split(END_OF_LINE, StringSplitOptions.None);
 
@@ -106,6 +111,21 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 if (customAttributeNames.Length >= 2 && CUSTOM_ATTRIBUTE_PREFIX.Any(x => x.Equals(customAttributeNames[0], StringComparison.InvariantCultureIgnoreCase)))
                 {
                     ParseCustomAttribute(Custom, customAttributeNames.Skip(1), attributeValue);
+                }
+                else
+                {
+                    throw new ArgumentException($"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                }
+                
+                return;
+            }
+            
+            if (CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR.Any(x => attributeName.Contains(x)))
+            {
+                var modelAttributeNames = attributeName.Split(CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
+                if (modelAttributeNames.Length >= 2 && MODEL_ATTRIBUTE_PREFIX.Any(x => x.Equals(modelAttributeNames[0], StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    ParseCustomAttribute(Model, modelAttributeNames.Skip(1), attributeValue);
                 }
                 else
                 {
