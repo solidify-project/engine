@@ -65,6 +65,11 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             
         }
 
+        public void MapDataToModel(ExpandoObject data)
+        {
+            mapDataToPageModel(Model, data);
+        }
+
         private void ParseAttributeLine(string line)
         {
             var attribute = line.Split(ATTRIBUTE_SEPARATORS, StringSplitOptions.None);
@@ -114,9 +119,18 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 }
                 else
                 {
-                    throw new ArgumentException($"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                    if (customAttributeNames.Length >= 2 && MODEL_ATTRIBUTE_PREFIX.Any(x =>
+                            x.Equals(customAttributeNames[0], StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        ParseCustomAttribute(Model, customAttributeNames.Skip(1), attributeValue);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                    }
                 }
-                
+
                 return;
             }
             
@@ -161,6 +175,56 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         private void ParseContent(IEnumerable<string> lines)
         {
             Content = string.Join("\r\n", lines);
+        }
+        
+        private void mapDataToPageModel(ExpandoObject model, ExpandoObject data)
+        {
+            IDictionary<string, object> modelDict = model;
+            foreach (var keyValuePair in model)
+            {
+                if (keyValuePair.Value is ExpandoObject expObject)
+                {
+                    mapDataToPageModel(expObject, data);
+                }
+                else
+                {
+                    modelDict[keyValuePair.Key] = getValueFromDataObject(keyValuePair.Value as string, data);
+                }
+            }
+        }
+
+        private object getValueFromDataObject(string path, ExpandoObject data)
+        {
+            var attributeNames = path.Split('.');
+            if (attributeNames.Length == 0)
+            {
+                return null;
+            }
+
+            if (attributeNames.First() == "Data")
+            {
+                if (attributeNames.Length == 1)
+                {
+                    return null;
+                }
+
+                attributeNames = attributeNames.Skip(1).ToArray();
+            }
+
+            object value = data;
+            foreach (var attribute in attributeNames)
+            {
+                if (value is IDictionary<string,object> dict)
+                {
+                    value = dict[attribute];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return value;
         }
     }
 }

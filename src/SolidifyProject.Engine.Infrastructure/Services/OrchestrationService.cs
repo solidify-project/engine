@@ -56,7 +56,9 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Page:Started] \"{pageId}\"");
             
             var page = await PageModelReaderService.LoadContentByIdAsync(pageId).ConfigureAwait(false);
-                
+            
+            page.MapDataToModel(dataModel);
+            
             var html = await TemplateService.RenderTemplateAsync(page.Content, page, dataModel);
             html = await MarkupService.RenderMarkupAsync(html).ConfigureAwait(false);
             page.Content = html;
