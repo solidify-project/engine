@@ -161,6 +161,42 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models
         }
         
         [Test]
+        public void ParseModelMultipleDuplicateItemsTest()
+        {
+            ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
+            data.Add(new KeyValuePair<string, object>("goods", new List<string>
+            {
+                "apple",
+                "peach",
+                "mango"
+            }));
+            data.Add(new KeyValuePair<string, object>("banner", new
+            {
+                url = "http://mydomain.com/banner.png"
+            }));
+            data.Add(new KeyValuePair<string, object>("other", new { }));
+            
+            var actualModel = new PageModel { ContentRaw = @"
+                Model.goods1:        Data.goods
+                model.goods2:        Data.goods
+                ---
+            "};
+
+            actualModel.Parse();
+            actualModel.MapDataToModel((ExpandoObject)data);
+            
+            Assert.AreEqual(((dynamic)data).goods.Count, actualModel.Model.goods1.Count);
+            Assert.AreEqual(((dynamic)data).goods[0], actualModel.Model.goods1[0]);
+            Assert.AreEqual(((dynamic)data).goods[1], actualModel.Model.goods1[1]);
+            Assert.AreEqual(((dynamic)data).goods[2], actualModel.Model.goods1[2]);
+            
+            Assert.AreEqual(((dynamic)data).goods.Count, actualModel.Model.goods2.Count);
+            Assert.AreEqual(((dynamic)data).goods[0], actualModel.Model.goods2[0]);
+            Assert.AreEqual(((dynamic)data).goods[1], actualModel.Model.goods2[1]);
+            Assert.AreEqual(((dynamic)data).goods[2], actualModel.Model.goods2[2]);
+        }
+        
+        [Test]
         public void ParseModelComplexMultipleItemsTest()
         {
             ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
