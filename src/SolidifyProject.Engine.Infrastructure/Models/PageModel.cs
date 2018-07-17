@@ -44,11 +44,14 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         public dynamic Model { get; set; }
 
-        public override void Parse()
+        public PageModel()
         {
             Custom = new ExpandoObject();
             Model = new ExpandoObject();
-            
+        }
+        
+        public override void Parse()
+        {
             var lines = ContentRaw.Split(END_OF_LINE, StringSplitOptions.None);
 
             var attributeLines = lines
@@ -62,12 +65,11 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             
             var contentLines = lines.SkipWhile(x => !SEPARATOR.Equals(x)).Skip(1);
             ParseContent(contentLines);
-            
         }
 
         public void MapDataToModel(ExpandoObject data)
         {
-            mapDataToPageModel(Model, data);
+            MapDataToPageModel(Model, data);
         }
 
         private void ParseAttributeLine(string line)
@@ -177,14 +179,14 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             Content = string.Join("\r\n", lines);
         }
         
-        private void mapDataToPageModel(ExpandoObject model, ExpandoObject data)
+        private void MapDataToPageModel(ExpandoObject model, ExpandoObject data)
         {
             IDictionary<string, object> modelDict = model;
             foreach (var keyValuePair in model)
             {
                 if (keyValuePair.Value is ExpandoObject expObject)
                 {
-                    mapDataToPageModel(expObject, data);
+                    MapDataToPageModel(expObject, data);
                 }
                 else
                 {
