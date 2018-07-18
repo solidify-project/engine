@@ -214,7 +214,7 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models
             
             var actualModel = new PageModel { ContentRaw = @"
                 Model.category.goods:            Data.goods
-                model.category.bannerUrl:        Data.banner.url
+                model.bannerUrl:        Data.banner.url
                 ---
             "};
 
