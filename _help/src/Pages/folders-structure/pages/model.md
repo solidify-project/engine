@@ -110,4 +110,4 @@ There is one important point to highlight here. `Page.Model` is predifened and c
 
 The main difference between custom attributes and data model is how they interprete the values you provide.
 - **Custom attributes** always treats all values as strings.
-- **Data model** always treat all values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
+- **Data model** always treats all values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
