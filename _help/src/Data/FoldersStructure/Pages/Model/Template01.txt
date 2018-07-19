@@ -1,0 +1,16 @@
+<img src="{{ Model.banner.url }}"/>
+
+{{ Page.Content }}
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+    </tr>
+    {{# Page.Model.goods }}
+        <tr>
+            <td>{{ title }}</td>
+            <td>{{ price }}</td>
+        </tr>
+    {{/ Page.Model.goods }}
+</table>

@@ -54,33 +54,16 @@ The `title` attribute is not mandatory, but we recommend to use it for setting h
 
 If predefined attributes are not enough and you want to add some extra attributes to your page, you can acheive that by using custom attributes section. The name of custom attribute should start with `custom` followed by `.`. After that you should add at least one character that will represent the name of your attribute.
 
+> More advanced details about how to work with custom attributes can be found in [page custom attributes](/folders-structure/pages/attributes.html) section.
 
-#### Page object
+### Data model
 
-All attributes can be accessible through global `Page` object. That object is accessible from each and every template and it always has a context of current page.
+In case you want to use the same template, but use different data for it you can use page data model. The scenario here is to have different data (in terms of value) with the same structure on different pages. The name of page data model should start with `model` followed by `.`. After that you should add at least one character that will represent the name of your data model. The value of `model` should always point to valid `data` object.
 
-You can access predefined page attributes via `Page.Title`, `Page.Url`, `Page.TemplateId` and `Page.Content` for page html content. All properties of global `Page` object are case sensitive.
+> More advanced details about how to work with data can be found in [page data model](/folders-structure/pages/model.html) section.
 
-You can access custom page attributes via properties of `Page.Custom` object. It will have all the properties defibed in page metadata secrion.
+### Custom attributes vs data model
 
-#### Example
-
-If your page file looks like this:
-
-```markdown
-url:                index.html  
-template:           default.hjs  
-title:              Home  
-
-custom.header:      header  
-custom.description: this is my home page  
-custom.logo.url:    http://my.com/logo.png  
-
----
-
-# Welcome to my website!
-```
-
-You can access logo url using the following statement `Page.Custom.logo.url`.
-
-There is one important point to highlight here. `Page.Custom` is predifened and case sensitive, but `logo.url` was generated dynamicaly from page metadata and it's also case sensitive.
+The main difference between custom attributes and data model is how they interpreter the values you provide.
+- **Custom attributes** always threat all the values like strings.
+- **Data model** always threat all the values like reference to global `Data` model. It will copy all the values from referenced `Data` object to current `Model` object.
