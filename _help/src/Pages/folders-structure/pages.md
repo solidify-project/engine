@@ -65,5 +65,5 @@ In case you want to use the same template, but use different data for it, you ca
 ### Custom attributes vs data model
 
 The main difference between custom attributes and data model is how they interprete the values you provide.
-- **Custom attributes** always treat all the values as strings.
-- **Data model** always treats all the values as references to global `Data` model. It will copy all the values from referenced `Data` object to current `Model` object.
+- **Custom attributes** always treat the values as strings.
+- **Data model** always treats the values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
