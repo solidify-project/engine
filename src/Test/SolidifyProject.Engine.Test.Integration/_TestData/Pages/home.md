@@ -1,5 +1,6 @@
 url:        index.html  
 template:   default.hjs
+Model.disclaimer: Data.disclaimer
 
 title:      Static Site Generator - Home
 

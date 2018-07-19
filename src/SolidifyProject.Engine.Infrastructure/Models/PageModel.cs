@@ -20,6 +20,8 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR = {"."};
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX = {"Custom"};
+
+        private static readonly string[] MODEL_ATTRIBUTE_PREFIX = {"Model"};
         
         public string Title { get; set; }
         public string Url { get; set; }
@@ -39,11 +41,17 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         /// Raw content after separator
         /// </summary>
         public string Content { get; set; }
+        
+        public dynamic Model { get; set; }
 
-        public override void Parse()
+        public PageModel()
         {
             Custom = new ExpandoObject();
-            
+            Model = new ExpandoObject();
+        }
+        
+        public override void Parse()
+        {
             var lines = ContentRaw.Split(END_OF_LINE, StringSplitOptions.None);
 
             var attributeLines = lines
@@ -57,7 +65,18 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             
             var contentLines = lines.SkipWhile(x => !SEPARATOR.Equals(x)).Skip(1);
             ParseContent(contentLines);
-            
+        }
+
+        public void MapDataToModel(ExpandoObject data)
+        {
+            if (Model is ExpandoObject)
+            {
+                MapDataToPageModel(Model, data);
+            }
+            else
+            {
+                Model = getValueFromDataObject(Model, data);
+            }
         }
 
         private void ParseAttributeLine(string line)
@@ -100,6 +119,12 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
 
+            if (MODEL_ATTRIBUTE_PREFIX.Any(x => x.Equals(attributeName, StringComparison.OrdinalIgnoreCase)))
+            {
+                Model = attributeValue;
+                return;
+            }
+
             if (CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR.Any(x => attributeName.Contains(x)))
             {
                 var customAttributeNames = attributeName.Split(CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR, StringSplitOptions.RemoveEmptyEntries);
@@ -109,38 +134,106 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 }
                 else
                 {
-                    throw new ArgumentException($"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                    if (customAttributeNames.Length >= 2 && MODEL_ATTRIBUTE_PREFIX.Any(x =>
+                            x.Equals(customAttributeNames[0], StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        ParseCustomAttribute(Model, customAttributeNames.Skip(1), attributeValue);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"Unknown name format of custom attribute \"{attributeName}\" at line \"{line}\"");
+                    }
                 }
-                
+
                 return;
             }
+            
 
             throw new ArgumentException($"Unknown attribute \"{attributeName}\" at line \"{line}\"");
         }
 
         private void ParseCustomAttribute(ExpandoObject obj, IEnumerable<string> attributeNames, string attributeValue)
         {
-            ICollection<KeyValuePair<string, object>> node = obj;
+            IDictionary<string, object> node = obj;
             var currentSection = attributeNames.First();
-            object currentValue;
-            
+
             if (attributeNames.Count() > 1)
             {
-                var subNode = new ExpandoObject();
-                currentValue = subNode;
-                ParseCustomAttribute(subNode, attributeNames.Skip(1), attributeValue);
+                ExpandoObject currentNode;
+                if (node.ContainsKey(currentSection))
+                {
+                    currentNode = node[currentSection] as ExpandoObject;
+                }
+                else
+                {
+                    currentNode = new ExpandoObject();
+                    node.Add(new KeyValuePair<string, object>(currentSection, currentNode));
+                }
+
+                ParseCustomAttribute(currentNode, attributeNames.Skip(1), attributeValue);
             }
             else
             {
-                currentValue = attributeValue;
+                node.Add(new KeyValuePair<string, object>(currentSection, attributeValue));
             }
-            
-            node.Add(new KeyValuePair<string, object>(currentSection, currentValue));
         }
 
         private void ParseContent(IEnumerable<string> lines)
         {
             Content = string.Join("\r\n", lines);
+        }
+        
+        private void MapDataToPageModel(ExpandoObject model, ExpandoObject data)
+        {
+            IDictionary<string, object> modelDict = model;
+            Dictionary<string, object> objectToIterate = model.ToDictionary(k => k.Key, v => v.Value);
+            foreach (var keyValuePair in objectToIterate)
+            {
+                if (keyValuePair.Value is ExpandoObject expObject)
+                {
+                    MapDataToPageModel(expObject, data);
+                }
+                else
+                {
+                    modelDict[keyValuePair.Key] = getValueFromDataObject(keyValuePair.Value as string, data);
+                }
+            }
+        }
+
+        private object getValueFromDataObject(string path, ExpandoObject data)
+        {
+            var attributeNames = path.Split('.');
+            if (attributeNames.Length == 0)
+            {
+                return null;
+            }
+
+            if (attributeNames.First() == "Data")
+            {
+                if (attributeNames.Length == 1)
+                {
+                    return data;
+                }
+
+                attributeNames = attributeNames.Skip(1).ToArray();
+            }
+
+            object value = data;
+            foreach (var attribute in attributeNames)
+            {
+                IDictionary<string, object> dict = value as IDictionary<string, object>;
+
+                if (dict == null)
+                {
+                    dict = value.GetType().GetProperties()
+                        .ToDictionary(x => x.Name, x => x.GetValue(value, null));
+                }
+
+                value = dict[attribute];
+            }
+
+            return value;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Nustache.Core;
 using SolidifyProject.Engine.Infrastructure.Interfaces;
@@ -30,7 +32,8 @@ namespace SolidifyProject.Engine.Services.TemplateService
                 throw new ArgumentNullException(nameof(pageModel));
             }
 
-            var model = new { Page = pageModel, Data = dataModel };
+
+            var model = new { Page = pageModel, Data = dataModel, Model = pageModel.Model };
             
             var result = Render.StringToString(template, model, getTemplate, new RenderContextBehaviour
             {
@@ -62,5 +65,6 @@ namespace SolidifyProject.Engine.Services.TemplateService
 
             return task.Result;
         }
+
     }
 }
