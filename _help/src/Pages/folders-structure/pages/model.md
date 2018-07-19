@@ -9,7 +9,7 @@ title:      Pages data model
 
 ### Data model
 
-In case you want to use the same template, but use different data for it you can use page data model. The scenario here is to have different data (in terms of value) with the same structure on different pages. The name of page data model should start with `model` followed by `.`. After that you should add at least one character that will represent the name of your data model. The value of `model` should always point to valid `data` object.
+In case you want to use the same template, but use different data for it, you can use page data model. The scenario here is to have different data (in terms of values) with the same structure on different pages. The name of page data model should start with `model` followed by `.`. After that you should add at least one character that will represent the name of your data model. The value of `model` should always point to valid `data` object.
 
 
 #### Page object
@@ -104,10 +104,10 @@ Finally, the html rendered by Solidify Engine will look like this:
 ```
 
 
-There is one important point to highlight here. `Page.Model` is predifened and case sensitive, but `goods` was generated dynamicaly from page metadata and it's also case sensitive.
+There is one important point to highlight here. `Page.Model` is predifened and case-sensitive, but `goods` was generated dynamicaly from page metadata and it's also case-sensitive.
 
 ### Custom attributes vs data model
 
-The main difference between custom attributes and data model is how they interpreter the values you provide.
-- **Custom attributes** always threat all the values like strings.
-- **Data model** always threat all the values like reference to global `Data` model. It will copy all the values from referenced `Data` object to current `Model` object.
+The main difference between custom attributes and data model is how they interprete the values you provide.
+- **Custom attributes** always treats all values as strings.
+- **Data model** always treat all values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
