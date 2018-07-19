@@ -16,7 +16,7 @@ If predefined attributes are not enough and you want to add some extra attribute
 
 All attributes can be accessible through global `Page` object. That object is accessible from each and every template and it always has a context of current page.
 
-You can access predefined page attributes via `Page.Title`, `Page.Url`, `Page.TemplateId` and `Page.Content` for page html content. All properties of global `Page` object are case sensitive.
+You can access predefined page attributes via `Page.Title`, `Page.Url`, `Page.TemplateId` and `Page.Content` for page html content. All properties of global `Page` object are case-sensitive.
 
 You can access custom page attributes via properties of `Page.Custom` object. It will have all the properties defined in page metadata section.
 
@@ -40,10 +40,10 @@ custom.logo.url:    http://my.com/logo.png
 
 You can access logo url using the following statement `Page.Custom.logo.url`.
 
-There is one important point to highlight here. `Page.Custom` is predifened and case sensitive, but `logo.url` was generated dynamicaly from page metadata and it's also case sensitive.
+There is one important point to highlight here. `Page.Custom` is predifened and case-sensitive, but `logo.url` was generated dynamicaly from page metadata and it's also case-sensitive.
 
 ### Custom attributes vs data model
 
-The main difference between custom attributes and data model is how they interpreter the values you provide.
-- **Custom attributes** always threat all the values like strings.
-- **Data model** always threat all the values like reference to global `Data` model. It will copy all the values from referenced `Data` object to current `Model` object.
+The main difference between custom attributes and data model is how they interprete the values you provide.
+- **Custom attributes** always treat all values as strings.
+- **Data model** always treats all values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
