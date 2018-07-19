@@ -26,5 +26,17 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services.ContentWriter
          
             Assert.IsTrue(AreEqual(newElement, newElementActual), "Objects are not equal");
         }
+
+        [Test]
+        public virtual async Task CleanOutputAsyncTest(T newElement)
+        {
+            await ContentWriterService.SaveContentAsync(newElement.Id, newElement);
+
+            await ContentWriterService.CleanFolderAsync("");
+
+            var newElementActual = await ContentReaderService.LoadContentByIdAsync(newElement.Id);
+            
+            Assert.IsNull(newElementActual);
+        }
     }
 }

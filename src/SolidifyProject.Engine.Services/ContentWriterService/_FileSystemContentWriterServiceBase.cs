@@ -24,6 +24,25 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
             Directory.CreateDirectory(directory);
         }
 
+        public Task CleanFolderAsync(string path)
+        {
+            DirectoryInfo di = new DirectoryInfo(Path.Combine(_root, path));
+            if (di.Exists)
+            {
+                foreach (var file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (var directory in di.GetDirectories())
+                {
+                    directory.Delete(true);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
         public abstract Task SaveContentAsync(string id, T content);
     }
 }

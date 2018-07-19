@@ -42,6 +42,13 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
 
         private IHtmlMinificationService HtmlMinificationService => new GoogleHtmlMinificationService();
 
+        [TearDown]
+        public void TearDown()
+        {
+            _assetsWriterStorage.Clear();
+            _pageModelWriterStorage.Clear();
+        }
+
         [Test]
         public async Task ProduceHtml()
         {
@@ -75,6 +82,61 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Services
             var page = _pageModelWriterStorage.Single(x => x.Id.Equals("index.html"));
             
             Assert.AreEqual("<html><head><link href=\"/assets/style.css\" rel=\"stylesheet\" type=\"text/css\"><title>Static Site Generator - Home</title><link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"/Assets/favicon.ico\"></head><body><div><ul><li><a href=\"https://facebook.com\">Facebook</a></li><li><a href=\"https://twitter.com\">Twitter</a></li></ul></div><h1>Welcome to Static Site Generator!</h1><h4>Authors</h4><h5>Founders</h5><ul><li>Anton Boyko (Microsoft Azure MVP)</li></ul><h5>Contributors</h5><p><strong>Powered by .NET Core 2.0</strong></p><div><i>All rights reserved</i></div></body></html>", page.ContentRaw);
+        }
+
+        [Test]
+        public async Task CleanUpBeforeRender()
+        {
+            Assert.AreEqual(0, _pageModelWriterStorage.Count);
+            Assert.AreEqual(0, _assetsWriterStorage.Count);
+            
+            _assetsWriterStorage.Add(new BinaryContentModel
+            {
+                Id = "fakedata"
+            });
+            
+            _assetsWriterStorage.Add(new BinaryContentModel
+            {
+                Id = "fakedata123"
+            });
+            
+            _pageModelWriterStorage.Add(new TextContentModel
+            {
+                Id = "fakedata"
+            });
+            
+            _pageModelWriterStorage.Add(new TextContentModel
+            {
+                Id = "fakedata123"
+            });
+            
+            var orchestrationService = new OrchestrationService();
+            orchestrationService.LoggerService = LoggerService;
+            orchestrationService.AssetsReaderService = AssetsReaderService;
+            orchestrationService.AssetsWriterService = AssetsWriterService;
+            orchestrationService.PageModelReaderService = PageModelReaderService;
+            orchestrationService.PageModelWriterService = PageModelWriterService;
+            orchestrationService.TemplateReaderService = TemplateReaderService;
+            orchestrationService.TemplateService = TemplateService;
+            orchestrationService.DataService = DataService;
+            orchestrationService.MarkupService = MarkupService;
+            orchestrationService.HtmlMinificationService = HtmlMinificationService;
+
+            await orchestrationService.RenderProjectAsync();
+
+            
+            Assert.AreEqual(2, _pageModelWriterStorage.Count);
+            Assert.IsFalse(_pageModelWriterStorage.All(x => x.ContentRaw == null));
+            
+            Assert.AreEqual(2, _assetsWriterStorage.Count);
+            Assert.IsFalse(_assetsWriterStorage.All(x => x.ContentRaw == null));
+
+            var logoAsset = _assetsWriterStorage.SingleOrDefault(x => x.Id.Contains("img") && x.Id.Contains("logo.png"));
+            Assert.IsNotNull(logoAsset);
+
+            var page = _pageModelWriterStorage.Single(x => x.Id.Equals("index.html"));
+            
+            Assert.AreEqual("<html><head><link href=\"/assets/style.css\" rel=\"stylesheet\" type=\"text/css\"><title>Static Site Generator - Home</title></head><body><div><ul><li><a href=\"https://facebook.com\">Facebook</a></li><li><a href=\"https://twitter.com\">Twitter</a></li></ul></div><h1>Welcome to Static Site Generator!</h1><h4>Authors</h4><h5>Founders</h5><ul><li>Anton Boyko (Microsoft Azure MVP)</li></ul><h5>Contributors</h5><p><strong>Powered by .NET Core 2.0</strong></p><div><i>All rights reserved</i></div></body></html>", page.ContentRaw);
         }
     }
 }
