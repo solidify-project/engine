@@ -1,4 +1,4 @@
-<img src="{{ Model.banner.url }}"/>
+<img src="{{ Page.Model.banner.url }}"/>
 
 {{ Page.Content }}
 
