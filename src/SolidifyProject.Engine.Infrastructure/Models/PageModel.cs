@@ -27,6 +27,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         public string Url { get; set; }
 
         public dynamic Custom { get; set; }
+        public dynamic Model { get; set; }
 
         /// <summary>
         /// </summary>
@@ -42,7 +43,6 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         /// </summary>
         public string Content { get; set; }
         
-        public dynamic Model { get; set; }
 
         public PageModel()
         {
