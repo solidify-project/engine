@@ -32,11 +32,15 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Services.ContentWriter
         {
             await ContentWriterService.SaveContentAsync(newElement.Id, newElement);
 
+            var actualElement = await ContentReaderService.LoadContentByIdAsync(newElement.Id);
+            
+            Assert.IsNotNull(actualElement);
+            
             await ContentWriterService.CleanFolderAsync("");
 
-            var newElementActual = await ContentReaderService.LoadContentByIdAsync(newElement.Id);
+            actualElement = await ContentReaderService.LoadContentByIdAsync(newElement.Id);
             
-            Assert.IsNull(newElementActual);
+            Assert.IsNull(actualElement);
         }
     }
 }
