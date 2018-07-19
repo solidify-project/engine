@@ -33,7 +33,7 @@ namespace SolidifyProject.Engine.Services.TemplateService
             }
 
 
-            var model = new { Page = pageModel, Data = dataModel, Model = pageModel.Model };
+            var model = new { Page = pageModel, Data = dataModel };
             
             var result = Render.StringToString(template, model, getTemplate, new RenderContextBehaviour
             {
