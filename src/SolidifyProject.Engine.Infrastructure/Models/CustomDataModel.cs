@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using CsvHelper;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -87,6 +91,13 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             {
                 DataType = CustomDataType.Txt;
                 ParseTxt();
+                return;
+            }
+
+            if (extension.Equals(CustomDataType.TableStorage.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                DataType = CustomDataType.TableStorage;
+                ParseTableStorage();
                 return;
             }
             
@@ -176,6 +187,58 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         private void ParseTxt()
         {
             CustomData = ContentRaw?.Trim();
+        }
+
+        private void ParseTableStorage()
+        {
+            var deserializer = new DeserializerBuilder()
+                .Build();
+
+            object obj;
+            using (var reader = new StringReader(ContentRaw))
+            {
+                obj = deserializer.Deserialize(reader);
+            }
+
+            dynamic config = ParseYaml(obj);
+
+            var storageAccount =
+                new CloudStorageAccount(new StorageCredentials(config.AccountName, config.AccountKey), true);
+            
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+
+            //Table
+            CloudTable table = tableClient.GetTableReference(config.TableName);
+            
+            TableQuery<DynamicTableEntity> query = new TableQuery<DynamicTableEntity>();
+
+            List<dynamic> results = new List<dynamic>();
+            TableContinuationToken continuationToken = null;
+            do
+            {
+                TableQuerySegment<DynamicTableEntity> queryResults =
+                    table.ExecuteQuerySegmentedAsync(query, continuationToken).GetAwaiter().GetResult();
+
+                continuationToken = queryResults.ContinuationToken;
+                foreach (var result in queryResults)
+                {
+                    ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
+                    
+                    data.Add(new KeyValuePair<string, object>("PartitionKey", result.PartitionKey));
+                    data.Add(new KeyValuePair<string, object>("RowKey", result.RowKey));
+                    data.Add(new KeyValuePair<string, object>("Timestamp", result.Timestamp));
+                    data.Add(new KeyValuePair<string, object>("ETag", result.ETag));
+                    
+                    foreach (var keyValuePair in result.Properties)
+                    {
+                        data.Add(new KeyValuePair<string, object>(keyValuePair.Key, keyValuePair.Value.PropertyAsObject));
+                    }
+                    results.Add(data);
+                }
+
+            } while (continuationToken != null);
+
+            CustomData = results;
         }
     }
 }

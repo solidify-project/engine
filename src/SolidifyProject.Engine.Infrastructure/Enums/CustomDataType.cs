@@ -11,6 +11,7 @@
         
         Csv      = 401,
         
-        Txt      = 501
+        Txt      = 501,
+        TableStorage = 601
     }
 }
