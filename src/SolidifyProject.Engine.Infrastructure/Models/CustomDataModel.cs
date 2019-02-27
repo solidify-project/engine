@@ -65,12 +65,12 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
             
-            if (extension.Equals(CustomDataType.Xml.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                DataType = CustomDataType.Xml;
-                ParseXml();
-                return;
-            }
+//            if (extension.Equals(CustomDataType.Xml.ToString(), StringComparison.OrdinalIgnoreCase))
+//            {
+//                DataType = CustomDataType.Xml;
+//                ParseXml();
+//                return;
+//            }
             
             if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase) ||
                 extension.Equals(CustomDataType.Yml.ToString(), StringComparison.OrdinalIgnoreCase))
@@ -109,10 +109,10 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             CustomData = JObject.Parse(ContentRaw);
         }
         
-        private void ParseXml()
-        {
-            throw new NotImplementedException();
-        }
+//        private void ParseXml()
+//        {
+//            throw new NotImplementedException();
+//        }
         
         private void ParseYaml()
         {
