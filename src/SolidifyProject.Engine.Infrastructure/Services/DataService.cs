@@ -172,9 +172,11 @@ namespace SolidifyProject.Engine.Infrastructure.Services
         
         private async Task<KeyValuePair<string, object>> GetDataByIdAsync(string dataId)
         {
-            await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Started] \"{dataId}\"");
+            await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Started] \"{dataId}\"")
+                .ConfigureAwait(false);
             
-            var customData = await DataReaderService.LoadContentByIdAsync(dataId);
+            var customData = await DataReaderService.LoadContentByIdAsync(dataId)
+                .ConfigureAwait(false);
 
             try
             {
@@ -182,7 +184,8 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             }
             finally
             {
-                await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Finished] \"{dataId}\"");
+                await InvokeLogEvent($"{DateTime.Now.ToLongTimeString()}: [Data:Finished] \"{dataId}\"")
+                    .ConfigureAwait(false);
             }
         }
 
