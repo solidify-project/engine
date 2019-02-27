@@ -32,7 +32,6 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models
             Assert.AreEqual(expectedModel.TemplateId, actualModel.TemplateId);
         }
         
-        
         [Test]
         public void ParseCustomAttributesTest()
         {
