@@ -19,7 +19,7 @@ namespace SolidifyProject.Engine.Configuration
                 root;
         }
 
-        private SolidifyConfiguration getConfiguration()
+        private SolidifyConfiguration GetConfiguration()
         {
             var reader = new FileSystemTextContentReaderService<CustomDataModel>(_root);
             var config = reader.LoadContentByIdAsync(CONFIGURATION_FILE).Result;
@@ -34,6 +34,6 @@ namespace SolidifyProject.Engine.Configuration
             return model;
         }
 
-        public SolidifyConfiguration Configuration => _configuration ?? (_configuration = getConfiguration());
+        public SolidifyConfiguration Configuration => _configuration ?? (_configuration = GetConfiguration());
     }
 }
