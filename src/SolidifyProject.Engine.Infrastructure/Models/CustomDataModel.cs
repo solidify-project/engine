@@ -10,6 +10,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
+using SolidifyProject.Engine.Infrastructure.Models.RemoteContentModel;
+using SolidifyProject.Engine.Infrastructure.Services;
 using YamlDotNet.Serialization;
 
 namespace SolidifyProject.Engine.Infrastructure.Models
@@ -100,6 +102,13 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 //                ParseTableStorage();
 //                return;
 //            }
+            
+            if (extension.Equals(CustomDataType.Http.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                DataType = CustomDataType.Http;
+                ParseHttp();
+                return;
+            }
             
             throw new NotSupportedException($"Unknown custom data type \"{extension}\"");
         }
@@ -240,5 +249,20 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 //            CustomData = results;
 //        }
 
+        private void ParseHttp()
+        {
+            var deserializer = new DeserializerBuilder()
+                .Build();
+
+            var model = deserializer.Deserialize<HttpRemoteContentModel>(ContentRaw);
+
+            var service = new HttpRemoteContentReaderService();
+            ContentRaw = service.LoadContentAsync(model).Result;
+
+            var extension = Path.GetExtension(Id).Trim('.');
+            Id = Id.Replace(extension, model.CustomDataType);
+            
+            Parse();
+        }
     }
 }
