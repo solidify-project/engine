@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SolidifyProject.Engine.Utils.Cache
@@ -24,7 +25,7 @@ namespace SolidifyProject.Engine.Utils.Cache
                 return await result.Value.ConfigureAwait(false);
             }
 
-            result = new Lazy<Task<T>>(() => _loadToCache(key));
+            result = new Lazy<Task<T>>(() => _loadToCache(key), LazyThreadSafetyMode.ExecutionAndPublication);
             
             _cache.AddOrUpdate(key, result, (k, r) => result);
 
