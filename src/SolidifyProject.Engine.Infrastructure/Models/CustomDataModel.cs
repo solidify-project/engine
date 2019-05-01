@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
-using System.Linq;
 using CsvHelper;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
