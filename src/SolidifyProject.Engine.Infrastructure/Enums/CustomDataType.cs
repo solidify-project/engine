@@ -12,6 +12,9 @@
         Csv      = 401,
         
         Txt      = 501,
-        TableStorage = 601
+        
+        TableStorage = 601,
+        
+        Http = 701
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
+using SolidifyProject.Engine.Infrastructure.Models.RemoteContentModel;
+using SolidifyProject.Engine.Infrastructure.Services;
 using YamlDotNet.Serialization;
 
 namespace SolidifyProject.Engine.Infrastructure.Models
@@ -65,12 +67,12 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
             
-            if (extension.Equals(CustomDataType.Xml.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                DataType = CustomDataType.Xml;
-                ParseXml();
-                return;
-            }
+//            if (extension.Equals(CustomDataType.Xml.ToString(), StringComparison.OrdinalIgnoreCase))
+//            {
+//                DataType = CustomDataType.Xml;
+//                ParseXml();
+//                return;
+//            }
             
             if (extension.Equals(CustomDataType.Yaml.ToString(), StringComparison.OrdinalIgnoreCase) ||
                 extension.Equals(CustomDataType.Yml.ToString(), StringComparison.OrdinalIgnoreCase))
@@ -94,10 +96,17 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
 
-            if (extension.Equals(CustomDataType.TableStorage.ToString(), StringComparison.OrdinalIgnoreCase))
+//            if (extension.Equals(CustomDataType.TableStorage.ToString(), StringComparison.OrdinalIgnoreCase))
+//            {
+//                DataType = CustomDataType.TableStorage;
+//                ParseTableStorage();
+//                return;
+//            }
+            
+            if (extension.Equals(CustomDataType.Http.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                DataType = CustomDataType.TableStorage;
-                ParseTableStorage();
+                DataType = CustomDataType.Http;
+                ParseHttp();
                 return;
             }
             
@@ -109,10 +118,10 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             CustomData = JObject.Parse(ContentRaw);
         }
         
-        private void ParseXml()
-        {
-            throw new NotImplementedException();
-        }
+//        private void ParseXml()
+//        {
+//            throw new NotImplementedException();
+//        }
         
         private void ParseYaml()
         {
@@ -189,56 +198,71 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             CustomData = ContentRaw?.Trim();
         }
 
-        private void ParseTableStorage()
+//        private void ParseTableStorage()
+//        {
+//            var deserializer = new DeserializerBuilder()
+//                .Build();
+//
+//            object obj;
+//            using (var reader = new StringReader(ContentRaw))
+//            {
+//                obj = deserializer.Deserialize(reader);
+//            }
+//
+//            dynamic config = ParseYaml(obj);
+//
+//            var storageAccount =
+//                new CloudStorageAccount(new StorageCredentials(config.AccountName, config.AccountKey), true);
+//            
+//            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+//
+//            CloudTable table = tableClient.GetTableReference(config.TableName);
+//            
+//            TableQuery<DynamicTableEntity> query = new TableQuery<DynamicTableEntity>();
+//
+//            List<dynamic> results = new List<dynamic>();
+//            TableContinuationToken continuationToken = null;
+//            do
+//            {
+//                TableQuerySegment<DynamicTableEntity> queryResults =
+//                    table.ExecuteQuerySegmentedAsync(query, continuationToken).GetAwaiter().GetResult();
+//
+//                continuationToken = queryResults.ContinuationToken;
+//                foreach (var result in queryResults)
+//                {
+//                    ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
+//                    
+//                    data.Add(new KeyValuePair<string, object>("PartitionKey", result.PartitionKey));
+//                    data.Add(new KeyValuePair<string, object>("RowKey", result.RowKey));
+//                    data.Add(new KeyValuePair<string, object>("Timestamp", result.Timestamp));
+//                    data.Add(new KeyValuePair<string, object>("ETag", result.ETag));
+//                    
+//                    foreach (var keyValuePair in result.Properties)
+//                    {
+//                        data.Add(new KeyValuePair<string, object>(keyValuePair.Key, keyValuePair.Value.PropertyAsObject));
+//                    }
+//                    results.Add(data);
+//                }
+//
+//            } while (continuationToken != null);
+//
+//            CustomData = results;
+//        }
+
+        private void ParseHttp()
         {
             var deserializer = new DeserializerBuilder()
                 .Build();
 
-            object obj;
-            using (var reader = new StringReader(ContentRaw))
-            {
-                obj = deserializer.Deserialize(reader);
-            }
+            var model = deserializer.Deserialize<HttpRemoteContentModel>(ContentRaw);
 
-            dynamic config = ParseYaml(obj);
+            var service = new HttpRemoteContentReaderService();
+            ContentRaw = service.LoadContentAsync(model).Result;
 
-            var storageAccount =
-                new CloudStorageAccount(new StorageCredentials(config.AccountName, config.AccountKey), true);
+            var extension = Path.GetExtension(Id).Trim('.');
+            Id = Id.Replace(extension, model.CustomDataType);
             
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-
-            //Table
-            CloudTable table = tableClient.GetTableReference(config.TableName);
-            
-            TableQuery<DynamicTableEntity> query = new TableQuery<DynamicTableEntity>();
-
-            List<dynamic> results = new List<dynamic>();
-            TableContinuationToken continuationToken = null;
-            do
-            {
-                TableQuerySegment<DynamicTableEntity> queryResults =
-                    table.ExecuteQuerySegmentedAsync(query, continuationToken).GetAwaiter().GetResult();
-
-                continuationToken = queryResults.ContinuationToken;
-                foreach (var result in queryResults)
-                {
-                    ICollection<KeyValuePair<string, object>> data = new ExpandoObject();
-                    
-                    data.Add(new KeyValuePair<string, object>("PartitionKey", result.PartitionKey));
-                    data.Add(new KeyValuePair<string, object>("RowKey", result.RowKey));
-                    data.Add(new KeyValuePair<string, object>("Timestamp", result.Timestamp));
-                    data.Add(new KeyValuePair<string, object>("ETag", result.ETag));
-                    
-                    foreach (var keyValuePair in result.Properties)
-                    {
-                        data.Add(new KeyValuePair<string, object>(keyValuePair.Key, keyValuePair.Value.PropertyAsObject));
-                    }
-                    results.Add(data);
-                }
-
-            } while (continuationToken != null);
-
-            CustomData = results;
+            Parse();
         }
     }
 }
