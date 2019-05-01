@@ -294,3 +294,4 @@ __pycache__/
 _help/engine
 _help/www
 solidify.sh
+.DS_Store
