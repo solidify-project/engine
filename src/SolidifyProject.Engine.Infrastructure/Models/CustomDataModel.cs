@@ -4,7 +4,9 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using CsvHelper;
-using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -113,41 +115,9 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private void ParseJson()
         {
-            CustomData = ParseJObject(JsonConvert.DeserializeObject(ContentRaw));
+            CustomData = JObject.Parse(ContentRaw);
         }
-
-        private dynamic ParseJObject(object obj)
-        {
-            if (obj is JObject)
-            {
-                IDictionary<string, object> result = new ExpandoObject();
-                
-                foreach (var property in ((JObject)obj).ToObject<Dictionary<string, object>>())
-                {
-                    switch (property.Value)
-                    {
-                        case JObject objectValue:
-                            result.Add(property.Key, ParseJObject(objectValue));
-                            break;
-                        case JArray arrayValue:
-                            var list = arrayValue
-                                .Select(ParseJObject)
-                                .ToList();
-                            result.Add(property.Key, list);
-                            break;
-                        default:
-                            result.Add(property.Key, property.Value);
-                            break;
-                    }
-                }
-                return (ExpandoObject)result;
-            }
-            else
-            {
-                return obj;
-            }
-        }
-
+        
 //        private void ParseXml()
 //        {
 //            throw new NotImplementedException();
