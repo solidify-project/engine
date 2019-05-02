@@ -1,70 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Nustache.Core;
 using SolidifyProject.Engine.Infrastructure.Interfaces;
 using SolidifyProject.Engine.Infrastructure.Models;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
-using SolidifyProject.Engine.Utils.Cache;
+using Stubble.Core.Contexts;
+using Stubble.Core.Exceptions;
+using Stubble.Core.Interfaces;
+using Stubble.Core.Renderers.StringRenderer;
+using Stubble.Core.Settings;
 
 namespace SolidifyProject.Engine.Services.TemplateService
 {
     public sealed class MustacheTemplateService : ITemplateService
     {
-        private readonly Encoders.HtmlEncoder _noHtmlEncoding = delegate(string text) { return text; };
         private readonly IContentReaderService<TextContentModel> _partialsLocator;
 
-        private readonly LazyCache<Template> _cache;
+        internal RendererSettings RendererSettings = new RendererSettingsBuilder().BuildSettings();
+
         
         public MustacheTemplateService(IContentReaderService<TextContentModel> partialsLocator = null)
         {
             _partialsLocator = partialsLocator;
-            _cache = new LazyCache<Template>(loadTemplate);
         }
         
-        public Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
+        public async Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
         {
             if (pageModel == null)
             {
                 throw new ArgumentNullException(nameof(pageModel));
             }
 
-
             var model = new { Page = pageModel, Data = dataModel };
             
-            var result = Render.StringToString(template, model, getTemplate, new RenderContextBehaviour
+            var loader = new StubbleLoader(_partialsLocator);
+            
+            return await RenderAsync(template, model, loader, new RenderSettings
             {
-                HtmlEncoder = _noHtmlEncoding
+                SkipHtmlEncoding = true,
+                ThrowOnDataMiss = true
             });
-
-            return Task.FromResult(result);
         }
 
-        private Task<Template> loadTemplate(string name)
+        private async Task<string> RenderAsync(string template, object view, IStubbleLoader partialsLoader, RenderSettings settings)
         {
-            if (_partialsLocator == null)
+            var loadedTemplate = await RendererSettings.TemplateLoader.LoadAsync(template);
+
+            if (loadedTemplate == null)
             {
-                return null;
+                throw new UnknownTemplateException("No template was found with the name '" + template + "'");
             }
 
-            var content = _partialsLocator.LoadContentByIdAsync(name).Result.ContentRaw;
+            var document = RendererSettings.Parser.Parse(loadedTemplate, RendererSettings.DefaultTags, pipeline: RendererSettings.ParserPipeline);
 
-            var template = new Template();
-            template.Load(new StringReader(content));
+            using (var textwriter = new StringWriter())
+            {
+                var renderer = new StringRender(textwriter, RendererSettings.RendererPipeline, RendererSettings.MaxRecursionDepth);
 
-            return Task.FromResult(template);
+                await renderer.RenderAsync(document, new Context(view, RendererSettings, partialsLoader, settings ?? RendererSettings.RenderSettings));
+
+                renderer.Writer.Flush();
+                return ((StringWriter)renderer.Writer).ToString();
+            }
         }
-
-        private Template getTemplate(string key)
-        {
-            var task = _cache.GetFromCacheAsync(key);
-            task.Wait();
-
-            return task.Result;
-        }
-
     }
 }
