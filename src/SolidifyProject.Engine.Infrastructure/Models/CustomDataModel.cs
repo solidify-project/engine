@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using CsvHelper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -123,24 +124,20 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 
                 foreach (var property in ((JObject)obj).ToObject<Dictionary<string, object>>())
                 {
-                    if (property.Value is JObject)
+                    switch (property.Value)
                     {
-                        result.Add(property.Key, ParseJObject(property.Value));
-                    }
-                    else if (property.Value is JArray)
-                    {
-                        var list = new List<object>();
-                        
-                        foreach (var item in (JArray)property.Value)
-                        {
-                            list.Add(ParseJObject(item));
-                        }
-                        
-                        result.Add(property.Key, list);
-                    }
-                    else
-                    {
-                        result.Add(property.Key, property.Value);
+                        case JObject objectValue:
+                            result.Add(property.Key, ParseJObject(objectValue));
+                            break;
+                        case JArray arrayValue:
+                            var list = arrayValue
+                                .Select(ParseJObject)
+                                .ToList();
+                            result.Add(property.Key, list);
+                            break;
+                        default:
+                            result.Add(property.Key, property.Value);
+                            break;
                     }
                 }
                 return (ExpandoObject)result;
