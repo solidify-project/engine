@@ -121,26 +121,26 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             {
                 IDictionary<string, object> result = new ExpandoObject();
                 
-                foreach (var propery in ((JObject)obj).ToObject<Dictionary<string, object>>())
+                foreach (var property in ((JObject)obj).ToObject<Dictionary<string, object>>())
                 {
-                    if (propery.Value is JObject)
+                    if (property.Value is JObject)
                     {
-                        result.Add(propery.Key, ParseJObject(propery.Value));
+                        result.Add(property.Key, ParseJObject(property.Value));
                     }
-                    else if (propery.Value is JArray)
+                    else if (property.Value is JArray)
                     {
                         var list = new List<object>();
                         
-                        foreach (var item in (JArray)propery.Value)
+                        foreach (var item in (JArray)property.Value)
                         {
                             list.Add(ParseJObject(item));
                         }
                         
-                        result.Add(propery.Key, list);
+                        result.Add(property.Key, list);
                     }
                     else
                     {
-                        result.Add(propery.Key, propery.Value);
+                        result.Add(property.Key, property.Value);
                     }
                 }
                 return (ExpandoObject)result;
