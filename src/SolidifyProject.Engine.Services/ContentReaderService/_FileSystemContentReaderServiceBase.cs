@@ -49,6 +49,10 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
 
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>File content or null, if file wasn't found.</returns>
         public abstract Task<T> LoadContentByIdAsync(string id);
     }
 }
