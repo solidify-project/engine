@@ -13,12 +13,12 @@ namespace SolidifyProject.Engine.Test.Unit.Utils.Cache
             {"key", "value"}
         };
 
-        private LazyCacheAsync<string> _cacheAsync;
+        private LazyCache<string> Cache;
 
         [OneTimeSetUp]
         public void Init()
         {
-            _cacheAsync = new LazyCacheAsync<string>((key) =>
+            Cache = new LazyCache<string>((key) =>
             {
                 return _storage.ContainsKey(key) ?
                     Task.FromResult(_storage[key]) :
@@ -29,7 +29,7 @@ namespace SolidifyProject.Engine.Test.Unit.Utils.Cache
         [Test]
         public async Task GetByNonCachedKey()
         {
-            var value = await _cacheAsync.GetFromCacheAsync("key");
+            var value = await Cache.GetFromCacheAsync("key");
             
             Assert.AreEqual("value", value);
         }
@@ -38,10 +38,10 @@ namespace SolidifyProject.Engine.Test.Unit.Utils.Cache
         public async Task GetByCachedKey()
         {
             // cache is empty
-            var value = await _cacheAsync.GetFromCacheAsync("key");
+            var value = await Cache.GetFromCacheAsync("key");
             
             // cache is not empty
-            value = await _cacheAsync.GetFromCacheAsync("key");
+            value = await Cache.GetFromCacheAsync("key");
             
             Assert.AreEqual("value", value);
         }
@@ -49,7 +49,7 @@ namespace SolidifyProject.Engine.Test.Unit.Utils.Cache
         [Test]
         public async Task GetByNonExistingKey()
         {
-            var value = await _cacheAsync.GetFromCacheAsync("non existing key");
+            var value = await Cache.GetFromCacheAsync("non existing key");
             
             Assert.IsNull(value);
         }
