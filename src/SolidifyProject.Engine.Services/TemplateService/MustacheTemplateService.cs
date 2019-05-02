@@ -20,7 +20,7 @@ namespace SolidifyProject.Engine.Services.TemplateService
         public MustacheTemplateService(IContentReaderService<TextContentModel> partialsLocator = null)
         {
             _partialsLocator = partialsLocator;
-            _cache = new LazyCache<Template>(loadTemplate);
+            _cache = new LazyCache<Template>(loadTemplateAsync);
         }
         
         public Task<string> RenderTemplateAsync(string template, PageModel pageModel, ExpandoObject dataModel)
@@ -41,19 +41,24 @@ namespace SolidifyProject.Engine.Services.TemplateService
             return Task.FromResult(result);
         }
 
-        private Task<Template> loadTemplate(string name)
+        private async Task<Template> loadTemplateAsync(string name)
         {
             if (_partialsLocator == null)
             {
                 return null;
             }
 
-            var content = _partialsLocator.LoadContentByIdAsync(name).Result.ContentRaw;
+            var content = await _partialsLocator.LoadContentByIdAsync(name);
+
+            if (content == null)
+            {
+                throw new FileNotFoundException(name);
+            }
 
             var template = new Template();
-            template.Load(new StringReader(content));
+            template.Load(new StringReader(content.ContentRaw));
 
-            return Task.FromResult(template);
+            return template;
         }
 
         private Template getTemplate(string key)
