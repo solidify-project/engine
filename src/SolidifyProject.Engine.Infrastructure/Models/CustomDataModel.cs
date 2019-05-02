@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using CsvHelper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -111,9 +112,45 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private void ParseJson()
         {
-            CustomData = JObject.Parse(ContentRaw);
+            CustomData = ParseJObject(JsonConvert.DeserializeObject(ContentRaw));
         }
-        
+
+        private dynamic ParseJObject(object obj)
+        {
+            if (obj is JObject)
+            {
+                IDictionary<string, object> result = new ExpandoObject();
+                
+                foreach (var propery in ((JObject)obj).ToObject<Dictionary<string, object>>())
+                {
+                    if (propery.Value is JObject)
+                    {
+                        result.Add(propery.Key, ParseJObject(propery.Value));
+                    }
+                    else if (propery.Value is JArray)
+                    {
+                        var list = new List<object>();
+                        
+                        foreach (var item in (JArray)propery.Value)
+                        {
+                            list.Add(ParseJObject(item));
+                        }
+                        
+                        result.Add(propery.Key, list);
+                    }
+                    else
+                    {
+                        result.Add(propery.Key, propery.Value);
+                    }
+                }
+                return (ExpandoObject)result;
+            }
+            else
+            {
+                return obj;
+            }
+        }
+
 //        private void ParseXml()
 //        {
 //            throw new NotImplementedException();
