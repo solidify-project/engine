@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using CsvHelper;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using SolidifyProject.Engine.Infrastructure.Enums;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
 using SolidifyProject.Engine.Infrastructure.Models.RemoteContentModel;
@@ -111,7 +111,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private void ParseJson()
         {
-            CustomData = JObject.Parse(ContentRaw);
+            CustomData = JsonConvert.DeserializeObject(ContentRaw);
         }
         
 //        private void ParseXml()

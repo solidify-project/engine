@@ -61,8 +61,8 @@ namespace SolidifyProject.Engine.Test.Integration.Infrastructure.Models.CustomDa
 
             Assert.AreEqual(0, ((dynamic) model.CustomData).Contributors.Count);
             Assert.AreEqual(1, ((dynamic) model.CustomData).Founders.Count);
-            Assert.AreEqual("Anton Boyko", ((dynamic) model.CustomData).Founders[0].Name.ToString());
-            Assert.AreEqual("Microsoft Azure MVP", ((dynamic) model.CustomData).Founders[0].Title.ToString());
+            Assert.AreEqual("Anton Boyko", (string)((dynamic) model.CustomData).Founders[0].Name);
+            Assert.AreEqual("Microsoft Azure MVP", (string)((dynamic) model.CustomData).Founders[0].Title);
         }
     }
 }
