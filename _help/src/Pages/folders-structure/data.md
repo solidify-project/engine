@@ -9,12 +9,18 @@ title:      Data folder structure
 
 ### Data
 
-Inside `Data` folder there will be all data files. For now Solidify Engine can support the following data formats:
+Inside `Data` folder there will be all data files. For now Solidify Engine can support the following local data formats:
 
 - json
 - csv
 - txt
 - yaml (yml)
+
+In addition to that Solidify Engine can support the following remote data sources:
+
+- http
+
+When content is downloaded from remote data source Solidify Engine will threat it as one of the local data formats mentioned above. More details can be found ar [remote data sources](/folders-structure/data/remote-data-sources.html  ) section.
 
 Solidify Engine will look for exact file extension from the list provided above. In case it is unable to find a match, the engine will blow up. In case there is a match, it will apply a parser based on exact extension to transform file content to in-memory data object.
 
