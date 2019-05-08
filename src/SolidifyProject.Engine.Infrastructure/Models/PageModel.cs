@@ -15,7 +15,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private static readonly string[] TITLE_ATTRIBUTE = {"Title"};
         private static readonly string[] URL_ATTRIBUTE = {"Url"};
-        private static readonly string[] TEMPLATE_TYPE_ATTRIBUTE = {"TemplateType"};
+//        private static readonly string[] TEMPLATE_TYPE_ATTRIBUTE = {"TemplateType"};
         private static readonly string[] TEMPLATE_ID_ATTRIBUTE = {"TemplateId", "Template", "LayoutId", "Layout"};
         
         private static readonly string[] CUSTOM_ATTRIBUTE_PREFIX_SEPARATOR = {"."};
@@ -29,9 +29,9 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         public dynamic Custom { get; set; }
         public dynamic Model { get; set; }
 
-        /// <summary>
-        /// </summary>
-        public TemplateType? TemplateType { get; set; }
+//        /// <summary>
+//        /// </summary>
+//        public TemplateType? TemplateType { get; set; }
 
         /// <summary>
         /// Template unique identifier
@@ -98,20 +98,20 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 return;
             }
             
-            if (TEMPLATE_TYPE_ATTRIBUTE.Any(x => x.Equals(attributeName, StringComparison.OrdinalIgnoreCase)))
-            {
-                TemplateType type;
-                if (Enum.TryParse(attributeValue, true, out type))
-                {
-                    TemplateType = type;
-                }
-                else
-                {
-                    throw new ArgumentOutOfRangeException($"Unknown value \"{attributeValue}\" for TemplateType enumerable at line \"{line}\"");
-                }
-
-                return;
-            }
+//            if (TEMPLATE_TYPE_ATTRIBUTE.Any(x => x.Equals(attributeName, StringComparison.OrdinalIgnoreCase)))
+//            {
+//                TemplateType type;
+//                if (Enum.TryParse(attributeValue, true, out type))
+//                {
+//                    TemplateType = type;
+//                }
+//                else
+//                {
+//                    throw new ArgumentOutOfRangeException($"Unknown value \"{attributeValue}\" for TemplateType enumerable at line \"{line}\"");
+//                }
+//
+//                return;
+//            }
             
             if (TEMPLATE_ID_ATTRIBUTE.Any(x => x.Equals(attributeName, StringComparison.OrdinalIgnoreCase)))
             {
