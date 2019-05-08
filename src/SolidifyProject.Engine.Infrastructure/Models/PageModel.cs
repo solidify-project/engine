@@ -75,7 +75,7 @@ namespace SolidifyProject.Engine.Infrastructure.Models
             }
             else
             {
-                Model = getValueFromDataObject(Model, data);
+                Model = GetValueFromDataObject(Model, data);
             }
         }
 
@@ -196,12 +196,12 @@ namespace SolidifyProject.Engine.Infrastructure.Models
                 }
                 else
                 {
-                    modelDict[keyValuePair.Key] = getValueFromDataObject(keyValuePair.Value as string, data);
+                    modelDict[keyValuePair.Key] = GetValueFromDataObject(keyValuePair.Value as string, data);
                 }
             }
         }
 
-        private object getValueFromDataObject(string path, ExpandoObject data)
+        private object GetValueFromDataObject(string path, ExpandoObject data)
         {
             var attributeNames = path.Split('.');
             if (attributeNames.Length == 0)
