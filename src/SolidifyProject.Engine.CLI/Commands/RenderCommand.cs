@@ -14,6 +14,12 @@ namespace SolidifyProject.Engine.CLI.Commands
 {
     public static partial class CliCommands
     {
+        public const string DATA = "data";
+        public const string LAYOUT = "layout";
+        public const string PARTIALS = "partials";
+        public const string ASSETS = "assets";
+        public const string PAGES = "pages";
+        
         public static void RenderCommand(CommandLineApplication command)
         {
             command.Description = "Renders static website";
@@ -37,23 +43,23 @@ namespace SolidifyProject.Engine.CLI.Commands
                 LoggerService.WriteLogMessage($"Source: {sourcePath}").Wait();
                 LoggerService.WriteLogMessage($"Output: {outputPath}").Wait();
 
-                var dataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(sourcePath, "data")));
+                var dataService = new DataService(new FileSystemTextContentReaderService<CustomDataModel>(Path.Combine(sourcePath, DATA)));
                 dataService.OnLogEvent += async message => { await LoggerService.WriteLogMessage(message); };
                 
                 var orchestrationService = new OrchestrationService();
                 
                 orchestrationService.LoggerService = LoggerService;
-                orchestrationService.TemplateService = new MustacheTemplateService(new FileSystemTextContentReaderService<TextContentModel>(Path.Combine(sourcePath, "layout", "partials")));
+                orchestrationService.TemplateService = new MustacheTemplateService(new FileSystemTextContentReaderService<TextContentModel>(Path.Combine(sourcePath, LAYOUT, PARTIALS)));
                 orchestrationService.MarkupService = new MarkdownMarkupService();
                 orchestrationService.HtmlMinificationService = new GoogleHtmlMinificationService();
                 
-                orchestrationService.AssetsReaderService = new FileSystemBinaryContentReaderService<BinaryContentModel>(Path.Combine(sourcePath, "assets"));
-                orchestrationService.PageModelReaderService = new FileSystemTextContentReaderService<PageModel>(Path.Combine(sourcePath, "pages"));
-                orchestrationService.TemplateReaderService = new FileSystemTextContentReaderService<TemplateModel>(Path.Combine(sourcePath, "layout"));
+                orchestrationService.AssetsReaderService = new FileSystemBinaryContentReaderService<BinaryContentModel>(Path.Combine(sourcePath, ASSETS));
+                orchestrationService.PageModelReaderService = new FileSystemTextContentReaderService<PageModel>(Path.Combine(sourcePath, PAGES));
+                orchestrationService.TemplateReaderService = new FileSystemTextContentReaderService<TemplateModel>(Path.Combine(sourcePath, LAYOUT));
                 orchestrationService.DataService = dataService;
                 
                 orchestrationService.PageModelWriterService = new FileSystemTextContentWriterService<TextContentModel>(Path.Combine(outputPath));
-                orchestrationService.AssetsWriterService = new FileSystemBinaryContentWriterService<BinaryContentModel>(Path.Combine(outputPath, "assets"));
+                orchestrationService.AssetsWriterService = new FileSystemBinaryContentWriterService<BinaryContentModel>(Path.Combine(outputPath, ASSETS));
     
                 orchestrationService.RenderProjectAsync().Wait();
 
