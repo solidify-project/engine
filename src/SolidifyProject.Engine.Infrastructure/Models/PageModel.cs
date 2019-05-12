@@ -23,6 +23,11 @@ namespace SolidifyProject.Engine.Infrastructure.Models
 
         private static readonly string[] MODEL_ATTRIBUTE_PREFIX = {"Model"};
         
+        private static readonly string[] FEED_ATTRIBUTE = {"Feed"};
+        private static readonly string[] FEED_NAME_ATTRIBUTE = {"FeedName"};
+        private static readonly string[] FEED_ORDER_ATTRIBUTE = {"FeedOrder"};
+        
+        
         public string Title { get; set; }
         public string Url { get; set; }
 
@@ -43,7 +48,30 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         /// </summary>
         public string Content { get; set; }
         
+        
+        #region Feed
 
+        public string Feed { get; set; }
+        public string FeedName { get; set; }
+        public string FeedOrder { get; set; }
+
+        public bool IsFeedItem()
+        {
+            return string.IsNullOrEmpty(Feed) 
+                   && !string.IsNullOrEmpty(FeedName) 
+                   && !string.IsNullOrEmpty(FeedOrder);
+        }
+
+        public bool IsFeedHost()
+        {
+            return !string.IsNullOrEmpty(Feed)
+                   && string.IsNullOrEmpty(FeedName)
+                   && string.IsNullOrEmpty(FeedOrder);
+        }
+        
+        #endregion
+
+        
         public PageModel()
         {
             Custom = new ExpandoObject();

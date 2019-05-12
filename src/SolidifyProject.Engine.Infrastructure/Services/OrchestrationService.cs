@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +45,26 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             
                 await Task.WhenAll(pageTasks)
                     .ConfigureAwait(false);
+                
+//                var dataModelTask = DataService.GetDataModelAsync();
+//                var pagesLoadTask = LoadPagesAsync();
+//
+//                await Task.WhenAll(dataModelTask, pagesLoadTask)
+//                    .ConfigureAwait(false);
+//
+//                var pages = pagesLoadTask.Result;
+//                
+//                var populateFeedsTask = pages
+//                    .Select(PopulateFeedsAsync);
+//
+//                await Task.WhenAll(populateFeedsTask)
+//                    .ConfigureAwait(false);
+//                    
+//                var renderPageTask = pages
+//                    .Select(page => RenderPageAsync(page, dataModelTask.Result));
+//
+//                await Task.WhenAll(renderPageTask)
+//                    .ConfigureAwait(false);
             });
             
             var tasksGroupAssets = Task.Run(async () =>
@@ -57,7 +78,64 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                     .ConfigureAwait(false);
             });
 
-            await Task.WhenAll(tasksGroupContent, tasksGroupAssets)
+            Task.WhenAll(tasksGroupAssets, tasksGroupContent)
+                .ConfigureAwait(false);
+        }
+
+        #region Pages
+
+        private async Task<List<PageModel>> LoadPagesAsync()
+        {
+            var pages = await PageModelReaderService.LoadContentsIdsAsync()
+                .ConfigureAwait(false);
+
+            var pagesContent = pages
+                .Select(pageId => PageModelReaderService.LoadContentByIdAsync(pageId));
+
+            await Task.WhenAll(pagesContent)
+                .ConfigureAwait(false);
+
+            return pagesContent
+                .Select(x => x.Result)
+                .ToList();
+        }
+
+        private async Task PopulateFeedsAsync(PageModel model)
+        {
+            if (model.IsFeedItem())
+            {
+            }
+
+            if (model.IsFeedHost())
+            {
+            }
+        }
+
+        private async Task RenderPageAsync(PageModel page, ExpandoObject dataModel)
+        {
+            page.MapDataToModel(dataModel);
+            
+            var html = await TemplateService.RenderTemplateAsync(page.Content, page, dataModel)
+                .ConfigureAwait(false);
+            html = await MarkupService.RenderMarkupAsync(html)
+                .ConfigureAwait(false);
+            page.Content = html;
+                
+            var template = await TemplateReaderService.LoadContentByIdAsync(page.TemplateId)
+                .ConfigureAwait(false);
+            html = await TemplateService.RenderTemplateAsync(template.Template, page, dataModel)
+                .ConfigureAwait(false);
+
+            html = await HtmlMinificationService.CompressHtmlAsync(html)
+                .ConfigureAwait(false);
+
+            var result = new TextContentModel
+            {
+                Id = page.Id,
+                ContentRaw = html
+            };
+
+            await PageModelWriterService.SaveContentAsync(page.Url, result)
                 .ConfigureAwait(false);
         }
 
@@ -98,6 +176,10 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 .ConfigureAwait(false);
         }
 
+        #endregion
+
+        #region Assets
+
         private async Task CopyAssetByIdAsync(string id)
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: [Asset:Started] \"{id}\"")
@@ -113,6 +195,8 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                 .ConfigureAwait(false);
         }
 
+        #endregion
+        
         private async Task CleanOutputAsync()
         {
             await LoggerService.WriteLogMessage($"{DateTime.Now.ToLongTimeString()}: Starting cleaning output folder")
