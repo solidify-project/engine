@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using McMaster.Extensions.CommandLineUtils;
 using SolidifyProject.Engine.Configuration;
 using SolidifyProject.Engine.Infrastructure.Models;
@@ -31,6 +32,9 @@ namespace SolidifyProject.Engine.CLI.Commands
             
             command.OnExecute(() =>
             {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                
                 LoggerService.WriteLogMessage("Rendering static website").Wait();
 
 //                var sourcePath = source.HasValue() ? source.Value() : Directory.GetCurrentDirectory();
@@ -64,6 +68,9 @@ namespace SolidifyProject.Engine.CLI.Commands
                 orchestrationService.RenderProjectAsync().Wait();
 
                 LoggerService.WriteLogMessage("Rendering finished successfully").Wait();
+                
+                stopwatch.Stop();
+                LoggerService.WriteLogMessage($"Time spent: {stopwatch.Elapsed:G}").Wait();
 
                 return 0;
             });

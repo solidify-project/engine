@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using McMaster.Extensions.CommandLineUtils;
 using SolidifyProject.Engine.Configuration;
 using SolidifyProject.Engine.Infrastructure.Models.Base;
@@ -17,7 +18,10 @@ namespace SolidifyProject.Engine.CLI.Commands
 
             command.OnExecute(() =>
             {
-                LoggerService.WriteLogMessage("Bootstraping folder strcuture").Wait();
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                
+                LoggerService.WriteLogMessage("Bootstraping folder structure").Wait();
 
                 var configurationService = new ConfigurationService();
                 var examplePath = Path.Combine(Directory.GetCurrentDirectory(), configurationService.Configuration.Engine.Path, "Data", "src");
@@ -46,6 +50,9 @@ namespace SolidifyProject.Engine.CLI.Commands
                 }
                 
                 LoggerService.WriteLogMessage("Bootstraping finished successfully").Wait();
+                
+                stopwatch.Stop();
+                LoggerService.WriteLogMessage($"Time spent: {stopwatch.Elapsed:G}").Wait();
 
                 return 0;
             });
