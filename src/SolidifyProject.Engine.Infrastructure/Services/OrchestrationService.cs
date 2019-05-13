@@ -35,36 +35,25 @@ namespace SolidifyProject.Engine.Infrastructure.Services
             
             var tasksGroupContent = Task.Run(async () =>
             {
-                var dataModel = await DataService.GetDataModelAsync()
+                var dataModelTask = DataService.GetDataModelAsync();
+                var pagesLoadTask = LoadPagesAsync();
+
+                await Task.WhenAll(dataModelTask, pagesLoadTask)
                     .ConfigureAwait(false);
 
-                var pages = await PageModelReaderService.LoadContentsIdsAsync()
-                    .ConfigureAwait(false);
+                var pages = pagesLoadTask.Result;
                 
-                var pageTasks = pages.Select(pageId => ProcessPageByIdAsync(pageId, dataModel));
-            
-                await Task.WhenAll(pageTasks)
+                var populateFeedsTask = pages
+                    .Select(PopulateFeedsAsync);
+
+                await Task.WhenAll(populateFeedsTask)
                     .ConfigureAwait(false);
-                
-//                var dataModelTask = DataService.GetDataModelAsync();
-//                var pagesLoadTask = LoadPagesAsync();
-//
-//                await Task.WhenAll(dataModelTask, pagesLoadTask)
-//                    .ConfigureAwait(false);
-//
-//                var pages = pagesLoadTask.Result;
-//                
-//                var populateFeedsTask = pages
-//                    .Select(PopulateFeedsAsync);
-//
-//                await Task.WhenAll(populateFeedsTask)
-//                    .ConfigureAwait(false);
-//                    
-//                var renderPageTask = pages
-//                    .Select(page => RenderPageAsync(page, dataModelTask.Result));
-//
-//                await Task.WhenAll(renderPageTask)
-//                    .ConfigureAwait(false);
+                    
+                var renderPageTask = pages
+                    .Select(page => RenderPageAsync(page, dataModelTask.Result));
+
+                await Task.WhenAll(renderPageTask)
+                    .ConfigureAwait(false);
             });
             
             var tasksGroupAssets = Task.Run(async () =>
@@ -78,7 +67,7 @@ namespace SolidifyProject.Engine.Infrastructure.Services
                     .ConfigureAwait(false);
             });
 
-            Task.WhenAll(tasksGroupAssets, tasksGroupContent)
+            await Task.WhenAll(tasksGroupAssets, tasksGroupContent)
                 .ConfigureAwait(false);
         }
 
