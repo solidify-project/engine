@@ -17,16 +17,16 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
 
         public void EnsureDirectoryExists(string path)
         {
-            var directory = Path.HasExtension(path)?
-                Path.GetDirectoryName(path) :
-                path;
+            var directory = Path.HasExtension(path)
+                ? Path.GetDirectoryName(path)
+                : path;
             
             Directory.CreateDirectory(directory);
         }
 
         public Task CleanFolderAsync(string path)
         {
-            DirectoryInfo di = new DirectoryInfo(Path.Combine(_root, path));
+            var di = new DirectoryInfo(Path.Combine(_root, path));
             if (di.Exists)
             {
                 foreach (var file in di.GetFiles())
