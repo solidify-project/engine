@@ -29,6 +29,7 @@ stages:
         steps:
 
           - task: DotNetCoreCLI@2
+            displayName: 'Restore, Build and Publish CLI'
             inputs:
               command: 'publish'
               publishWebProjects: false
@@ -36,5 +37,26 @@ stages:
               arguments: '-r $(buildPlatform) --self-contained -c Release -o $(Build.ArtifactStagingDirectory)/$(buildPlatform)/engine'
               zipAfterPublish: false
               modifyOutputPath: false
+
+          - task: CopyFiles@2
+            displayName: 'Copy shared artifacts'
+            inputs:
+              SourceFolder: '_publish/all'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+
+          - task: CopyFiles@2
+            displayName: 'Copy platform specific artifacts'
+            inputs:
+              SourceFolder: '_publish/$(buildPlatform)'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish artifacts'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+              ArtifactName: '$(buildPlatform)'
+              publishLocation: 'Container'
 
           
