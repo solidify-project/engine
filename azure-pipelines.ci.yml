@@ -1,6 +1,9 @@
 # Get help her https://aka.ms/yaml
 
 name: 'ci'
+
+trigger: none
+
 stages:
   - stage: build_test
     displayName: 'Build and test'
