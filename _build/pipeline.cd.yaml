@@ -72,8 +72,7 @@ stages:
               repositoryName: 'solidify-project/engine'
               action: 'create'
               target: '$(releaseVersion)'
-              tagSource: 'manual'
-              tag: '$(releaseVersion)'
+              tagSource: 'auto'
               isDraft: true
               isPreRelease: true
               releaseNotesSource: 'input'
