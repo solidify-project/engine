@@ -5,9 +5,9 @@ name: ci-$(Date:yyyyMMdd)-$(Rev:r)
 trigger: none
 
 stages:
-  - stage: linux
+  - stage: build_test
     jobs:
-      - job: build_test
+      - job: linux
         pool:
           vmImage: 'ubuntu-16.04'
         workspace:
@@ -29,7 +29,7 @@ stages:
               name: 'Integration tests on Linux'
 
 
-      - job: build_test
+      - job: windows
         pool:
           vmImage: 'vs2015-win2012r2'
         workspace:
@@ -46,7 +46,7 @@ stages:
               name: 'Integration tests on Windows'
 
 
-      - job: build_test
+      - job: macos
         pool:
           vmImage: 'macOS-10.13'
         workspace:
