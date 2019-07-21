@@ -4,7 +4,7 @@ name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
 variables:
   - name: releaseVersion
-    value: v-demo
+    value: 'v-demo'
 
 trigger: none
 
@@ -76,7 +76,8 @@ stages:
               repositoryName: 'solidify-project/engine'
               action: 'create'
               target: '$(releaseVersion)'
-              tagSource: 'auto'
+              tagSource: 'manual'
+              tag: '$(releaseVersion)'
               isDraft: true
               isPreRelease: true
               releaseNotesSource: 'input'
