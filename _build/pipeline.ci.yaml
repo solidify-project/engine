@@ -1,5 +1,24 @@
 # Get help her https://aka.ms/yaml
 
-name: 'ci-$(Date:yyyyMMdd)-$(Rev:.r)'
+name: ci-$(Date:yyyyMMdd)-$(Rev:.r)
 
 trigger: none
+
+stages:
+  - stage: build_test
+    jobs:
+      - job: build
+        pool:
+          vmImage: 'ubuntu-16.04'
+        workspace:
+          clean: outputs
+        steps:
+
+          - template: 'template.build.yaml'
+            parameters:
+              pathToSolution: 'src/SolidifyProject.Engine.sln'
+
+          - template: 'template.test.yaml'
+            parameters:
+              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
+              name: 'Unit tests on Linux'
