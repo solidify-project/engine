@@ -2,6 +2,9 @@
 
 name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
+variables:
+  - name: releaseVersion
+
 trigger: none
 
 stages:
@@ -12,7 +15,7 @@ stages:
         value: 'src/SolidifyProject.Engine.CLI/SolidifyProject.Engine.CLI.csproj'
 
     jobs:
-      - job: linux
+      - job: publish
         strategy:
           matrix:
             linux:
@@ -59,4 +62,20 @@ stages:
               ArtifactName: '$(buildPlatform)'
               publishLocation: 'Container'
 
-          
+  - stage: deploy
+    dependsOn: release
+    jobs:
+      - job: github
+        pool:
+          vmImage: 'ubuntu-16.04'
+        steps:
+          - task: GitHubRelease@0
+            inputs:
+              gitHubConnection: 'GitHub'
+              repositoryName: 'solidify-project/engine'
+              action: 'create'
+              target: '$(releaseVersion)'
+              tagSource: 'auto'
+              isDraft: true
+              isPreRelease: true
+              assets: '$(Build.ArtifactStagingDirectory)/*'
