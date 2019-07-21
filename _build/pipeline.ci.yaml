@@ -1,6 +1,6 @@
 # Get help her https://aka.ms/yaml
 
-name: ci-$(Date:yyyyMMdd)-$(Rev:r)
+name: ci-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
 trigger: none
 
@@ -40,7 +40,7 @@ stages:
 
       - job: windows
         pool:
-          vmImage: 'vs2015-win2012r2'
+          vmImage: 'windows-2019'
         workspace:
           clean: outputs
         steps:
