@@ -6,6 +6,15 @@ trigger: none
 
 stages:
   - stage: build_test
+
+    variables:
+      - name: pathToSolution
+        value: 'src/SolidifyProject.Engine.sln'
+      - name: pathToUnitTests
+        value: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
+      - name: pathToIntegrationTests
+        value: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+
     jobs:
       - job: linux
         pool:
@@ -16,16 +25,16 @@ stages:
 
           - template: 'template.build.yaml'
             parameters:
-              pathToSolution: 'src/SolidifyProject.Engine.sln'
+              pathToSolution: $(pathToSolution)
 
           - template: 'template.test.yaml'
             parameters:
-              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
+              pathToProject: $(pathToUnitTests)
               name: 'Unit tests on Linux'
 
           - template: 'template.test.yaml'
             parameters:
-              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              pathToProject: $(pathToIntegrationTests)
               name: 'Integration tests on Linux'
 
 
@@ -38,11 +47,11 @@ stages:
 
           - template: 'template.build.yaml'
             parameters:
-              pathToSolution: 'src/SolidifyProject.Engine.sln'
+              pathToSolution: $(pathToSolution)
 
           - template: 'template.test.yaml'
             parameters:
-              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              pathToProject: $(pathToIntegrationTests)
               name: 'Integration tests on Windows'
 
 
@@ -55,9 +64,9 @@ stages:
 
           - template: 'template.build.yaml'
             parameters:
-              pathToSolution: 'src/SolidifyProject.Engine.sln'
+              pathToSolution: $(pathToSolution)
 
           - template: 'template.test.yaml'
             parameters:
-              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              pathToProject: $(pathToIntegrationTests)
               name: 'Integration tests on Mac'
