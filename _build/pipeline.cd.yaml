@@ -2,9 +2,6 @@
 
 name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
-variables:
-  - name: releaseVersion
-
 trigger: none
 
 stages:
