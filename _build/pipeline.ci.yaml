@@ -1,13 +1,13 @@
 # Get help her https://aka.ms/yaml
 
-name: ci-$(Date:yyyyMMdd)-$(Rev:.r)
+name: ci-$(Date:yyyyMMdd)-$(Rev:r)
 
 trigger: none
 
 stages:
-  - stage: build_test
+  - stage: linux
     jobs:
-      - job: build
+      - job: build_test
         pool:
           vmImage: 'ubuntu-16.04'
         workspace:
@@ -22,3 +22,42 @@ stages:
             parameters:
               pathToProject: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
               name: 'Unit tests on Linux'
+
+          - template: 'template.test.yaml'
+            parameters:
+              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              name: 'Integration tests on Linux'
+
+
+      - job: build_test
+        pool:
+          vmImage: 'vs2015-win2012r2'
+        workspace:
+          clean: outputs
+        steps:
+
+          - template: 'template.build.yaml'
+            parameters:
+              pathToSolution: 'src/SolidifyProject.Engine.sln'
+
+          - template: 'template.test.yaml'
+            parameters:
+              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              name: 'Integration tests on Windows'
+
+
+      - job: build_test
+        pool:
+          vmImage: 'macOS-10.13'
+        workspace:
+          clean: outputs
+        steps:
+
+          - template: 'template.build.yaml'
+            parameters:
+              pathToSolution: 'src/SolidifyProject.Engine.sln'
+
+          - template: 'template.test.yaml'
+            parameters:
+              pathToProject: 'src/Test/SolidifyProject.Engine.Test.Integration/SolidifyProject.Engine.Test.Integration.csproj'
+              name: 'Integration tests on Mac'
