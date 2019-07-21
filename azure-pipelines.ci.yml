@@ -1,19 +1,39 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# Get help her https://aka.ms/yaml
 
-trigger:
-- master
+name: 'ci'
+stages:
+  - stage: build_test
+    displayName: 'Build and test'
+    jobs:
+      - job: build
+        displayName: 'Build solution'
+        pool:
+          vmImage: 'ubuntu-16.04'
+        workspace:
+          clean: outputs
+        steps:
 
-pool:
-  vmImage: 'ubuntu-latest'
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore packages'
+            inputs:
+              command: 'restore'
+              projects: 'src/SolidifyProject.Engine.sln'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+          - task: DotNetCoreCLI@2
+            displayName: 'Build all projects'
+            inputs:
+              command: 'build'
+              arguments: '--no-restore'
+              projects: 'src/SolidifyProject.Engine.sln'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+          - task: DotNetCoreCLI@2
+            displayName: 'Run unit tests'
+            inputs:
+              command: 'test'
+              projects: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
+              arguments: '--no-build'
+              publishTestResults: true
+              testRunTitle: 'Unit tests on Linux'
+
+    
+
