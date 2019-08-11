@@ -2,7 +2,11 @@
 
 name: ci-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
-trigger: none
+trigger:
+  - master
+
+pr:
+  - master
 
 stages:
   - stage: build_test
