@@ -20,13 +20,13 @@ In addition to that Solidify Engine can support the following remote data source
 
 - http
 
-When content is downloaded from remote data source Solidify Engine will threat it as one of the local data formats mentioned above. More details can be found ar [remote data sources](/folders-structure/data/remote-data-sources.html  ) section.
+When content is downloaded from remote data source Solidify Engine will treat it as one of the local data formats mentioned above. More details can be found in [remote data sources](/folders-structure/data/remote-data-sources.html  ) section.
 
-Solidify Engine will look for exact file extension from the list provided above. In case it is unable to find a match, the engine will blow up. In case there is a match, it will apply a parser based on exact extension to transform file content to in-memory data object.
+Solidify Engine will look for exact file extension from the list provided above. In case it is unable to find a match, the engine will blow up. In case there is a match, it will apply a parser based on exact extension to transform the file content into in-memory data object.
 
 On views and pages you can use global object `Data` to access actual data that is located on the file system.
 
-All properties of `Data` object are case sensitive.
+All properties of `Data` object are case-sensitive.
 
 > More advanced details about how to work with data can be found in [data special properties](/folders-structure/data/special-properties.html) section.
 
