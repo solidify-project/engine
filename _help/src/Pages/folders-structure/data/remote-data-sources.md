@@ -22,7 +22,7 @@ Method:         <http method>
 CustomDataType: <data format (type)>
 ```
 
-This data source will send an http request to `<url string>` using http method `<http method>`. It will threat response body as raw content string. It will try to parse raw content using `<data format (type)>` data format parser.
+This data source will send http request to `<url string>` using http method `<http method>`. It will treat response body as raw content string. It will try to parse raw content using `<data format (type)>` data format parser.
 
 ##### Example
 
