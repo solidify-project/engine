@@ -226,5 +226,48 @@ namespace SolidifyProject.Engine.Test.Unit.Infrastructure.Models
             Assert.AreEqual(((dynamic)data).goods[2], actualModel.Model.category.goods[2]);
             Assert.AreEqual(((dynamic)data).banner.url, actualModel.Model.bannerUrl);
         }
+
+        
+        
+        private static object[] _parseFeedHostTestCases =
+        {
+            new object[] { "testFeed", string.Empty, string.Empty },
+            new object[] { "testFeed", null, null },
+            new object[] { "testFeed", null, string.Empty },
+            new object[] { "testFeed", string.Empty, null }
+        };
+        
+        [Test]
+        [TestCaseSource(nameof(_parseFeedHostTestCases))]
+        public void ParseFeedHostTest(string feed, string feedName, string feedOrder)
+        {
+            var page = new PageModel();
+
+            page.FeedSource = feed;
+            page.FeedDestination = feedName;
+            page.FeedDestinationOrder = feedOrder;
+
+            Assert.IsTrue(page.IsFeedHost());
+            Assert.IsFalse(page.IsFeedItem());
+        }
+        
+        private static object[] _parseFeedItemTestCases =
+        {
+            new object[] { string.Empty, "testFeed", "01" },
+            new object[] { null, "testFeed", "01" }
+        };
+        [Test]
+        [TestCaseSource(nameof(_parseFeedItemTestCases))]
+        public void ParseFeedItemTest(string feed, string feedName, string feedOrder)
+        {
+            var page = new PageModel();
+
+            page.FeedSource = feed;
+            page.FeedDestination = feedName;
+            page.FeedDestinationOrder = feedOrder;
+
+            Assert.IsFalse(page.IsFeedHost());
+            Assert.IsTrue(page.IsFeedItem());
+        }
     }
 }
