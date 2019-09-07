@@ -1,0 +1,85 @@
+# Get help her https://aka.ms/yaml
+
+name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
+
+variables:
+  - name: releaseVersion
+    value: 'v-demo'
+
+trigger: none
+
+stages:
+  - stage: release
+
+    variables:
+      - name: pathToProject
+        value: 'src/SolidifyProject.Engine.CLI/SolidifyProject.Engine.CLI.csproj'
+
+    jobs:
+      - job: publish
+        strategy:
+          matrix:
+            linux:
+              buildPlatform: linux-x64
+            windows:
+              buildPlatform: win-x64
+            macos:
+              buildPlatform: osx-x64
+
+        pool:
+          vmImage: 'ubuntu-16.04'
+        workspace:
+          clean: outputs
+        steps:
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore, Build and Publish CLI'
+            inputs:
+              command: 'publish'
+              publishWebProjects: false
+              projects: '$(pathToProject)'
+              arguments: '-r $(buildPlatform) --self-contained -c Release -o $(Build.ArtifactStagingDirectory)/$(buildPlatform)/engine'
+              zipAfterPublish: false
+              modifyOutputPath: false
+
+          - task: CopyFiles@2
+            displayName: 'Copy shared artifacts'
+            inputs:
+              SourceFolder: '_publish/all'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+
+          - task: CopyFiles@2
+            displayName: 'Copy platform specific artifacts'
+            inputs:
+              SourceFolder: '_publish/$(buildPlatform)'
+              Contents: '**/*'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish artifacts'
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
+              ArtifactName: '$(buildPlatform)'
+              publishLocation: 'Container'
+
+  - stage: deploy
+    dependsOn: release
+    jobs:
+      - job: github
+        pool:
+          vmImage: 'ubuntu-16.04'
+        steps:
+          - task: GitHubRelease@0
+            inputs:
+              gitHubConnection: 'GitHub'
+              repositoryName: 'solidify-project/engine'
+              action: 'create'
+              target: '$(releaseVersion)'
+              tagSource: 'manual'
+              tag: '$(releaseVersion)'
+              isDraft: true
+              isPreRelease: true
+              releaseNotesSource: 'input'
+              releaseNotes: 'Version $(releaseVersion)'
+              assets: '$(Build.ArtifactStagingDirectory)/*'

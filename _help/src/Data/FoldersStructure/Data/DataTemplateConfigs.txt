@@ -1,0 +1,13 @@
+<table>
+    <tr>
+        <th>Engine.Path</th>
+        <th>Source.Path</th>
+        <th>Output.Path</th>
+    </tr>
+    <tr>
+        <td>{{ Data.misc.config.engine.path }}</td>
+        <td>{{ Data.misc.config.source.path }}</td>
+        <td>{{ Data.misc.config.output.path }}</td>
+    </tr>
+</table>
+

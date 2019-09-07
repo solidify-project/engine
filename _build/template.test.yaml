@@ -1,0 +1,13 @@
+parameters:
+  name: ''
+  pathToProject: ''
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Run tests'
+    inputs:
+      command: 'test'
+      projects: ${{ parameters.pathToProject }}
+      arguments: '--no-build'
+      publishTestResults: true
+      testRunTitle: ${{ parameters.name }}

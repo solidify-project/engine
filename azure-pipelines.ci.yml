@@ -1,0 +1,42 @@
+# Get help her https://aka.ms/yaml
+
+name: 'ci'
+
+trigger: none
+
+stages:
+  - stage: build_test
+    displayName: 'Build and test'
+    jobs:
+      - job: build
+        displayName: 'Build solution'
+        pool:
+          vmImage: 'ubuntu-16.04'
+        workspace:
+          clean: outputs
+        steps:
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore packages'
+            inputs:
+              command: 'restore'
+              projects: 'src/SolidifyProject.Engine.sln'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build all projects'
+            inputs:
+              command: 'build'
+              arguments: '--no-restore'
+              projects: 'src/SolidifyProject.Engine.sln'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Run unit tests'
+            inputs:
+              command: 'test'
+              projects: 'src/Test/SolidifyProject.Engine.Test.Unit/SolidifyProject.Engine.Test.Unit.csproj'
+              arguments: '--no-build'
+              publishTestResults: true
+              testRunTitle: 'Unit tests on Linux'
+
+    
+
