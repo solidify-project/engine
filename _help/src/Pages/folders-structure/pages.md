@@ -56,6 +56,7 @@ If predefined attributes are not enough and you want to add some extra attribute
 
 > More advanced details about how to work with custom attributes can be found in [page custom attributes](/folders-structure/pages/attributes.html) section.
 
+
 ### Data model
 
 In case you want to use the same template, but use different data for it, you can use page data model. The scenario here is to have different data (in terms of values) with the same structure on different pages. The name of page data model should start with `model` followed by `.`. After that you should add at least one character that will represent the name of your data model. The value of `model` should always point to valid `data` object.
@@ -67,3 +68,31 @@ In case you want to use the same template, but use different data for it, you ca
 The main difference between custom attributes and data model is how they interprete the values you provide.
 - **Custom attributes** always treat the values as strings.
 - **Data model** always treats the values as references to global `Data` model. It will copy all values from referenced `Data` object to current `Model` object.
+
+
+### Feeds
+
+There are cases when you may need to display a collection of similar items, byt the regular repeater may not be enough. For example - if you need to show the list of phones to call and make an order in your online shop repeater will work, but for showing the list of all items available for purchase it may not. The reason why repeater may not be good enough is because of volume of items within the collection. For longer lists everyone will expect to have them splitted onto few pages.
+
+**Feeds** are a way to split a big collection of items to smaller sub-parts and render them on your website.
+
+Feeds adopts push model of putting items to the feed. It means that you need to explicetly push a page to the feed.
+
+#### Adding a page to the feed
+
+There are dedicated attributes to add a page to the feed:
+
+```markdown
+FeedDestination:         blogPosts
+FeedDestinationOrder:    2019-12-21
+```
+
+`FeedDestination` has a string type and represents the name of a feed that page will be added to. If you need to add a few pages to the same feed this attribute should be the same for all of them.
+
+`FeedDestinationOrder` has a string type and serves the purpose of ordering items within the feed. **IMPORTANT!** - because `FeedDestinationOrder` is a string field it means that rules of string comparison will be applied to determine the order of items in a feed. For example, following items will be ordered like this: `09`, `1`, `10`, `2`, `3`. Chose the values for `FeedDestinationOrder` wisely.
+
+
+#### Consuming pages feed
+
+
+
