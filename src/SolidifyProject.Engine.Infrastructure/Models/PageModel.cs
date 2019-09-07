@@ -51,22 +51,30 @@ namespace SolidifyProject.Engine.Infrastructure.Models
         
         #region Feed
 
-        public string Feed { get; set; }
-        public string FeedName { get; set; }
-        public string FeedOrder { get; set; }
+        public string FeedSource { get; set; }
+        public string FeedDestination { get; set; }
+        public string FeedDestinationOrder { get; set; }
 
+        /// <summary>
+        /// Shows if page is a part of a feed (an item in a pages collection).
+        /// </summary>
+        /// <returns></returns>
         public bool IsFeedItem()
         {
-            return string.IsNullOrEmpty(Feed) 
-                   && !string.IsNullOrEmpty(FeedName) 
-                   && !string.IsNullOrEmpty(FeedOrder);
+            return string.IsNullOrEmpty(FeedSource) 
+                   && !string.IsNullOrEmpty(FeedDestination) 
+                   && !string.IsNullOrEmpty(FeedDestinationOrder);
         }
 
+        /// <summary>
+        /// Shows if page contains a feed (host a collection of other pages).
+        /// </summary>
+        /// <returns></returns>
         public bool IsFeedHost()
         {
-            return !string.IsNullOrEmpty(Feed)
-                   && string.IsNullOrEmpty(FeedName)
-                   && string.IsNullOrEmpty(FeedOrder);
+            return !string.IsNullOrEmpty(FeedSource)
+                   && string.IsNullOrEmpty(FeedDestination)
+                   && string.IsNullOrEmpty(FeedDestinationOrder);
         }
         
         #endregion
