@@ -12,6 +12,7 @@ steps:
     organization: 'solidify-project'
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
+    projectName: 'Solidify Project Engine'
 
 - task: DotNetCoreCLI@2
   inputs:
