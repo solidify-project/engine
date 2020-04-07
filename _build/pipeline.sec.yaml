@@ -13,11 +13,11 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'config'
+    projects: '**/*.sln'
+    feedsToUse: 'select'
 
 - task: VSBuild@1
   inputs:
