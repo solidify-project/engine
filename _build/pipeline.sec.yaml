@@ -13,12 +13,17 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
 
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'config'
+
 - task: VSBuild@1
   inputs:
     solution: '**\*.sln'
     vsVersion: '16.0'
     clean: true
-    restoreNugetPackages: true
     msbuildArchitecture: 'x64'
 
 - task: VSTest@2
