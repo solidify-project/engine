@@ -16,12 +16,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '**/*.sln'
+    projects: 'src\SolidifyProject.Engine.sln'
     feedsToUse: 'select'
 
 - task: VSBuild@1
   inputs:
-    solution: '**\*.sln'
+    solution: 'src\SolidifyProject.Engine.sln'
     vsVersion: '16.0'
     clean: true
     msbuildArchitecture: 'x64'
@@ -29,10 +29,7 @@ steps:
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
+    testAssemblyVer2: 'src\Test\SolidifyProject.Engine.Test.Unit\**\*test*.dll'
     searchFolder: '$(System.DefaultWorkingDirectory)'
     vsTestVersion: '16.0'
 
