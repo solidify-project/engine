@@ -30,7 +30,7 @@ steps:
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
-    testAssemblyVer2: '**\SolidifyProject.Engine.Test.Unit.dll'
+    testAssemblyVer2: 'src\Test\SolidifyProject.Engine.Test.Unit\bin\**\SolidifyProject.Engine.Test.Unit.dll'
     searchFolder: '$(System.DefaultWorkingDirectory)'
     vsTestVersion: '16.0'
     codeCoverageEnabled: true
