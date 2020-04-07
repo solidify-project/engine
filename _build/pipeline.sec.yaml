@@ -1,0 +1,43 @@
+trigger: none
+
+pool:
+  # Windows Server 2019 with Visual Studio 2019
+  vmImage: 'windows-2019'
+
+steps:
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'solidify-project'
+    scannerMode: 'MSBuild'
+    projectKey: 'solidify-project-engine'
+    projectName: 'Solidify Project Engine'
+    projectVersion: '$(Date:yyyy-MM-dd)-v$(Rev:r)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: 'src\SolidifyProject.Engine.sln'
+    feedsToUse: 'select'
+
+- task: VSBuild@1
+  inputs:
+    solution: 'src\SolidifyProject.Engine.sln'
+    vsVersion: '16.0'
+    clean: true
+
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: 'src\Test\SolidifyProject.Engine.Test.Unit\bin\**\SolidifyProject.Engine.Test.Unit.dll'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    resultsFolder: '$(System.DefaultWorkingDirectory)\..\TestResults'
+    vsTestVersion: '16.0'
+    codeCoverageEnabled: true
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
