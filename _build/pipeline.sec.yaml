@@ -16,7 +16,6 @@ steps:
   inputs:
     solution: '**\*.sln'
     vsVersion: '16.0'
-    configuration: 'Release'
     clean: true
     restoreNugetPackages: true
     msbuildArchitecture: 'x64'
@@ -30,7 +29,6 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     vsTestVersion: '16.0'
-    configuration: 'Release'
 
 - task: SonarQubeAnalyze@4
 
