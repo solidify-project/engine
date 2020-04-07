@@ -6,11 +6,6 @@ pool:
 
 steps:
 
-# - task: UseDotNet@2
-#   inputs:
-#     packageType: 'sdk'
-#     version: '2.2.x'
-
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
@@ -31,11 +26,13 @@ steps:
     vsVersion: '16.0'
     clean: true
 
-- task: DotNetCoreCLI@2
+- task: VSTest@2
   inputs:
-    command: 'test'
-    projects: 'src\Test\SolidifyProject.Engine.Test.Unit\**\*.Test.Unit.*.dll'
-    arguments: '-l trx'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: 'src\Test\SolidifyProject.Engine.Test.Unit\**\*.Test.Unit.*.dll'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    vsTestVersion: '16.0'
+    codeCoverageEnabled: true
 
 - task: SonarCloudAnalyze@1
 
