@@ -6,9 +6,10 @@ pool:
 
 steps:
 
-- task: SonarQubePrepare@4
+- task: SonarCloudPrepare@1
   inputs:
-    SonarQube: 'SonarCloud'
+    SonarCloud: 'SonarCloud'
+    organization: 'solidify-project'
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
 
@@ -30,8 +31,8 @@ steps:
     searchFolder: '$(System.DefaultWorkingDirectory)'
     vsTestVersion: '16.0'
 
-- task: SonarQubeAnalyze@4
+- task: SonarCloudAnalyze@1
 
-- task: SonarQubePublish@4
+- task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
