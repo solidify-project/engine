@@ -50,5 +50,6 @@ steps:
   inputs:
     serviceConnectionEndpoint: 'SnykCloud'
     testType: 'app'
+    targetFile: 'src'
     monitorOnBuild: true
     failOnIssues: false
