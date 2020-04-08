@@ -45,3 +45,10 @@ steps:
 - task: WhiteSource Bolt@20
   inputs:
     cwd: '$(System.DefaultWorkingDirectory)'
+
+- task: SnykSecurityScan@0
+  inputs:
+    serviceConnectionEndpoint: 'SnykCloud'
+    testType: 'app'
+    monitorOnBuild: true
+    failOnIssues: false
