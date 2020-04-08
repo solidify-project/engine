@@ -13,7 +13,7 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
     projectName: 'Solidify Project Engine'
-    projectVersion: '$(Date:yyyy-MM-dd)-v$(Rev:r)'
+    projectVersion: $(Date:yyyy-MM-dd)-v$(Rev:r)
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -41,3 +41,15 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
+
+- task: WhiteSource Bolt@20
+  inputs:
+    cwd: '$(System.DefaultWorkingDirectory)'
+
+- task: SnykSecurityScan@0
+  inputs:
+    serviceConnectionEndpoint: 'SnykCloud'
+    testType: 'app'
+    targetFile: 'src\SolidifyProject.Engine.sln'
+    monitorOnBuild: true
+    failOnIssues: false
