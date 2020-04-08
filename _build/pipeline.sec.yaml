@@ -50,6 +50,6 @@ steps:
   inputs:
     serviceConnectionEndpoint: 'SnykCloud'
     testType: 'app'
-    targetFile: 'src'
+    targetFile: 'src\SolidifyProject.Engine.sln'
     monitorOnBuild: true
     failOnIssues: false
