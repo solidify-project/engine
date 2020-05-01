@@ -94,5 +94,13 @@ FeedDestinationOrder:    2019-12-21
 
 #### Consuming pages feed
 
+There is an attribute to consume pages feed on current page:
+
+```markdown
+FeedSource:     blogPosts
+```
+
+`FeedDestination` has a string type and represents the name of a feed that page will consume. 
+
 
 
