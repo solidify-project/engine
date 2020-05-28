@@ -5,6 +5,7 @@ parameters:
 steps:
   - task: DotNetCoreCLI@2
     displayName: 'Run tests'
+    continueOnError: true
     inputs:
       command: 'test'
       projects: ${{ parameters.pathToProject }}
