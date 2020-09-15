@@ -2,10 +2,6 @@
 
 name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
-variables:
-  - name: releaseVersion
-    value: 'v-demo'
-
 trigger: none
 
 stages:
@@ -73,17 +69,3 @@ stages:
           - task: CmdLine@2
             inputs:
               script: 'echo "deploy to github"'
-
-          # - task: GitHubRelease@0
-          #   inputs:
-          #     gitHubConnection: 'GitHub'
-          #     repositoryName: 'solidify-project/engine'
-          #     action: 'create'
-          #     target: '$(releaseVersion)'
-          #     tagSource: 'manual'
-          #     tag: '$(releaseVersion)'
-          #     isDraft: true
-          #     isPreRelease: true
-          #     releaseNotesSource: 'input'
-          #     releaseNotes: 'Version $(releaseVersion)'
-          #     assets: '$(Build.ArtifactStagingDirectory)/*'
