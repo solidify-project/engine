@@ -40,11 +40,7 @@ stages:
               command: 'publish'
               publishWebProjects: false
               projects: '$(pathToProject)'
-              arguments: |
-                -r $(buildPlatform)
-                --self-contained
-                -c Release
-                -o $(Build.ArtifactStagingDirectory)/$(buildPlatform)/engine
+              arguments: '-r $(buildPlatform) --self-contained -c Release -o $(Build.ArtifactStagingDirectory)/$(buildPlatform)/engine'
               zipAfterPublish: false
               modifyOutputPath: false
 
