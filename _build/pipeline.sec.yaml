@@ -13,7 +13,7 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'solidify-project-engine'
     projectName: 'Solidify Project Engine'
-    projectVersion: $(Date:yyyy-MM-dd)-v$(Rev:r)
+    projectVersion: latest
 
 - task: DotNetCoreCLI@2
   inputs:
