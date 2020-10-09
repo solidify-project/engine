@@ -11,7 +11,7 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
         {
         }
         
-        public override async Task<T> LoadContentByIdAsync(string id)
+        protected override async Task<T> LoadContentByIdAsyncInternal(string id)
         {
             var path = Path.Combine(_root, id);
             

@@ -11,7 +11,7 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
         {
         }
         
-        public override async Task SaveContentAsync(string id, T content)
+        protected override async Task SaveContentAsyncInternal(string id, T content)
         {
             var path = Path.Combine(_root, id);
             EnsureDirectoryExists(path);

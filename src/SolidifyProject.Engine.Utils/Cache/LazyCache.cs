@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SolidifyProject.Engine.Utils.Cache
@@ -12,7 +11,6 @@ namespace SolidifyProject.Engine.Utils.Cache
         private readonly LoadToCacheAsyncDelegate _loadToCache;
         
         private readonly ConcurrentDictionary<string, Lazy<Task<T>>> _cache= new ConcurrentDictionary<string, Lazy<Task<T>>>();
-        private static readonly ConcurrentDictionary<string, Mutex> _mutexes = new ConcurrentDictionary<string, Mutex>();
         
         public LazyCache(LoadToCacheAsyncDelegate loadToCache)
         {
@@ -25,34 +23,12 @@ namespace SolidifyProject.Engine.Utils.Cache
             {
                 return await result.Value.ConfigureAwait(false);
             }
-
-            var mutex = _getMutexByKey(key);
-            mutex.WaitOne();
             
             result = new Lazy<Task<T>>(() => _loadToCache(key));
 
             _cache.AddOrUpdate(key, result, (k, r) => result);
 
-            mutex.ReleaseMutex();
-
             return await GetFromCacheAsync(key).ConfigureAwait(false);
-        }
-
-        private static Mutex _getMutexByKey(string key)
-        {
-            Mutex result;
-            if (_mutexes.TryGetValue(key, out result))
-            {
-                return result;
-            }
-
-            result = new Mutex();
-            if (_mutexes.TryAdd(key, result))
-            {
-                return result;
-            }
-
-            return _getMutexByKey(key);
         }
     }
 }
