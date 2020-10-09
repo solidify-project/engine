@@ -1,4 +1,5 @@
-trigger: none
+trigger:
+- master
 
 pool:
   # Windows Server 2019 with Visual Studio 2019
