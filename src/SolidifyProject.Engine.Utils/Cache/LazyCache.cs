@@ -26,18 +26,14 @@ namespace SolidifyProject.Engine.Utils.Cache
                 return await result.Value.ConfigureAwait(false);
             }
 
-            result = new Lazy<Task<T>>(() =>
-            {
-                using (var mutex = _getMutexByKey(key))
-                {
-                    mutex.WaitOne();
-                    var task = _loadToCache(key);
-                    mutex.ReleaseMutex();
-                    return task;
-                }
-            });
+            var mutex = _getMutexByKey(key);
+            mutex.WaitOne();
             
+            result = new Lazy<Task<T>>(() => _loadToCache(key));
+
             _cache.AddOrUpdate(key, result, (k, r) => result);
+
+            mutex.ReleaseMutex();
 
             return await GetFromCacheAsync(key).ConfigureAwait(false);
         }
