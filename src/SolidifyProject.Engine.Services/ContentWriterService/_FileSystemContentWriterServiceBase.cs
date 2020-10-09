@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using SolidifyProject.Engine.Infrastructure.Interfaces;
 
 namespace SolidifyProject.Engine.Services.ContentWriterService
 {
-    public abstract class _FileSystemContentWriterServiceBase<T> : IContentWriterService<T> where T : class 
+    public abstract class _FileSystemContentWriterServiceBase<T> : _FileSystemContentServiceBase, IContentWriterService<T> where T : class 
     {
         protected readonly string _root;
 
@@ -43,6 +44,20 @@ namespace SolidifyProject.Engine.Services.ContentWriterService
             return Task.CompletedTask;
         }
 
-        public abstract Task SaveContentAsync(string id, T content);
+        public async Task SaveContentAsync(string id, T content)
+        {
+            LockFileByKey(id);
+
+            try
+            {
+                await SaveContentAsyncInternal(id, content);
+            }
+            finally
+            {
+                ReleaseFileByKey(id);
+            }
+        }
+
+        protected abstract Task SaveContentAsyncInternal(string id, T content);
     }
 }

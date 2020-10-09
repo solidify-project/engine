@@ -7,7 +7,7 @@ using SolidifyProject.Engine.Infrastructure.Interfaces;
 
 namespace SolidifyProject.Engine.Services.ContentReaderService
 {
-    public abstract class _FileSystemContentReaderServiceBase<T> : IContentReaderService<T> where T : class
+    public abstract class _FileSystemContentReaderServiceBase<T> : _FileSystemContentServiceBase, IContentReaderService<T> where T : class
     {
         public readonly string[] IGNORED_FILES = {"README.md", ".DS_Store"};
         protected readonly string _root;
@@ -53,6 +53,20 @@ namespace SolidifyProject.Engine.Services.ContentReaderService
         /// </summary>
         /// <param name="id"></param>
         /// <returns>File content or null, if file wasn't found.</returns>
-        public abstract Task<T> LoadContentByIdAsync(string id);
+        public async Task<T> LoadContentByIdAsync(string id)
+        {
+            LockFileByKey(id);
+
+            try
+            {
+                return await LoadContentByIdAsyncInternal(id);
+            }
+            finally
+            {
+                ReleaseFileByKey(id);
+            }
+        }
+
+        protected abstract Task<T> LoadContentByIdAsyncInternal(string id);
     }
 }

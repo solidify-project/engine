@@ -11,7 +11,7 @@ namespace SolidifyProject.Engine.Utils.Cache
         private readonly LoadToCacheAsyncDelegate _loadToCache;
         
         private readonly ConcurrentDictionary<string, Lazy<Task<T>>> _cache= new ConcurrentDictionary<string, Lazy<Task<T>>>();
-
+        
         public LazyCache(LoadToCacheAsyncDelegate loadToCache)
         {
             _loadToCache = loadToCache;
@@ -23,9 +23,9 @@ namespace SolidifyProject.Engine.Utils.Cache
             {
                 return await result.Value.ConfigureAwait(false);
             }
-
-            result = new Lazy<Task<T>>(() => _loadToCache(key));
             
+            result = new Lazy<Task<T>>(() => _loadToCache(key));
+
             _cache.AddOrUpdate(key, result, (k, r) => result);
 
             return await GetFromCacheAsync(key).ConfigureAwait(false);
