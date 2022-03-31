@@ -1,5 +1,3 @@
-# Get help her https://aka.ms/yaml
-
 name: cd-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
 trigger: none
@@ -23,7 +21,7 @@ stages:
               buildPlatform: osx-x64
 
         pool:
-          vmImage: 'ubuntu-16.04'
+          vmImage: 'ubuntu-20.04'
         workspace:
           clean: outputs
         steps:
@@ -64,14 +62,3 @@ stages:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(buildPlatform)'
               ArtifactName: '$(buildPlatform)'
               publishLocation: 'Container'
-
-  - stage: deploy
-    dependsOn: release
-    jobs:
-      - job: github
-        pool:
-          vmImage: 'ubuntu-16.04'
-        steps:
-          - task: CmdLine@2
-            inputs:
-              script: 'echo "deploy to github"'
