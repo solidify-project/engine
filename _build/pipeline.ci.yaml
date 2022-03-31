@@ -1,5 +1,3 @@
-# Get help her https://aka.ms/yaml
-
 name: ci-$(Date:yyyy-MM-dd)-v$(Rev:r)
 
 trigger:
